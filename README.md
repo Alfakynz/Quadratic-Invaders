@@ -6,11 +6,12 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 #### Méthodes
 
-- Augmenter ennemis en fonction du temps (dégat, vitesse, bouclier, PV)
+- Augmenter ennemis en fonction du temps (dégat, vitesse, bouclier, PV, vitesse de tir)
 
 #### Interface
 
-- Taille fenêtre
+- Taille fenêtre (`x: int, y: int`)
+- Compteur de points (temps resté en vie) (`points: int`)
 
 ## Presonnage
 
@@ -21,12 +22,13 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 #### Interface
 
-- Couleur
-- Forme
-- PV
-- Dégats
-- Vitesse
-- Bouclier
+- Couleur (`r: int, g: int, b: int`)
+- Forme (`shape: str`)
+- PV (`hp: int`)
+- Dégats (`damage: int`)
+- Vitesse (`speed: int`)
+- Bouclier (`shield: int`)
+- Vitesse de tir (`speed_shoot: int`)
 
 ## Main Character
 
@@ -36,7 +38,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 #### Interface
 
-- XP
+- XP (`xp: int`)
 
 ## Ennemis (Personnage)
 
@@ -48,7 +50,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 #### Interface
 
-- XP
+- XP (`xp: int`)
 
 ## Tir
 
@@ -60,16 +62,16 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 #### Interface
 
-- Couleur
-- Forme
-- Dégat
-- Vitesse
+- Couleur (`r: int, g: int, b: int`)
+- Forme (`shape: str`)
+- Dégat (`damage: int`)
+- Vitesse (`speed: int`)
 
 ## Formes
 
 #### Interface
 
-- Couleur
+- Couleur (`r: int, g: int, b: int`)
 
 ## Upgrade
 
