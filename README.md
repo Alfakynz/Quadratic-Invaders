@@ -79,7 +79,18 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 - Augmenter PV
 - Augmenter attaque
+- Augmenter bouclier
+- Augmenter vitesse
+- Augmenter vitesse de tir
+- Augmenter prix (après achat)
 - Ajouter une compétence
-- Ajouter bouclier
-- Ajouter vitesse
 - Vérifier nombre XP joueur
+
+#### Interface
+
+- Prix PV (`price_hp: int`)
+- Prix attaque (`price_damage: int`)
+- Prix bouclier (`price_shield: int`)
+- Prix vitesse (`price_speed: int`)
+- Prix vitesse de tir (`price_speed_shoot: int`)
+- Prix compétences (`price_skills: int`)
