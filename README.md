@@ -7,6 +7,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 #### Méthodes
 
 - Augmenter ennemis en fonction du temps (dégat, vitesse, bouclier, PV, vitesse de tir)
+- Game Over
 
 #### Interface
 
@@ -66,6 +67,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Forme (`shape: str`)
 - Dégat (`damage: int`)
 - Vitesse (`speed: int`)
+- Angle (`angle: float`)
 
 ## Formes
 
