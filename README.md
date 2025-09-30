@@ -8,6 +8,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 - Augmenter ennemis en fonction du temps (dégat, vitesse, bouclier, PV, vitesse de tir)
 - Game Over
+- Collision
 
 #### Interface
 
@@ -31,7 +32,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Bouclier (`shield: int`)
 - Vitesse de tir (`speed_shoot: int`)
 
-## Main Character
+## Main Character (Personnage)
 
 #### Méthodes
 
@@ -41,19 +42,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 - XP (`xp: int`)
 
-## Ennemis (Personnage)
-
-#### Méthodes
-
-- Se déplacer vers le perso (pythagore)
-- Collision
-- Attaquer
-
-#### Interface
-
-- XP (`xp: int`)
-
-## Tir
+## Tir (Main Character)
 
 #### Méthodes
 
@@ -68,6 +57,18 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Dégat (`damage: int`)
 - Vitesse (`speed: int`)
 - Angle (`angle: float`)
+
+## Ennemis (Personnage)
+
+#### Méthodes
+
+- Se déplacer vers le perso (pythagore)
+- Collision
+- Attaquer
+
+#### Interface
+
+- XP (`xp: int`)
 
 ## Formes
 
