@@ -85,7 +85,6 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Augmenter vitesse
 - Augmenter vitesse de tir
 - Augmenter prix (après achat)
-- Ajouter une compétence
 - Vérifier nombre XP joueur
 
 #### Interface
@@ -96,3 +95,10 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Prix vitesse (`price_speed: int`)
 - Prix vitesse de tir (`price_speed_shoot: int`)
 - Prix compétences (`price_skills: int`)
+
+## Si on a le temps
+
+- Types d'ennemis
+- Fenêtre qui bouge
+- Compétences
+- Boss
