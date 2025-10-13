@@ -31,16 +31,14 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Vitesse (`speed: int`)
 - Bouclier (`shield: int`)
 - Vitesse de tir (`speed_shoot: int`)
+- XP (`xp: int`)
 
 ## Main Character (Personnage)
 
 #### Méthodes
 
 - Tirer
-
-#### Interface
-
-- XP (`xp: int`)
+- Ajout XP
 
 ## Tir (Main Character)
 
@@ -65,10 +63,6 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Se déplacer vers le perso (pythagore)
 - Collision
 - Attaquer
-
-#### Interface
-
-- XP (`xp: int`)
 
 ## Formes
 
