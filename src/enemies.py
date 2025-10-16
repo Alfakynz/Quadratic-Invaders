@@ -1,7 +1,15 @@
 from characters import Character
 
 class Enemy(Character):
-    def __init_(self, color: list[int], shape: str, hp: int, damage: int, speed: int, shield: int, speed_shoot: int, xp: int) -> None:
+    def __init__(self,
+                 color: list[int],
+                 shape: str,
+                 hp: int,
+                 damage: int,
+                 speed: int,
+                 shield: int,
+                 speed_shoot: int,
+                 xp: int) -> None:
         super().__init__(color, shape, hp, damage, speed, shield, speed_shoot, xp)
 
     def move(self):
