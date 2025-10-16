@@ -1,18 +1,25 @@
 class Upgrade:
-    def __init__(self, 
-                 price_pv: int,
-                 price_attack: int,
-                 price_shield: int,
-                 price_speed: int,
-                 price_speed_shoot: int,
-                 price_skills: int
-                 ) -> None:
-        self.price_pv = price_pv
-        self.price_attack = price_attack
-        self.price_shield = price_shield
-        self.price_speed = price_speed
-        self.price_speed_shoot = price_speed_shoot
-        self.price_skills = price_skills
+    def __init__(self) -> None:
+        self.price_hp: int = 25
+        self.price_attack: int = 10
+        self.price_shield: int = 50
+        self.price_speed: int = 5
+        self.price_speed_shoot: int = 10
+        self.price_skills: int = 100
 
-    def increase(self, skill):
-        pass
+    def increase(self, skill: str) -> None:
+        match skill:
+            case "hp":
+                self.price_hp = int(self.price_hp * 1.5)
+            case "attack":
+                self.price_attack = int(self.price_attack * 1.5)
+            case "shield":
+                self.price_shield = int(self.price_shield * 1.5)
+            case "speed":
+                self.price_speed = int(self.price_speed * 1.5)
+            case "speed_shoot":
+                self.price_speed_shoot = int(self.price_speed_shoot * 1.5)
+            case "skills":
+                self.price_skills = int(self.price_skills * 1.5)
+            case _:
+                print("Skill not found")

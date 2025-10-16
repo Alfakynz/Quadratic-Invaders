@@ -19,7 +19,6 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 #### Méthodes
 
-- Se déplacer
 - Recevoir dégats
 
 #### Interface
@@ -37,6 +36,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 #### Méthodes
 
+- Se déplacer
 - Tirer
 - Ajout XP
 
@@ -44,6 +44,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 #### Méthodes
 
+- Se déplacer
 - Avancer
 - Collision
 - Attaquer
