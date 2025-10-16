@@ -1,8 +1,7 @@
 import pyxel
 
 class Game:
-    def __init__(self):
-        
+    def __init__(self) -> None:
         self.window_width: int = 1000
         self.window_height: int = 750
 

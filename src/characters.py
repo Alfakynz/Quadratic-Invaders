@@ -1,5 +1,5 @@
 class Character:
-    def __init__(self, color: list[int], shape: str, hp: int, damage: int, speed: int, shield: int, speed_shoot: int, xp: int):
+    def __init__(self, color: list[int], shape: str, hp: int, damage: int, speed: int, shield: int, speed_shoot: int, xp: int) -> None:
         self.color = color
         self.shape = shape
         self.hp = hp
