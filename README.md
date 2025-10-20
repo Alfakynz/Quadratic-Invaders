@@ -15,7 +15,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Taille fenêtre (`x: int, y: int`)
 - Compteur de points (temps resté en vie) (`points: int`)
 
-## Presonnage
+## Personnage
 
 #### Méthodes
 
@@ -23,16 +23,16 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 #### Interface
 
-- Couleur (`r: int, g: int, b: int`)
+- Couleur (`color: int`)
 - Forme (`shape: str`)
 - PV (`hp: int`)
 - Dégats (`damage: int`)
 - Vitesse (`speed: int`)
 - Bouclier (`shield: int`)
-- Vitesse de tir (`speed_shoot: int`)
+- Vitesse de tir (`shoot_speed: int`)
 - XP (`xp: int`)
 
-## Main Character (Personnage)
+## Joueur (Personnage)
 
 #### Méthodes
 
@@ -40,7 +40,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Tirer
 - Ajout XP
 
-## Tir (Main Character)
+## Tir (Joueur)
 
 #### Méthodes
 
@@ -51,7 +51,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 #### Interface
 
-- Couleur (`r: int, g: int, b: int`)
+- Couleur (`color: int`)
 - Forme (`shape: str`)
 - Dégat (`damage: int`)
 - Vitesse (`speed: int`)
@@ -69,7 +69,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 
 #### Interface
 
-- Couleur (`r: int, g: int, b: int`)
+- Couleur (`color: int`)
 
 ## Upgrade
 
