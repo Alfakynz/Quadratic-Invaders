@@ -1,12 +1,12 @@
 class Character:
     def __init__(self,
-                 color: list[int],
+                 color: int,
                  shape: str,
                  hp: int,
                  attack: int,
                  speed: int,
                  shield: int,
-                 speed_shoot: int,
+                 shoot_speed: int,
                  xp: int) -> None:
         self.color = color
         self.shape = shape
@@ -16,7 +16,7 @@ class Character:
             "attack": attack,
             "shield": shield,
             "speed": speed,
-            "speed_shoot": speed_shoot
+            "shoot_speed": shoot_speed
         }
 
     def receive_damage(self, amount):

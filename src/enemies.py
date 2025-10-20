@@ -2,15 +2,15 @@ from characters import Character
 
 class Enemy(Character):
     def __init__(self,
-                 color: list[int],
+                 color: int,
                  shape: str,
                  hp: int,
                  damage: int,
                  speed: int,
                  shield: int,
-                 speed_shoot: int,
+                 shoot_speed: int,
                  xp: int) -> None:
-        super().__init__(color, shape, hp, damage, speed, shield, speed_shoot, xp)
+        super().__init__(color, shape, hp, damage, speed, shield, shoot_speed, xp)
 
     def move(self):
         pass
