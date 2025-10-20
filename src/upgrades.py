@@ -8,13 +8,13 @@ class Upgrade:
             "attack": Skill("attack", "Increase your attack by 1", 10, 1),
             "shield": Skill("shield", "Increase your shield by 5", 50, 5),
             "speed": Skill("speed", "Increase your speed by 6", 5, 6),
-            "shoot_speed": Skill("shoot_speed", "Increase your shooting speed by 2", 10, 2),
+            "shoot_speed": Skill("shoot_speed", "Increase your bulleting speed by 2", 10, 2),
         }
         self.price_hp: int = 25
         self.price_attack: int = 10
         self.price_shield: int = 50
         self.price_speed: int = 5
-        self.price_speed_shoot: int = 10
+        self.price_speed_bullet: int = 10
 
     def increase(self, skill: str, player: Player) -> None:
         if skill not in self.upgrades:

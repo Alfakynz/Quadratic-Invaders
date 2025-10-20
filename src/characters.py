@@ -1,3 +1,5 @@
+import pyxel
+
 class Character:
     def __init__(self,
                  color: int,
@@ -18,7 +20,6 @@ class Character:
             "speed": speed,
             "shoot_speed": shoot_speed
         }
-
     def receive_damage(self, amount):
         self.skills["hp"] -= amount * (1 - self.skills["shield"] / 100)
         if self.skills["hp"] < 0:

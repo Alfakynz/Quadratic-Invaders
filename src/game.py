@@ -18,10 +18,9 @@ class Game:
         self.window_height: int = 750 # height of the window
         self.window_title: str = "Window-Kill" #title of the window
 
-        pyxel.init(self.window_width, self.window_height, title=self.window_title) # initializes Pyxel and creates the window
+        pyxel.init(self.window_width, self.window_height, title=self.window_title, fps=60) # initializes Pyxel and creates the window
 
         pyxel.run(self.update, self.draw) # call infinitely the update and draw functions
-    
     def update(self):
         """
         Function that calls all the update functions of every class and is called infinitely by Pyxel
@@ -37,4 +36,7 @@ class Game:
         takes no argyments and returns None
         """
         pyxel.cls(0) # clears the window
+        pyxel.mouse(True) # displays the mouse on the window
+
         self.player.draw() # draws the player
+

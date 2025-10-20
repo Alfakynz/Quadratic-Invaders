@@ -32,7 +32,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Vitesse de tir (`speed_shoot: int`)
 - XP (`xp: int`)
 
-## Main Character (Personnage)
+## Player (Personnage)
 
 #### Méthodes
 
@@ -40,7 +40,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Tirer
 - Ajout XP
 
-## Tir (Main Character)
+## Balles (Player)
 
 #### Méthodes
 
