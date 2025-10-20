@@ -92,6 +92,15 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Prix vitesse de tir (`price_speed_shoot: int`)
 - Prix compétences (`price_skills: int`)
 
+## Skill
+
+#### Interface
+
+- Name (`name: str`)
+- Description (`description: str`)
+- Price (`price: int`)
+- Amoount (`amount: int`)
+
 ## Si on a le temps
 
 - Types d'ennemis
