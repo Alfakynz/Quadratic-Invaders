@@ -16,7 +16,7 @@ class Game:
 
         self.window_width: int = 1000 # width of the window
         self.window_height: int = 750 # height of the window
-        self.window_title: str = "Window-Kill" #title of the window
+        self.window_title: str = "Window-Kill" # title of the window
 
         pyxel.init(self.window_width, self.window_height, title=self.window_title, fps=60) # initializes Pyxel and creates the window
 
