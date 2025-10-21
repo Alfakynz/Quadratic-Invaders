@@ -29,10 +29,10 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Dégats (`damage: int`)
 - Vitesse (`speed: int`)
 - Bouclier (`shield: int`)
-- Vitesse de tir (`shoot_speed: int`)
+- Vitesse de tir (`fire_rate: int`)
 - XP (`xp: int`)
 
-## Player (Personnage)
+## Joueur (Personnage)
 
 #### Méthodes
 
@@ -40,7 +40,7 @@ Python, [Pyxel](https://github.com/kitao/pyxel)
 - Tirer
 - Ajout XP
 
-## Balles (Player)
+## Balles (Joueur)
 
 #### Méthodes
 

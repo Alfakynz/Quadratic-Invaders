@@ -8,14 +8,14 @@ class Player(Character):
 
     """
     def __init__(self,
-                 color: int = 7,
+                 color: int = 7, # white
                  shape: str = "triangle",
-                 hp: int = 10,
-                 attack: int = 1,
-                 speed: int = 5,
-                 shield: int = 0,
-                 shoot_speed: int = 30,
-                 xp: int = 0) -> None:
+                 hp: int = 10, # health points
+                 attack: int = 1, # amount of hp that the player removes to the enemies touched by a bullet
+                 speed: int = 5, # speed at which the player moves (in cartesian coordinates)
+                 shield: int = 0, # reduces the damage taken
+                 fire_rate: int = 30, # number of frames counted each time a bullet is shot
+                 xp: int = 0) -> None: # amount of experience points collected by the player
         """
         Initialize the class Player
 
@@ -25,11 +25,11 @@ class Player(Character):
         attack: int
         speed: int
         shield: int
-        shoot_speed: int
+        fire_rate: int
         xp: int
         -> None
         """
-        super().__init__(color, shape, hp, attack, speed, shield, shoot_speed, xp)
+        super().__init__(color, shape, hp, attack, speed, shield, fire_rate, xp)
 
 
         self.color: int = color
@@ -38,62 +38,79 @@ class Player(Character):
         self.attack: int = attack
         self.speed: int = speed
         self.shield: int = shield
-        self.shoot_speed: int = shoot_speed
+        self.fire_rate: int = fire_rate
         self.xp: int = xp
+
+        self.window_width: int = 0 # width of the window (given by the class Game)
+        self.window_height: int = 0 # height of the window (given by the class Game)
 
         # player's starting position
         self.player_x: int = 500
         self.player_y: int = 375
 
-        self.r: int = 0 # distance from the pole in polar coodinates (used in the draw function)
-        self.bullets = Bullets(self.player_x, self.player_y, self.r, self.shoot_speed)
+        self.r: int = 20 # distance from the pole in polar coodinates (also size)
 
-    def move(self) -> None:
+        self.bullets: Bullets = Bullets(self.player_x, self.player_y) # creates the objet Bullets
+        self.bullets.fire_rate = self.fire_rate # gives the fire rate to the bullet
+
+        return None
+
+    def player_movements(self) -> True:
         """
         Move the player according to the arrow keys pressed and stops it when it is about to go out of bounds
 
-        takes no arguments and returns None
+        takes no arguments -> True
         """
-        if pyxel.btn(pyxel.KEY_RIGHT) and self.player_x<1000:
-            self.player_x += self.speed
-        if pyxel.btn(pyxel.KEY_LEFT) and self.player_x>0:
-            self.player_x -= self.speed
-        if pyxel.btn(pyxel.KEY_DOWN) and self.player_y<750:
-            self.player_y += self.speed
-        if pyxel.btn(pyxel.KEY_UP) and self.player_y>0:
-            self.player_y -= self.speed
+        if pyxel.btn(pyxel.KEY_RIGHT) and self.player_x < self.window_width:
+            self.player_x += self.speed # moves to the right
+        if pyxel.btn(pyxel.KEY_LEFT) and self.player_x > 0:
+            self.player_x -= self.speed # moves to the left
+        if pyxel.btn(pyxel.KEY_DOWN) and self.player_y < self.window_height:
+            self.player_y += self.speed # moves down
+        if pyxel.btn(pyxel.KEY_UP) and self.player_y > 0:
+            self.player_y -= self.speed # moves up
 
-    def add_xp(self, amount: int) -> None:
+        return True
+
+    def add_xp(self, amount: int) -> True:
+
         self.xp += amount
 
-    def update(self) -> None:
+        return True
+
+    def update(self) -> True:
         """
         Function that updates everything inside and is called infinitely in the class Game
 
-        takes no arguments and returns None
+        takes no arguments -> True
         """
-        self.move() # moves the player
+
+        self.player_movements() # moves the player
+
+        # gives the position of the player to the bullet
         self.bullets.player_x = self.player_x
         self.bullets.player_y = self.player_y
-        self.bullets.update()
 
-    def draw(self) -> None:
+        # calculates the teta between the position of the mouse and the position of the player (polar coordinates)
+        self.teta: float = self.teta_calculation((pyxel.mouse_x, pyxel.mouse_y), (self.player_x, self.player_y))
+        self.bullets.teta = self.teta # gives teta to the bullet in order use it as the direction the bullet will move towards
+
+        self.bullets.update(self.polar_to_cartesian) # updates the bullets
+
+        return True
+
+    def draw(self) -> True:
         """
         Function that draws the objects on the window and is called infinitely in the class Game
 
-        takes no arguments and returns None
+        takes no arguments -> True
         """
 
-        dx: int = pyxel.mouse_x - self.player_x # distance between x of mouse and x of player
-        dy: int = pyxel.mouse_y - self.player_y # distance between y of mouse and y of player
-        teta: float = math.atan2(dy, dx) # calculation of teta, direction from the pole relative to the direction of the polar axis
-
-        self.r = 20 # distance from the pole
-
-        p1: tuple = (math.cos(teta) * self.r, math.sin(teta) * self.r) # conversion of polar coordinates into cartesian coordinates for the vertex of the triangle that is orientated to the mouse
-        # conversion for the other vertexes of the triangle
-        p2: tuple = (math.cos(teta + 3*math.pi/4) * self.r, math.sin(teta + 3*math.pi/4) * self.r)
-        p3: tuple = (math.cos(teta - 3*math.pi/4) * self.r, math.sin(teta - 3*math.pi/4) * self.r)
+        # conversion of polar coordinates into cartesian coordinates for the vertex of the triangle that is orientated to the mouse
+        p1: tuple[float, float] = self.polar_to_cartesian(self.teta, self.r)
+        # conversion for the other vertexes of the triangle (with an offset of 3pi/4)
+        p2: tuple[float, float] = self.polar_to_cartesian(self.teta, self.r, 3*math.pi/4)
+        p3: tuple[float, float] = self.polar_to_cartesian(self.teta, self.r, -3*math.pi/4)
 
         # drawing of the triangle/player
         pyxel.tri(self.player_x + p1[0], self.player_y + p1[1],
@@ -101,4 +118,6 @@ class Player(Character):
                   self.player_x + p3[0], self.player_y + p3[1],
                   self.color)
         
-        self.bullets.draw()
+        self.bullets.draw() # draws the bullets
+
+        return True

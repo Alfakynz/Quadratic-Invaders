@@ -2,39 +2,77 @@ import pyxel
 import math
 
 class Bullets:
-    def __init__(self, player_x, player_y, player_r, shoot_speed):
+    """
+    Class that manages the bullets shot by the player
+    """
+    def __init__(self, player_x: int, player_y: int) -> None:
+        """
+        Initializes the class Bullet
 
-        self.player_x = player_x
-        self.player_y = player_y
-        self.player_r = player_r
-        self.shoot_speed = shoot_speed
+        player_x: int
+        player_y: int
+        -> None
+        """
 
-        self.bullet_speed = 10
-        self.size = 10
-        self.color = 10
-        self.bullets_list: list[list[float]] = []
+        self.player_x: int = player_x # player's x position
+        self.player_y: int = player_y # player's y position
 
-    def bullets_creation(self):
-        
-        if pyxel.btn(pyxel.MOUSE_BUTTON_LEFT) and pyxel.frame_count % self.shoot_speed == True:
-            # distance between the position of the mouse and the start position of the bullet
-            dx: int = pyxel.mouse_x - (self.player_x + self.player_r)
-            dy: int = pyxel.mouse_y - (self.player_y + self.player_r)
-            teta: float = math.atan2(dy, dx) # calculation of teta, direction from the pole relative to the direction of the polar axis
+        self.window_width = 0 # width of the window (given by the class Game)
+        self.window_height = 0 # height of the window (given by the class Game)
+        self.fire_rate: int = 0 # number of frames counted each time a bullet is shot
+        self.teta: float = 0 # value of teta between the position of the mouse and the position of the player (calculated in the function update of the class Player)
 
-            self.bullets_list.append([self.player_x + self.player_r, self.player_y + self.player_r, teta])
+        self.bullet_speed: int = 10 # speed of the bullet (also r in polar coordinates)
+        self.size: int = 10 # size of the bullet/circle
+        self.color: int = 10 # yellow
+        self.bullets_list: list[list[float]] = [] # list where the coordinates and the direction of each bullet is stored
 
-    def bullets_movements(self):
-        for bullet in  self.bullets_list:
-            bullet[0] += math.cos(bullet[2]) * self.bullet_speed
-            bullet[1] += math.sin(bullet[2]) * self.bullet_speed
-            if  bullet[0]<-10 or bullet[0]>1010 or bullet[1]<-10 or bullet[1]>760:
-                self.bullets_list.remove(bullet)
+    def bullets_creation(self) -> True:
+        """
+        Creates bullets every time a specific amount of frames is counted and when left click is continuously pressed
 
-    def update(self):
-        self.bullets_creation()
-        self.bullets_movements()
+        takes no arguments -> True
+        """
 
-    def draw(self):
+        if pyxel.btn(pyxel.MOUSE_BUTTON_LEFT) and pyxel.frame_count % self.fire_rate == True:
+            self.bullets_list.append([self.player_x, self.player_y, self.teta]) # adds to bullets_list a list of the coordinates and the direction of the bullet
+
+        return True
+
+    def bullets_movements(self, polar_to_cartesian: callable) -> True:
+        """
+        Moves the bullet towards the place the mouse clicked and removes it when it goes out of bounds
+
+        polar_to_cartesian: callable (function) -> True
+        """
+
         for bullet in self.bullets_list:
-            pyxel.circ(bullet[0], bullet[1], self.size, self.color)
+            # moves the bullet (with the help of a conversion of polar coordinates into cartesian coordinates)
+            bullet[0] += polar_to_cartesian(bullet[2], self.bullet_speed)[0]
+            bullet[1] += polar_to_cartesian(bullet[2], self.bullet_speed)[1]
+            if  bullet[0] < 0 - self.size or bullet[0] > self.window_width + self.size or bullet[1] < 0 - self.size or bullet[1] > self.window_height + self.size:
+                self.bullets_list.remove(bullet) #removes the bullet when it goes out of bounds
+
+        return True
+
+    def update(self, polar_to_cartesian: callable) -> True:
+        """
+        Function that updates everything inside and is called infinitely in the class Player
+
+        polar_to_cartesian: callable (function) -> True
+        """
+        self.bullets_creation() # creates bullets
+        self.bullets_movements(polar_to_cartesian) # moves bullets
+
+        return True
+
+    def draw(self) -> True:
+        """
+        Function that draws the bullets on the window and is called infinitely in the class Player
+
+        takes no arguments -> True
+        """
+        for bullet in self.bullets_list:
+            pyxel.circ(bullet[0], bullet[1], self.size, self.color) # draws bullets/circles
+
+        return True

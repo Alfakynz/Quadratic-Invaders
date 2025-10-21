@@ -8,7 +8,7 @@ class Upgrade:
             "attack": Skill("attack", "Increase your attack by 1", 10, 1),
             "shield": Skill("shield", "Increase your shield by 5", 50, 5),
             "speed": Skill("speed", "Increase your speed by 6", 5, 6),
-            "shoot_speed": Skill("shoot_speed", "Increase your bulleting speed by 2", 10, 2),
+            "fire_rate": Skill("fire_rate", "Increase your bulleting speed by 2", 10, 2),
         }
         self.price_hp: int = 25
         self.price_attack: int = 10

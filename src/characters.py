@@ -1,4 +1,5 @@
 import pyxel
+import math
 
 class Character:
     def __init__(self,
@@ -8,7 +9,7 @@ class Character:
                  attack: int,
                  speed: int,
                  shield: int,
-                 shoot_speed: int,
+                 fire_rate: int,
                  xp: int) -> None:
         self.color = color
         self.shape = shape
@@ -18,8 +19,37 @@ class Character:
             "attack": attack,
             "shield": shield,
             "speed": speed,
-            "shoot_speed": shoot_speed
+            "fire_rate": fire_rate
         }
+
+    def teta_calculation(self, coord1: tuple[int, int], coord2: tuple[int, int]) -> float:
+        """
+        Function that calculates teta, direction from the pole relative to the direction of the polar axis (polar coordinates), according to two tuples of coordinates
+
+        coord1: tuple[int, int]
+        coord2: tuple[int, int]
+        -> float
+        """
+
+        dx: int = coord1[0] - coord2[0] # distance between x of coord1 and x of coord2
+        dy: int = coord1[1] - coord2[1] # distance between y of coord1 and y of coord2
+        teta: float = math.atan2(dy, dx) # calculation of teta
+        return teta
+    
+    def polar_to_cartesian(self, teta: float, r: int, offset: float = 0) -> tuple[float, float]:
+        """
+        Function that turns polar coordinates into cartesian coordinates
+
+        teta: float
+        r: int
+        offset: float
+        -> tuple[float, float]
+        """
+
+        x: float = math.cos(teta + offset) * r # calculates x according to the polar coordinates given (if given an offset, adds it to the operation)
+        y: float = math.sin(teta + offset) * r # calculates y according to the polar coordinates given (if given an offset, adds it to the operation)
+        return (x, y)
+
     def receive_damage(self, amount):
         self.skills["hp"] -= amount * (1 - self.skills["shield"] / 100)
         if self.skills["hp"] < 0:
