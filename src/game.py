@@ -1,3 +1,4 @@
+from PIL import Image
 import pyxel
 from player import Player
 from enemies import Enemies
@@ -30,10 +31,11 @@ class Game:
         self.player.bullets.window_height = self.window_height
 
         self.window_title: str = "Window-Kill" # title of the window
+        self.cursor_pixels = self.load_image_as_array("assets/cursor.png")
 
         self.in_upgrade_menu: bool = False
 
-        pyxel.init(self.window_width, self.window_height, title=self.window_title, fps=60) # initializes Pyxel and creates the window
+        pyxel.init(self.window_width, self.window_height, title = self.window_title, fps = 60) # initializes Pyxel and creates the window
 
         pyxel.run(self.update, self.draw) # call infinitely the update and draw functions
 
@@ -69,13 +71,56 @@ class Game:
         """
 
         pyxel.cls(0) # clears the window
-        pyxel.mouse(True) # displays the mouse on the window
+        pyxel.mouse(False) # displays the mouse on the window
 
         if self.in_upgrade_menu:
             self.upgrade.draw() # draws the upgrade menu
         else:
             self.player.draw() # draws the player
             self.enemies.draw() # draws the enemies
+            self.draw_cursor(pyxel.mouse_x - 16, pyxel.mouse_y - 16) # draws a custom cursor (centered)
 
         return
 
+    def load_image_as_array(self, path: str, color: int = 12) -> list[list[int]]:
+        """
+        Load an image and convert it to a 2D array of pixel colors based on transparency.
+        Args:
+            path (str): The file path to the image.
+            color (int): The color to use for non-transparent pixels.
+        Returns:
+            list[list[int]]: A 2D array representing the image pixels.
+        """
+        img = Image.open(path).convert("RGBA")
+        w, h = img.size
+        data = []
+
+        for y in range(h):
+            row = []
+            for x in range(w):
+                pixel = img.getpixel((x, y))
+                if isinstance(pixel, tuple) and len(pixel) == 4:
+                    a = pixel[3]
+                elif isinstance(pixel, (int, float)):
+                    a = pixel
+                else:
+                    a = 0
+                row.append(color if a > 10 else 0)
+            data.append(row)
+
+        return data
+    
+    def draw_cursor(self, x, y) -> None:
+        """
+        Draw a custom cursor at the specified position.
+        Args:
+            x (int): The x-coordinate to draw the cursor.
+            y (int): The y-coordinate to draw the cursor.
+        
+        Returns:
+            None
+        """
+        for j, row in enumerate(self.cursor_pixels):
+            for i, color in enumerate(row):
+                if color != 0:
+                    pyxel.pset(x + i, y + j, color)
