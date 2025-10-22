@@ -1,6 +1,5 @@
 import pyxel
 import random
-import math
 from characters import Character
 
 class Enemies(Character):
@@ -50,7 +49,7 @@ class Enemies(Character):
         self.player_x: int = 0 # player's x position
         self.player_y: int = 0 # player's y position
 
-    def enemies_creation(self) -> True:
+    def enemies_creation(self) -> bool:
         """"
         Creates an enemy on a random side of the map every time a specific amount of frames is counted
 
@@ -70,7 +69,7 @@ class Enemies(Character):
 
         return True
 
-    def enemies_movements(self) -> True:
+    def enemies_movements(self) -> bool:
         """
         Moves the enemies towards the player
 
@@ -93,7 +92,7 @@ class Enemies(Character):
     def attack(self):
         pass
 
-    def update(self) -> True:
+    def update(self) -> bool:
         """
         Function that updates everything inside and is called infinitely in the class Game
 
@@ -105,7 +104,7 @@ class Enemies(Character):
 
         return True
 
-    def draw(self) -> True:
+    def draw(self) -> bool:
         """
         Function that draws the enemies on the window and is called infinitely in the class Game
 

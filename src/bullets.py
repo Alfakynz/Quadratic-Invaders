@@ -1,5 +1,5 @@
 import pyxel
-import math
+from typing import Callable
 
 class Bullets:
     """
@@ -27,7 +27,7 @@ class Bullets:
         self.color: int = 10 # yellow
         self.bullets_list: list[list[float]] = [] # list where the coordinates and the direction of each bullet is stored
 
-    def bullets_creation(self) -> True:
+    def bullets_creation(self) -> bool:
         """
         Creates bullets every time a specific amount of frames is counted and when left click is continuously pressed
 
@@ -39,7 +39,7 @@ class Bullets:
 
         return True
 
-    def bullets_movements(self, polar_to_cartesian: callable) -> True:
+    def bullets_movements(self, polar_to_cartesian: Callable) -> bool:
         """
         Moves the bullet towards the place the mouse clicked and removes it when it goes out of bounds
 
@@ -55,7 +55,8 @@ class Bullets:
 
         return True
 
-    def update(self, polar_to_cartesian: callable) -> True:
+    
+    def update(self, polar_to_cartesian: Callable) -> bool:
         """
         Function that updates everything inside and is called infinitely in the class Player
 
@@ -66,7 +67,7 @@ class Bullets:
 
         return True
 
-    def draw(self) -> True:
+    def draw(self) -> bool:
         """
         Function that draws the bullets on the window and is called infinitely in the class Player
 

@@ -37,18 +37,19 @@ class Game:
 
         pyxel.run(self.update, self.draw) # call infinitely the update and draw functions
 
-    def update(self) -> True:
+    def update(self) -> None:
         """
         Function that calls all the update functions of every class and is called infinitely by Pyxel
 
-        takes no arguments -> True
+        takes no arguments -> None
         """
 
         if pyxel.btnp(pyxel.KEY_E):
             self.in_upgrade_menu = not self.in_upgrade_menu
+
         if self.in_upgrade_menu:
-            self.upgrade.update()
-            return True
+            self.upgrade.update() # updates the upgrade menu
+            return # skips the rest of the update function
 
         self.player.update() # updates the player
 
@@ -58,26 +59,23 @@ class Game:
 
         self.enemies.update() # updates the enemies
 
-        return True
+        return
 
-    def draw(self) -> True:
+    def draw(self) -> None:
         """
         Function that calls all the draw functions of every class and is called infinitely by Pyxel
 
-        takes no arguments -> True
+        takes no arguments -> None
         """
 
         pyxel.cls(0) # clears the window
         pyxel.mouse(True) # displays the mouse on the window
 
-        self.player.draw() # draws the player
-        self.enemies.draw() # draws the enemies
-
         if self.in_upgrade_menu:
-            self.upgrade.draw()
+            self.upgrade.draw() # draws the upgrade menu
         else:
-            self.player.draw()
-            self.enemies.draw()
+            self.player.draw() # draws the player
+            self.enemies.draw() # draws the enemies
 
-        return True
+        return
 

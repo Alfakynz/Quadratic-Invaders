@@ -31,16 +31,6 @@ class Player(Character):
         """
         super().__init__(color, shape, hp, attack, speed, shield, fire_rate, xp)
 
-
-        self.color: int = color
-        self.shape: str = shape
-        self.hp: int = hp
-        self.attack: int = attack
-        self.speed: int = speed
-        self.shield: int = shield
-        self.fire_rate: int = fire_rate
-        self.xp: int = xp
-
         self.window_width: int = 0 # width of the window (given by the class Game)
         self.window_height: int = 0 # height of the window (given by the class Game)
 
@@ -51,11 +41,11 @@ class Player(Character):
         self.r: int = 20 # distance from the pole in polar coodinates (also size)
 
         self.bullets: Bullets = Bullets(self.player_x, self.player_y) # creates the objet Bullets
-        self.bullets.fire_rate = self.fire_rate # gives the fire rate to the bullet
+        self.bullets.fire_rate = self.skills["fire_rate"] # gives the fire rate to the bullet
 
         return None
 
-    def player_movements(self) -> True:
+    def player_movements(self) -> bool:
         """
         Move the player according to the arrow keys pressed and stops it when it is about to go out of bounds
 
@@ -72,13 +62,13 @@ class Player(Character):
 
         return True
 
-    def add_xp(self, amount: int) -> True:
+    def add_xp(self, amount: int) -> bool:
 
         self.xp += amount
 
         return True
 
-    def update(self) -> True:
+    def update(self) -> bool:
         """
         Function that updates everything inside and is called infinitely in the class Game
 
@@ -99,7 +89,7 @@ class Player(Character):
 
         return True
 
-    def draw(self) -> True:
+    def draw(self) -> bool:
         """
         Function that draws the objects on the window and is called infinitely in the class Game
 
