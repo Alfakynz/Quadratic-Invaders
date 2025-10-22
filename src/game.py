@@ -1,6 +1,7 @@
 import pyxel
 from player import Player
 from enemies import Enemies
+from upgrades import Upgrade
 
 class Game:
     """
@@ -15,6 +16,7 @@ class Game:
 
         self.player = Player() # creates the object Player
         self.enemies = Enemies() # creates the object Enemies
+        self.upgrade = Upgrade(self.player) # creates the object Upgrade
 
         self.window_width: int = 1000 # width of the window
         self.window_height: int = 750 # height of the window
@@ -29,6 +31,8 @@ class Game:
 
         self.window_title: str = "Window-Kill" # title of the window
 
+        self.in_upgrade_menu: bool = False
+
         pyxel.init(self.window_width, self.window_height, title=self.window_title, fps=60) # initializes Pyxel and creates the window
 
         pyxel.run(self.update, self.draw) # call infinitely the update and draw functions
@@ -39,6 +43,12 @@ class Game:
 
         takes no arguments -> True
         """
+
+        if pyxel.btnp(pyxel.KEY_E):
+            self.in_upgrade_menu = not self.in_upgrade_menu
+        if self.in_upgrade_menu:
+            self.upgrade.update()
+            return True
 
         self.player.update() # updates the player
 
@@ -62,6 +72,12 @@ class Game:
 
         self.player.draw() # draws the player
         self.enemies.draw() # draws the enemies
+
+        if self.in_upgrade_menu:
+            self.upgrade.draw()
+        else:
+            self.player.draw()
+            self.enemies.draw()
 
         return True
 

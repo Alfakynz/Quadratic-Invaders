@@ -61,14 +61,14 @@ class Player(Character):
 
         takes no arguments -> True
         """
-        if pyxel.btn(pyxel.KEY_RIGHT) and self.player_x < self.window_width:
-            self.player_x += self.speed # moves to the right
-        if pyxel.btn(pyxel.KEY_LEFT) and self.player_x > 0:
-            self.player_x -= self.speed # moves to the left
-        if pyxel.btn(pyxel.KEY_DOWN) and self.player_y < self.window_height:
-            self.player_y += self.speed # moves down
-        if pyxel.btn(pyxel.KEY_UP) and self.player_y > 0:
-            self.player_y -= self.speed # moves up
+        if (pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.KEY_D)) and self.player_x < self.window_width:
+            self.player_x += self.skills["speed"] # moves to the right
+        if (pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.KEY_Q)) and self.player_x > 0:
+            self.player_x -= self.skills["speed"] # moves to the left
+        if (pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.KEY_S)) and self.player_y < self.window_height:
+            self.player_y += self.skills["speed"] # moves down
+        if (pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_Z)) and self.player_y > 0:
+            self.player_y -= self.skills["speed"] # moves up
 
         return True
 

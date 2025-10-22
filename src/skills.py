@@ -8,3 +8,4 @@ class Skill:
         self.description = description
         self.price = price
         self.amount = amount
+        self.level = 0
