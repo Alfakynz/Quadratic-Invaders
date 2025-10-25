@@ -17,6 +17,9 @@ class Bullets:
         self.player_x: int = player_x # player's x position
         self.player_y: int = player_y # player's y position
 
+        self.enemies_list: list[dict[float, float, bool, float, int, int, str, int, int, int, int, int, int]] = []
+        self.enemy_size: int = 0
+
         self.window_width = 0 # width of the window (given by the class Game)
         self.window_height = 0 # height of the window (given by the class Game)
         self.fire_rate: int = 0 # number of frames counted each time a bullet is shot
@@ -25,13 +28,13 @@ class Bullets:
         self.bullet_speed: int = 10 # speed of the bullet (also r in polar coordinates)
         self.size: int = 10 # size of the bullet/circle
         self.color: int = 10 # yellow
-        self.bullets_list: list[list[float]] = [] # list where the coordinates and the direction of each bullet is stored
+        self.bullets_list: list[list[float, float, float]] = [] # list where the coordinates and the direction of each bullet is stored
 
     def bullets_creation(self) -> bool:
         """
         Creates bullets every time a specific amount of frames is counted and when left click is continuously pressed
 
-        takes no arguments -> True
+        takes no arguments -> bool
         """
 
         if pyxel.btn(pyxel.MOUSE_BUTTON_LEFT) and pyxel.frame_count % self.fire_rate == True:
@@ -43,7 +46,7 @@ class Bullets:
         """
         Moves the bullet towards the place the mouse clicked and removes it when it goes out of bounds
 
-        polar_to_cartesian: callable (function) -> True
+        polar_to_cartesian: callable (function) -> bool
         """
 
         for bullet in self.bullets_list:
@@ -54,16 +57,22 @@ class Bullets:
                 self.bullets_list.remove(bullet) #removes the bullet when it goes out of bounds
 
         return True
-
     
+    def enemy_collision(self):
+        for enemy in self.enemies_list:
+            for bullet in self.bullets_list:
+                if enemy["x"] <= bullet[0] + self.size and enemy["y"] <= bullet[1] + self.size and enemy["x"] + self.enemy_size >= bullet[0] and enemy["y"] + self.enemy_size >= bullet[1]:
+                    self.bullets_list.remove(bullet)
+
     def update(self, polar_to_cartesian: Callable) -> bool:
         """
         Function that updates everything inside and is called infinitely in the class Player
 
-        polar_to_cartesian: callable (function) -> True
+        polar_to_cartesian: callable (function) -> bool
         """
         self.bullets_creation() # creates bullets
         self.bullets_movements(polar_to_cartesian) # moves bullets
+        #self.enemy_collision()
 
         return True
 
@@ -71,7 +80,7 @@ class Bullets:
         """
         Function that draws the bullets on the window and is called infinitely in the class Player
 
-        takes no arguments -> True
+        takes no arguments -> bool
         """
         for bullet in self.bullets_list:
             pyxel.circ(bullet[0], bullet[1], self.size, self.color) # draws bullets/circles

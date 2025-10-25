@@ -53,11 +53,24 @@ class Game:
             self.upgrade.update() # updates the upgrade menu
             return # skips the rest of the update function
 
+        self.player.enemies_list = self.enemies.enemies_list
+        self.player.enemy_size = self.enemies.size
+        self.player.enemies_damage = self.enemies.damage
+
+        self.player.bullets.enemies_list = self.enemies.enemies_list
+        self.player.bullets.enemy_size = self.enemies.size
+
         self.player.update() # updates the player
 
         # gives the player's position to the enemies
         self.enemies.player_x = self.player.player_x
         self.enemies.player_y = self.player.player_y
+
+        self.enemies.player_size = self.player.r
+        self.enemies.player_attack = self.player.skills["attack"]
+
+        self.enemies.bullets_list = self.player.bullets.bullets_list
+        self.enemies.bullet_size = self.player.bullets.size
 
         self.enemies.update() # updates the enemies
 

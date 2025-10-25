@@ -22,12 +22,12 @@ class Character:
             "fire_rate": fire_rate
         }
 
-    def teta_calculation(self, coord1: tuple[int, int], coord2: tuple[float, float]) -> float:
+    def teta_calculation(self, coord1: tuple[float, float], coord2: tuple[float, float]) -> float:
         """
         Function that calculates teta, direction from the pole relative to the direction of the polar axis (polar coordinates), according to two tuples of coordinates
 
-        coord1: tuple[int, int]
-        coord2: tuple[int, int]
+        coord1: tuple[float, float]
+        coord2: tuple[float, float]
         -> float
         """
 
@@ -50,7 +50,9 @@ class Character:
         y: float = math.sin(teta + offset) * r # calculates y according to the polar coordinates given (if given an offset, adds it to the operation)
         return (x, y)
 
-    def receive_damage(self, amount) -> None:
-        self.skills["hp"] -= amount * (1 - self.skills["shield"] / 100)
-        if self.skills["hp"] < 0:
-            self.skills["hp"] = 0
+    def receive_damage(self, amount, hp, shield) -> int:
+        hp -= amount * (1 - shield // 100)
+        if hp < 0:
+            hp = 0
+        
+        return hp

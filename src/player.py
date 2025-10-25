@@ -39,6 +39,12 @@ class Player(Character):
         self.player_y: int = 375
 
         self.r: int = 20 # distance from the pole in polar coodinates (also size)
+        self.took_damage: bool = False
+        self.count: int = 0
+
+        self.enemies_list: list[dict[float, float, bool, float, int, int, str, int, int, int, int, int, int]] = []
+        self.enemies_damage: int = 0
+        self.enemy_size: int = 0
 
         self.bullets: Bullets = Bullets(self.player_x, self.player_y) # creates the objet Bullets
         self.bullets.fire_rate = self.skills["fire_rate"] # gives the fire rate to the bullet
@@ -49,19 +55,48 @@ class Player(Character):
         """
         Move the player according to the arrow keys pressed and stops it when it is about to go out of bounds
 
-        takes no arguments -> True
+        takes no arguments -> bool
         """
         if (pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.KEY_D)) and self.player_x < self.window_width:
             self.player_x += self.skills["speed"] # moves to the right
+            for enemy in self.enemies_list:
+                if enemy["x"] <= self.player_x+self.r and enemy["y"] <= self.player_y+self.r and enemy["x"]+self.enemy_size >= self.player_x and enemy["y"]+self.enemy_size >= self.player_y:
+                    self.player_x -= self.skills["speed"]
         if (pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.KEY_Q)) and self.player_x > 0:
             self.player_x -= self.skills["speed"] # moves to the left
+            for enemy in self.enemies_list:
+                if enemy["x"] <= self.player_x+self.r and enemy["y"] <= self.player_y+self.r and enemy["x"]+self.enemy_size >= self.player_x and enemy["y"]+self.enemy_size >= self.player_y:
+                    self.player_x += self.skills["speed"]
         if (pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.KEY_S)) and self.player_y < self.window_height:
             self.player_y += self.skills["speed"] # moves down
+            for enemy in self.enemies_list:
+                if enemy["x"] <= self.player_x+self.r and enemy["y"] <= self.player_y+self.r and enemy["x"]+self.enemy_size >= self.player_x and enemy["y"]+self.enemy_size >= self.player_y:
+                    self.player_y -= self.skills["speed"]
         if (pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_Z)) and self.player_y > 0:
             self.player_y -= self.skills["speed"] # moves up
+            for enemy in self.enemies_list:
+                if enemy["x"] <= self.player_x+self.r and enemy["y"] <= self.player_y+self.r and enemy["x"]+self.enemy_size >= self.player_x and enemy["y"]+self.enemy_size >= self.player_y:
+                    self.player_y -= self.skills["speed"]
+            
 
         return True
 
+    def damage(self) -> bool:
+        for enemy in self.enemies_list:
+            if enemy["x"] <= self.player_x+self.r and enemy["y"] <= self.player_y+self.r and enemy["x"]+self.enemy_size >= self.player_x and enemy["y"]+self.enemy_size >= self.player_y and self.took_damage == False:
+                self.skills["hp"] = self.receive_damage(self.enemies_damage, self.skills["hp"], self.skills["shield"])
+                self.color = 13
+                self.took_damage = True
+            
+            if self.took_damage == False:
+                self.count = 0
+            elif self.took_damage == True:
+                self.count += 1
+
+            if self.count >= 60 :
+                self.color = 7
+                self.took_damage = False
+                
     def add_xp(self, amount: int) -> bool:
 
         self.xp += amount
@@ -72,10 +107,12 @@ class Player(Character):
         """
         Function that updates everything inside and is called infinitely in the class Game
 
-        takes no arguments -> True
+        takes no arguments -> bool
         """
 
         self.player_movements() # moves the player
+
+        self.damage()
 
         # gives the position of the player to the bullet
         self.bullets.player_x = self.player_x
@@ -93,7 +130,7 @@ class Player(Character):
         """
         Function that draws the objects on the window and is called infinitely in the class Game
 
-        takes no arguments -> True
+        takes no arguments -> bool
         """
 
         # conversion of polar coordinates into cartesian coordinates for the vertex of the triangle that is orientated to the mouse

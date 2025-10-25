@@ -43,7 +43,7 @@ class Upgrade:
         """
         Handle user input to navigate and purchase upgrades
 
-        takes no arguments -> True
+        takes no arguments -> bool
         """
 
         # Navigate the upgrade menu
