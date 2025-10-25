@@ -1,8 +1,15 @@
-from PIL import Image
 import pyxel
+from PIL import Image as PILImage
+from pathlib import Path
 from player import Player
 from enemies import Enemies
 from upgrades import Upgrade
+
+# Matches the paths with the files (made by ChatGPT)
+BASE_DIR = Path(__file__).resolve().parent           
+ASSETS_DIR = BASE_DIR.parent / "assets"              
+SRC = ASSETS_DIR / "GameOver.png"
+DST = ASSETS_DIR / "_GameOver_256.png"               
 
 class Game:
     """
@@ -31,27 +38,25 @@ class Game:
         self.player.bullets.window_height = self.window_height
 
         self.window_title: str = "Window-Kill" # title of the window
-        self.cursor_pixels = self.load_image_as_array("assets/cursor.png")
 
         self.in_upgrade_menu: bool = False
 
         pyxel.init(self.window_width, self.window_height, title = self.window_title, fps = 60) # initializes Pyxel and creates the window
+        pyxel.image(0).load(0, 0, str(DST))
+
+        # Resizes the GameOver image into a 256x256 format (made by ChatGPT)
+        im = PILImage.open(SRC).convert("RGBA")
+        im.thumbnail((256, 256), PILImage.BICUBIC)
+        im.save(DST)
+        self.game_over_w, self.game_over_h = im.size
+        self.game_over_w = max(1, min(self.game_over_w, 256))
+        self.game_over_h = max(1, min(self.game_over_h, 256))
+        self.cursor_path = ASSETS_DIR / "cursor.png"
+        self.cursor_pixels = self.load_image_as_array(str(self.cursor_path))
 
         pyxel.run(self.update, self.draw) # call infinitely the update and draw functions
 
-    def update(self) -> None:
-        """
-        Function that calls all the update functions of every class and is called infinitely by Pyxel
-
-        takes no arguments -> None
-        """
-
-        if pyxel.btnp(pyxel.KEY_E):
-            self.in_upgrade_menu = not self.in_upgrade_menu
-
-        if self.in_upgrade_menu:
-            self.upgrade.update() # updates the upgrade menu
-            return # skips the rest of the update function
+    def variables_update(self):
 
         self.player.enemies_list = self.enemies.enemies_list
         self.player.enemy_size = self.enemies.size
@@ -59,8 +64,6 @@ class Game:
 
         self.player.bullets.enemies_list = self.enemies.enemies_list
         self.player.bullets.enemy_size = self.enemies.size
-
-        self.player.update() # updates the player
 
         # gives the player's position to the enemies
         self.enemies.player_x = self.player.player_x
@@ -72,9 +75,27 @@ class Game:
         self.enemies.bullets_list = self.player.bullets.bullets_list
         self.enemies.bullet_size = self.player.bullets.size
 
-        self.enemies.update() # updates the enemies
+    def update(self) -> None:
+        """
+        Function that calls all the update functions of every class and is called infinitely by Pyxel
 
-        return
+        takes no arguments -> None
+        """
+        if self.player.skills["hp"] > 0:
+            if pyxel.btnp(pyxel.KEY_E):
+                self.in_upgrade_menu = not self.in_upgrade_menu
+
+            if self.in_upgrade_menu:
+                self.upgrade.update() # updates the upgrade menu
+                return # skips the rest of the update function
+
+            self.variables_update()
+
+            self.player.update() # updates the player
+
+            self.enemies.update() # updates the enemies
+
+            return
 
     def draw(self) -> None:
         """
@@ -86,14 +107,21 @@ class Game:
         pyxel.cls(0) # clears the window
         pyxel.mouse(False) # displays the mouse on the window
 
-        if self.in_upgrade_menu:
-            self.upgrade.draw() # draws the upgrade menu
-        else:
-            self.player.draw() # draws the player
-            self.enemies.draw() # draws the enemies
-            self.draw_cursor(pyxel.mouse_x - 16, pyxel.mouse_y - 16) # draws a custom cursor (centered)
+        if self.player.skills["hp"] > 0:
+            if self.in_upgrade_menu:
+                self.upgrade.draw() # draws the upgrade menu
+            else:
+                self.player.draw() # draws the player
+                self.enemies.draw() # draws the enemies
+                self.draw_cursor(pyxel.mouse_x - 16, pyxel.mouse_y - 16) # draws a custom cursor (centered)
 
-        return
+            return
+        
+        else:
+            x = (self.window_width  - self.game_over_w) // 2
+            y = (self.window_height - self.game_over_h) // 2
+            pyxel.blt(x, y, 0, 0, 0, self.game_over_w, self.game_over_h)
+
 
     def load_image_as_array(self, path: str, color: int = 12) -> list[list[int]]:
         """
@@ -104,7 +132,7 @@ class Game:
         Returns:
             list[list[int]]: A 2D array representing the image pixels.
         """
-        img = Image.open(path).convert("RGBA")
+        img = PILImage.open(path).convert("RGBA")
         w, h = img.size
         data = []
 
