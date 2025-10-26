@@ -98,9 +98,7 @@ class Player(Character):
                 self.took_damage = False
                 
     def add_xp(self, amount: int) -> bool:
-
         self.xp += amount
-
         return True
 
     def update(self) -> bool:

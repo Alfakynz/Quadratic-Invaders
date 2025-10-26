@@ -1,12 +1,14 @@
 import pyxel
 import random
 from characters import Character
+from player import Player
 
 class Enemies(Character):
     """
     Class that manages the enemies and inherits the characteristics of the class Character
     """
     def __init__(self,
+                 player: Player,
                  color: int = 4, # red
                  shape: str = "square",
                  hp: int = 1, # health points
@@ -14,7 +16,7 @@ class Enemies(Character):
                  speed: int = 2, # speed at which the enemies move (r in polar coordinates)
                  shield: int = 0, # reduces the damage taken
                  fire_rate: int = 60, # number of frames counted each time a bullet is shot
-                 xp: int = 0) -> None: # amount of experience points dropped by the enemies when killed
+                 xp: int = 10) -> None: # amount of experience points dropped by the enemies when killed
         """
         Initializes the class Enemies
 
@@ -47,6 +49,7 @@ class Enemies(Character):
         self.creation_speed: int = 300 # number of frames counted each time time an enemy is created
         self.size: int = 40 # size of the enemies
 
+        self.player: Player = player
         self.player_x: int = 0 # player's x position
         self.player_y: int = 0 # player's y position
         self.player_size: int = 0
@@ -126,7 +129,7 @@ class Enemies(Character):
             if enemy["reverse"] == True and enemy["count"] >= 30:
                 enemy["reverse"] = False
 
-    def bullet_collision(self):
+    def bullet_collision(self, player: Player):
         for enemy in self.enemies_list:
             for bullet in self.bullets_list:
                 if enemy["x"] <= bullet[0]+self.bullet_size and enemy["y"] <= bullet[1]+self.bullet_size and enemy["x"]+self.size >= bullet[0] and enemy["y"]+self.size >= bullet[1]:
@@ -134,6 +137,7 @@ class Enemies(Character):
                     enemy["color"] = 2
                     if enemy["hp"] == 0:
                         self.enemies_list.remove(enemy)
+                        player.add_xp(enemy["xp"])
                 if pyxel.frame_count%15 == 0:
                     enemy["color"] = 4
 
@@ -148,7 +152,7 @@ class Enemies(Character):
         self.enemies_creation() # creates enemies
         self.enemies_movements() # moves enemies
         self.player_collision()
-        self.bullet_collision()
+        self.bullet_collision(self.player)
 
         return True
 

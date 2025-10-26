@@ -24,13 +24,13 @@ class Upgrade:
         -> None
         """
         if skill not in self.upgrades:
-            print("Skill not found")
+            self.message = "Skill not found"
             return
         
         upgrade = self.upgrades[skill]
 
         if player.xp < upgrade.price:
-            print("Insufficient XP")
+            self.message = "Insufficient XP"
             return
         
         player.xp -= upgrade.price
@@ -38,6 +38,8 @@ class Upgrade:
 
         upgrade.price = int(upgrade.price * 1.5)
         upgrade.level += 1
+
+        self.message = f"{skill.capitalize()} upgraded to level {upgrade.level}"
 
     def update(self) -> bool:
         """
@@ -79,5 +81,8 @@ class Upgrade:
             y_position += 12
 
         pyxel.text(10, y_position + 10, "Press ENTER to buy | E to close", pyxel.COLOR_DARK_BLUE)
+
+        if hasattr(self, "message"):
+            pyxel.text(10, y_position + 25, self.message, pyxel.COLOR_RED)
 
         return
