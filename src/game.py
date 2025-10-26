@@ -6,10 +6,10 @@ from enemies import Enemies
 from upgrades import Upgrade
 
 # Matches the paths with the files (made by ChatGPT)
-BASE_DIR = Path(__file__).resolve().parent           
-ASSETS_DIR = BASE_DIR.parent / "assets"              
+BASE_DIR = Path(__file__).resolve().parent
+ASSETS_DIR = BASE_DIR.parent / "assets"
 SRC = ASSETS_DIR / "GameOver.png"
-DST = ASSETS_DIR / "_GameOver_256.png"               
+DST = ASSETS_DIR / "_GameOver_256.png"
 
 class Game:
     """
@@ -42,12 +42,19 @@ class Game:
         self.in_upgrade_menu: bool = False
 
         pyxel.init(self.window_width, self.window_height, title = self.window_title, fps = 60) # initializes Pyxel and creates the window
-        pyxel.image(0).load(0, 0, str(DST))
+        pyxel.images[0].load(0, 0, str(DST))
 
         # Resizes the GameOver image into a 256x256 format (made by ChatGPT)
         im = PILImage.open(SRC).convert("RGBA")
-        im.thumbnail((256, 256), PILImage.BICUBIC)
+        # Use the newer Resampling enum if available, otherwise fall back to legacy constants
+        resampling = getattr(PILImage, "Resampling", None)
+        if resampling is not None:
+            resample_method = resampling.BICUBIC
+        else:
+            resample_method = getattr(PILImage, "BICUBIC", getattr(PILImage, "NEAREST"))
+        im.thumbnail((256, 256), resample_method)
         im.save(DST)
+        
         self.game_over_w, self.game_over_h = im.size
         self.game_over_w = max(1, min(self.game_over_w, 256))
         self.game_over_h = max(1, min(self.game_over_h, 256))
