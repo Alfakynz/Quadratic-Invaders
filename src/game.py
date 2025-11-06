@@ -26,8 +26,8 @@ class Game:
         self.enemies = Enemies(self.player) # creates the object Enemies
         self.upgrade = Upgrade(self.player) # creates the object Upgrade
 
-        self.window_width: int = 1000 # width of the window
-        self.window_height: int = 750 # height of the window
+        self.window_width: int = 1250 # width of the window
+        self.window_height: int = 800 # height of the window
 
         # gives the width and height of the window to the different classes
         self.player.window_width = self.window_width
