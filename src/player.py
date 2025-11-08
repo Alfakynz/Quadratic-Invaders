@@ -2,6 +2,8 @@ import pyxel
 import math
 from characters import Character
 from bullets import Bullets
+from ascii import ASCII
+
 class Player(Character):
     """
     Class that manages the player and inherits the characteristics of the class Character
@@ -30,6 +32,7 @@ class Player(Character):
         -> None
         """
         super().__init__(color, shape, hp, attack, speed, shield, fire_rate, xp)
+        self.ascii: ASCII = ASCII()
 
         self.window_width: int = 0 # width of the window (given by the class Game)
         self.window_height: int = 0 # height of the window (given by the class Game)
@@ -145,4 +148,22 @@ class Player(Character):
         
         self.bullets.draw() # draws the bullets
 
+        self.draw_hp()
+
         return True
+    
+    def draw_hp(self):
+        color = pyxel.COLOR_GREEN
+
+        hp = self.skills["hp"]
+
+        if hp > 7:
+            color = pyxel.COLOR_GREEN
+        elif hp > 5:
+            color = pyxel.COLOR_YELLOW
+        elif hp > 3:
+            color = pyxel.COLOR_ORANGE
+        else:
+            color = pyxel.COLOR_RED
+
+        self.ascii.text(25, 25, f"{self.skills["hp"]} HP", color)
