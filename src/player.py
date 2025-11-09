@@ -3,12 +3,13 @@ import math
 from characters import Character
 from bullets import Bullets
 from ascii import ASCII
+from enemy import Enemy
 
 class Player(Character):
     """
     Class that manages the player and inherits the characteristics of the class Character
-
     """
+
     def __init__(self,
                  color: int = 7, # white
                  shape: str = "triangle",
@@ -31,6 +32,7 @@ class Player(Character):
         xp: int
         -> None
         """
+
         super().__init__(color, shape, hp, attack, speed, shield, fire_rate, xp)
         self.ascii: ASCII = ASCII()
 
@@ -45,7 +47,7 @@ class Player(Character):
         self.took_damage: bool = False
         self.count: int = 0
 
-        self.enemies_list: list[dict[float, float, bool, float, int, int, str, int, int, int, int, int, int]] = []
+        self.enemies_list: list[Enemy] = []
         self.enemies_damage: int = 0
         self.enemy_size: int = 0
 
@@ -60,6 +62,7 @@ class Player(Character):
 
         takes no arguments -> bool
         """
+
         if (pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.KEY_D)) and self.player_x < self.window_width:
             self.player_x += self.skills["speed"] # moves to the right
             for enemy in self.enemies_list:
@@ -99,6 +102,7 @@ class Player(Character):
             if self.count >= 60 :
                 self.color = 7
                 self.took_damage = False
+        return True
                 
     def add_xp(self, amount: int) -> bool:
         self.xp += amount

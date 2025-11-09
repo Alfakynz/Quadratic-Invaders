@@ -2,11 +2,13 @@ import pyxel
 import random
 from characters import Character
 from player import Player
+from enemy import Enemy
 
 class Enemies(Character):
     """
     Class that manages the enemies and inherits the characteristics of the class Character
     """
+
     def __init__(self,
                  player: Player,
                  color: int = 4, # red
@@ -45,7 +47,7 @@ class Enemies(Character):
         self.window_width: int = 0 # width of the window (given by the class Game)
         self.window_height: int = 0 # height of the window (given by the class Game)
 
-        self.enemies_list: list[dict[float, float, bool, float, int, int, str, int, int, int, int, int, int]] = [] # list where the coordinates of each enemy is stored
+        self.enemies_list: list[Enemy] = [] # list where the coordinates of each enemy is stored
         self.creation_speed: int = 300 # number of frames counted each time time an enemy is created
         self.size: int = 40 # size of the enemies
 
@@ -55,7 +57,7 @@ class Enemies(Character):
         self.player_size: int = 0
         self.player_attack: int = 0
 
-        self.bullets_list: list[list[float, float, float]] = []
+        self.bullets_list: list[list[float]] = []
         self.bullet_size: int = 0
 
     def enemies_creation(self) -> bool:
@@ -68,19 +70,21 @@ class Enemies(Character):
         side = random.randint(1, 4) # chooses a random side of the map
         if pyxel.frame_count % self.creation_speed == True:
             self.enemies_list.append({
-                    "x": 0, 
-                    "y": 0, 
-                    "reverse": False, 
-                    "teta": 0, 
-                    "count": 0, 
-                    "color": self.color, 
-                    "shape": self.shape, 
-                    "hp": self.hp, 
-                    "damage": self.damage, 
-                    "speed": self.speed, 
-                    "shield": self.shield, 
-                    "fire_rate": self.fire_rate, 
-                    "xp": self.xp})
+                "x": 0,
+                "y": 0,
+                "reverse": False,
+                "teta": 0,
+                "count": 0,
+                "color": self.color,
+                "shape": self.shape,
+                "hp": self.hp,
+                "damage": self.damage,
+                "speed": self.speed,
+                "shield": self.shield,
+                "fire_rate": self.fire_rate,
+                "xp": self.xp
+            })
+            
             if side == 1:
                 # creates an enemy on the top side of the window
                 self.enemies_list[-1]["x"] = random.randint(0, self.window_width - self.size)

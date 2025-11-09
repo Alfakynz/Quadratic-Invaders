@@ -4,6 +4,7 @@ class ASCII:
     """
     Class that manages the ASCII police
     """
+
     def __init__(self) -> None:
         """For each character, see ascii.txt"""
         self.alphabet: dict[str, list[str]] = {
@@ -60,6 +61,7 @@ class ASCII:
         @param string: the string to convert
         @return: a list with top/mid/bottom of the string for each character 
         """
+
         string = string.lower()
         liste: list[str] = ["", "", ""]
         for letter in string:
@@ -77,6 +79,7 @@ class ASCII:
         @param color: int. The color
         @return: None
         """
+
         converted = self.convert(text)
         SPACE = 7
         for i in range(3):

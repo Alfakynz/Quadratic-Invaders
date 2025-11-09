@@ -1,10 +1,12 @@
 import pyxel
 from typing import Callable
+from enemy import Enemy
 
 class Bullets:
     """
     Class that manages the bullets shot by the player
     """
+
     def __init__(self, player_x: int, player_y: int) -> None:
         """
         Initializes the class Bullet
@@ -17,7 +19,7 @@ class Bullets:
         self.player_x: int = player_x # player's x position
         self.player_y: int = player_y # player's y position
 
-        self.enemies_list: list[dict[float, float, bool, float, int, int, str, int, int, int, int, int, int]] = []
+        self.enemies_list: list[Enemy] = []
         self.enemy_size: int = 0
 
         self.window_width = 0 # width of the window (given by the class Game)
@@ -28,7 +30,7 @@ class Bullets:
         self.bullet_speed: int = 10 # speed of the bullet (also r in polar coordinates)
         self.size: int = 10 # size of the bullet/circle
         self.color: int = 10 # yellow
-        self.bullets_list: list[list[float, float, float]] = [] # list where the coordinates and the direction of each bullet is stored
+        self.bullets_list: list[list[float]] = [] # list where the coordinates and the direction of each bullet is stored
 
     def bullets_creation(self) -> bool:
         """
@@ -70,6 +72,7 @@ class Bullets:
 
         polar_to_cartesian: callable (function) -> bool
         """
+
         self.bullets_creation() # creates bullets
         self.bullets_movements(polar_to_cartesian) # moves bullets
         #self.enemy_collision()
@@ -82,6 +85,7 @@ class Bullets:
 
         takes no arguments -> bool
         """
+
         for bullet in self.bullets_list:
             pyxel.circ(bullet[0], bullet[1], self.size, self.color) # draws bullets/circles
 

@@ -7,6 +7,7 @@ class Upgrade:
     """
     Class that displays the menu
     """
+
     def __init__(self, player: Player) -> None:
         self.player = player
         self.upgrades = {
@@ -31,6 +32,7 @@ class Upgrade:
         player: Player
         -> None
         """
+
         # Skill not found
         if skill not in self.upgrades:
             self.message = "Skill not found"
@@ -81,6 +83,7 @@ class Upgrade:
 
         takes no arguments -> None
         """
+
         pyxel.cls(0)
         self.y = 25
         self.ascii.text(self.x, self.y, "--- Upgrade Menu ---", pyxel.COLOR_YELLOW)

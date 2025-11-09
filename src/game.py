@@ -15,6 +15,7 @@ class Game:
     """
     Class that manages the game in general
     """
+
     def __init__(self) -> None:
         """
         Initialize the class Player
@@ -64,7 +65,6 @@ class Game:
         pyxel.run(self.update, self.draw) # call infinitely the update and draw functions
 
     def variables_update(self):
-
         self.player.enemies_list = self.enemies.enemies_list
         self.player.enemy_size = self.enemies.size
         self.player.enemies_damage = self.enemies.damage
@@ -88,6 +88,7 @@ class Game:
 
         takes no arguments -> None
         """
+
         if self.player.skills["hp"] > 0:
             if pyxel.btnp(pyxel.KEY_E):
                 self.upgrade.message = ""  # Clear previous messages when toggling menu
@@ -140,6 +141,7 @@ class Game:
         Returns:
             list[list[int]]: A 2D array representing the image pixels.
         """
+
         img = PILImage.open(path).convert("RGBA")
         w, h = img.size
         data = []
@@ -169,6 +171,7 @@ class Game:
         Returns:
             None
         """
+
         for j, row in enumerate(self.cursor_pixels):
             for i, color in enumerate(row):
                 if color != 0:
