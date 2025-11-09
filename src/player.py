@@ -149,6 +149,7 @@ class Player(Character):
         self.bullets.draw() # draws the bullets
 
         self.draw_hp()
+        self.draw_xp()
 
         return True
     
@@ -167,3 +168,7 @@ class Player(Character):
             color = pyxel.COLOR_RED
 
         self.ascii.text(25, 25, f"{self.skills["hp"]} HP", color)
+    
+    def draw_xp(self):
+        color = pyxel.COLOR_YELLOW
+        self.ascii.text(1125, 25, f"{self.xp} XP", color)
