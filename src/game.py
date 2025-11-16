@@ -5,12 +5,6 @@ from player import Player
 from enemies import Enemies
 from upgrades import Upgrade
 
-# Matches the paths with the files (made by ChatGPT)
-BASE_DIR = Path(__file__).resolve().parent
-ASSETS_DIR = BASE_DIR.parent / "assets"
-SRC = ASSETS_DIR / "GameOver.png"
-DST = ASSETS_DIR / "_GameOver_256.png"
-
 class Game:
     """
     Class that manages the game in general
@@ -41,6 +35,12 @@ class Game:
         self.window_title: str = "Window-Kill" # title of the window
 
         self.in_upgrade_menu: bool = False
+
+        # Matches the paths with the files (made by ChatGPT)
+        BASE_DIR = Path(__file__).resolve().parent
+        ASSETS_DIR = BASE_DIR.parent / "assets"
+        SRC = ASSETS_DIR / "GameOver.png"
+        DST = ASSETS_DIR / "_GameOver_256.png"
 
         pyxel.init(self.window_width, self.window_height, title = self.window_title, fps = 60, quit_key = False) # initializes Pyxel and creates the window
         pyxel.images[0].load(0, 0, str(DST))

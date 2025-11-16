@@ -1,4 +1,3 @@
-import pyxel
 import math
 
 class Character:
