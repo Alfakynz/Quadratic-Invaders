@@ -42,7 +42,7 @@ class Game:
 
         self.in_upgrade_menu: bool = False
 
-        pyxel.init(self.window_width, self.window_height, title = self.window_title, fps = 60) # initializes Pyxel and creates the window
+        pyxel.init(self.window_width, self.window_height, title = self.window_title, fps = 60, quit_key = False) # initializes Pyxel and creates the window
         pyxel.images[0].load(0, 0, str(DST))
 
         # Resizes the GameOver image into a 256x256 format (made by ChatGPT)
@@ -90,7 +90,11 @@ class Game:
         """
 
         if self.player.skills["hp"] > 0:
-            if pyxel.btnp(pyxel.KEY_E):
+            # Temporary quit the game with 0
+            if pyxel.btnp(pyxel.KEY_0):
+                pyxel.quit()
+
+            if pyxel.btnp(pyxel.KEY_E) or pyxel.btnp(pyxel.KEY_ESCAPE):
                 self.upgrade.message = ""  # Clear previous messages when toggling menu
                 self.in_upgrade_menu = not self.in_upgrade_menu
 

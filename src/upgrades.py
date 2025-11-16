@@ -101,7 +101,7 @@ class Upgrade:
             self.y += 30
 
         self.y += 30
-        self.ascii.text(self.x, self.y, "Press ENTER to buy or press E to close", pyxel.COLOR_DARK_BLUE)
+        self.ascii.text(self.x, self.y, "Press ENTER to buy or press E to close or press 0 to quit the game", pyxel.COLOR_DARK_BLUE)
 
         # Display a message if necessary
         if hasattr(self, "message"):
