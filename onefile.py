@@ -4,7 +4,7 @@ import sys
 import re
 
 FOLDER = "src"
-OUTPUT_FILE = "main.py"
+OUTPUT_FILE = "window-kill.py"
 
 def merge_python_files(src_folder):
     """
@@ -20,7 +20,7 @@ def merge_python_files(src_folder):
         for name in files:
             if name.endswith('.py'):
                 py_files.append(os.path.join(root, name))
-    py_files.sort()  # Tri pour un ordre déterministe
+    py_files.sort()  # Sort for a deterministic order
 
     # names of internal modules (.py files)
     internal_modules = {os.path.splitext(os.path.basename(p))[0] for p in py_files}
@@ -45,12 +45,12 @@ def merge_python_files(src_folder):
             # External imports -> keep, internal imports -> ignore
             if isinstance(node, ast.Import):
                 for alias in node.names:
-                    if alias.name not in internal_modules:  # garde seulement si module externe
+                    if alias.name not in internal_modules:  # keep only if external module
                         all_imports.add(code_lines[node.lineno - 1].strip())
 
             elif isinstance(node, ast.ImportFrom):
                 module = node.module.split('.')[0] if node.module else ""
-                if module not in internal_modules:  # garde seulement si module externe
+                if module not in internal_modules:  # keep only if external module
                     all_imports.add(code_lines[node.lineno - 1].strip())
 
             elif isinstance(node, ast.ClassDef):
@@ -81,12 +81,12 @@ def merge_python_files(src_folder):
         for i, line in enumerate(code_lines):
             stripped = line.strip()
             if stripped.startswith('import ') or stripped.startswith('from '):
-                continue  # sauter tous les imports
+                continue  # skip all imports
             if i in class_lines:
-                continue  # sauter les lignes des classes
+                continue  # skip class lines
             other_code_lines.append(line)
 
-        other_code_lines.append('')  # séparation entre fichiers
+        other_code_lines.append('')  # separation between files
 
     # 3. Sort external imports
     sorted_imports = sorted(all_imports)
