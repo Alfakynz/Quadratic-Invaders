@@ -5,10 +5,17 @@ from ascii import ASCII
 
 class Upgrade:
     """
-    Class that displays the menu
+    Class that displays the menu.
     """
 
     def __init__(self, player: Player) -> None:
+        """
+        Create the upgrade the menu to buy skills upgrades.
+
+        Args:
+            player (Player): The Player.
+        """
+
         self.player = player
         self.upgrades = {
             "hp": Skill("hp", "Increase your health by 1", 25, 1),
@@ -24,13 +31,12 @@ class Upgrade:
         self.selected_index: int = 0
         self.skill_names: list = list(self.upgrades.keys())
 
-    def increase(self, skill: str, player: Player) -> None:
+    def increase(self, skill: str) -> None:
         """
-        Increase the selected skill of the player if he has enough XP
+        Increase the selected skill of the player if he has enough XP.
         
-        skill: str
-        player: Player
-        -> None
+        Args:
+            skill (str): The skill to improve
         """
 
         # Skill not found
@@ -42,13 +48,13 @@ class Upgrade:
         upgrade = self.upgrades[skill]
 
         # Insufficient XP
-        if player.xp < upgrade.price:
+        if self.player.xp < upgrade.price:
             self.message = "Insufficient XP"
             self.color = pyxel.COLOR_RED
             return
         
-        player.xp -= upgrade.price
-        player.skills[skill] += upgrade.amount
+        self.player.xp -= upgrade.price
+        self.player.skills[skill] += upgrade.amount
 
         upgrade.price = int(upgrade.price * 1.5)
         upgrade.level += 1
@@ -57,11 +63,9 @@ class Upgrade:
         self.color = pyxel.COLOR_LIGHT_BLUE
         return
 
-    def update(self) -> bool:
+    def update(self) -> None:
         """
-        Handle user input to navigate and purchase upgrades
-
-        takes no arguments -> bool
+        Handle user input to navigate and purchase upgrades.
         """
 
         # Navigate the upgrade menu
@@ -73,15 +77,11 @@ class Upgrade:
         # Purchase the selected upgrade
         if pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.KEY_KP_ENTER):
             selected_skill = self.skill_names[self.selected_index]
-            self.increase(selected_skill, self.player)
-
-        return True
+            self.increase(selected_skill)
     
     def draw(self) -> None:
         """
-        Draw the upgrade menu
-
-        takes no arguments -> None
+        Draw the upgrade menu.
         """
 
         pyxel.cls(0)
@@ -107,5 +107,3 @@ class Upgrade:
         if hasattr(self, "message"):
             self.y += 60
             self.ascii.text(self.x, self.y, self.message, self.color)
-
-        return

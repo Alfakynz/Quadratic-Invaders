@@ -6,7 +6,7 @@ from enemy import Enemy
 
 class Enemies(Character):
     """
-    Class that manages the enemies and inherits the characteristics of the class Character
+    Class that manages the enemies and inherits the characteristics of the class Character.
     """
 
     def __init__(self,
@@ -14,7 +14,7 @@ class Enemies(Character):
                  color: int = 4, # red
                  shape: str = "square",
                  hp: int = 1, # health points
-                 damage: int = 1, # amount of hp that the enemies remove to the player when they touch them
+                 attack: int = 1, # amount of hp that the enemies remove to the player when they touch them
                  speed: int = 2, # speed at which the enemies move (r in polar coordinates)
                  shield: int = 0, # reduces the damage taken
                  fire_rate: int = 60, # number of frames counted each time a bullet is shot
@@ -22,23 +22,23 @@ class Enemies(Character):
         """
         Initializes the class Enemies
 
-        color: int
-        shape: str
-        hp: int
-        damage: int
-        speed: int
-        shield: int
-        fire_rate: int
-        xp: int
-        -> None
+        Args:
+            color (int): Character color (not yet implemented).
+            shape (str): Character shape (not yet implemented).
+            hp (int): Maximum health of the character.
+            attack (int): Base attack damage the character can inflict.
+            speed (int): Movement speed of the character.
+            shield (int): Amount of damage the character can block before losing hp.
+            fire_rate (int): Delay between attacks.
+            xp (int): Experience points awarded when the character is defeated. 
         """
 
-        super().__init__(color, shape, hp, damage, speed, shield, fire_rate, xp)
+        super().__init__(color, shape, hp, attack, speed, shield, fire_rate, xp)
 
         self.color: int = color
         self.shape: str = shape
         self.hp: int = hp
-        self.damage: int = damage
+        self.attack: int = attack
         self.speed: int = speed
         self.shield: int = shield
         self.fire_rate: int = fire_rate
@@ -60,11 +60,9 @@ class Enemies(Character):
         self.bullets_list: list[list[float]] = []
         self.bullet_size: int = 0
 
-    def enemies_creation(self) -> bool:
+    def enemies_creation(self) -> None:
         """"
-        Creates an enemy on a random side of the map every time a specific amount of frames is counted
-
-        takes no arguments -> bool
+        Creates an enemy on a random side of the map every time a specific amount of frames is counted.
         """
 
         side = random.randint(1, 4) # chooses a random side of the map
@@ -78,7 +76,7 @@ class Enemies(Character):
                 "color": self.color,
                 "shape": self.shape,
                 "hp": self.hp,
-                "damage": self.damage,
+                "attack": self.attack,
                 "speed": self.speed,
                 "shield": self.shield,
                 "fire_rate": self.fire_rate,
@@ -100,13 +98,9 @@ class Enemies(Character):
                 self.enemies_list[-1]["x"] = self.window_width - self.size
                 self.enemies_list[-1]["y"] = random.randint(0, self.window_height - self.size)
 
-        return True
-
-    def enemies_movements(self) -> bool:
+    def enemies_movements(self) -> None:
         """
-        Moves the enemies towards the player
-
-        takes no arguments -> bool
+        Moves the enemies towards the player.
         """
 
         for enemy in self.enemies_list:
@@ -123,9 +117,11 @@ class Enemies(Character):
                 enemy["y"] += self.polar_to_cartesian(teta, self.speed)[1]
                 enemy["count"] = 0
 
-        return True
-
     def player_collision(self):
+        """
+        Function to check the collision between enemies and the enemies.
+        """
+
         for enemy in self.enemies_list:
             if enemy["x"] <= self.player_x+self.player_size and enemy["y"] <= self.player_y+self.player_size and enemy["x"]+self.size >= self.player_x and enemy["y"]+self.size >= self.player_y:
                 enemy["reverse"] = True
@@ -146,11 +142,9 @@ class Enemies(Character):
                     enemy["color"] = 4
 
 
-    def update(self) -> bool:
+    def update(self) -> None:
         """
-        Function that updates everything inside and is called infinitely in the class Game
-
-        takes no arguments -> bool
+        Function that updates everything inside and is called infinitely in the class Game.
         """
 
         self.enemies_creation() # creates enemies
@@ -158,16 +152,10 @@ class Enemies(Character):
         self.player_collision()
         self.bullet_collision(self.player)
 
-        return True
-
-    def draw(self) -> bool:
+    def draw(self) -> None:
         """
-        Function that draws the enemies on the window and is called infinitely in the class Game
-
-        takes no arguments -> bool
+        Function that draws the enemies on the window and is called infinitely in the class Game.
         """
 
         for enemy in self.enemies_list:
             pyxel.rect(enemy["x"], enemy["y"], self.size, self.size, enemy["color"]) # draws enemies/squares
-
-        return True

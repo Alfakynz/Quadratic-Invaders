@@ -4,16 +4,16 @@ from enemy import Enemy
 
 class Bullets:
     """
-    Class that manages the bullets shot by the player
+    Class that manages the bullets shot by the player.
     """
 
     def __init__(self, player_x: int, player_y: int) -> None:
         """
-        Initializes the class Bullet
+        Initializes the class Bullet.
 
-        player_x: int
-        player_y: int
-        -> None
+        Args:
+            player_x (int): Player x position.
+            player_y (int): Player y position.
         """
 
         self.player_x: int = player_x # player's x position
@@ -32,23 +32,20 @@ class Bullets:
         self.color: int = 10 # yellow
         self.bullets_list: list[list[float]] = [] # list where the coordinates and the direction of each bullet is stored
 
-    def bullets_creation(self) -> bool:
+    def bullets_creation(self) -> None:
         """
-        Creates bullets every time a specific amount of frames is counted and when left click is continuously pressed
-
-        takes no arguments -> bool
+        Creates bullets every time a specific amount of frames is counted and when left click is continuously pressed.
         """
 
         if pyxel.btn(pyxel.MOUSE_BUTTON_LEFT) and pyxel.frame_count % self.fire_rate == True:
             self.bullets_list.append([self.player_x, self.player_y, self.teta]) # adds to bullets_list a list of the coordinates and the direction of the bullet
 
-        return True
-
-    def bullets_movements(self, polar_to_cartesian: Callable) -> bool:
+    def bullets_movements(self, polar_to_cartesian: Callable) -> None:
         """
-        Moves the bullet towards the place the mouse clicked and removes it when it goes out of bounds
+        Moves the bullet towards the place the mouse clicked and removes it when it goes out of bounds.
 
-        polar_to_cartesian: callable (function) -> bool
+        Args:
+            polar_to_cartesian (Callable): A Callable function.
         """
 
         for bullet in self.bullets_list:
@@ -57,36 +54,33 @@ class Bullets:
             bullet[1] += polar_to_cartesian(bullet[2], self.bullet_speed)[1]
             if  bullet[0] < 0 - self.size or bullet[0] > self.window_width + self.size or bullet[1] < 0 - self.size or bullet[1] > self.window_height + self.size:
                 self.bullets_list.remove(bullet) #removes the bullet when it goes out of bounds
-
-        return True
     
-    def enemy_collision(self):
+    def enemy_collision(self) -> None:
+        """
+        Function to check the collision between enemies and the bullet.
+        """
+
         for enemy in self.enemies_list:
             for bullet in self.bullets_list:
                 if enemy["x"] <= bullet[0] + self.size and enemy["y"] <= bullet[1] + self.size and enemy["x"] + self.enemy_size >= bullet[0] and enemy["y"] + self.enemy_size >= bullet[1]:
                     self.bullets_list.remove(bullet)
 
-    def update(self, polar_to_cartesian: Callable) -> bool:
+    def update(self, polar_to_cartesian: Callable) -> None:
         """
-        Function that updates everything inside and is called infinitely in the class Player
+        Function that updates everything inside and is called infinitely in the class Player.
 
-        polar_to_cartesian: callable (function) -> bool
+        Args:
+            polar_to_cartesian (Callable): A callable function
         """
 
         self.bullets_creation() # creates bullets
         self.bullets_movements(polar_to_cartesian) # moves bullets
         #self.enemy_collision()
 
-        return True
-
-    def draw(self) -> bool:
+    def draw(self) -> None:
         """
-        Function that draws the bullets on the window and is called infinitely in the class Player
-
-        takes no arguments -> bool
+        Function that draws the bullets on the window and is called infinitely in the class Player.
         """
 
         for bullet in self.bullets_list:
             pyxel.circ(bullet[0], bullet[1], self.size, self.color) # draws bullets/circles
-
-        return True

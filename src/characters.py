@@ -1,6 +1,10 @@
 import math
 
 class Character:
+    """
+    Class that manages characters (for the player and enemies).
+    """
+
     def __init__(self,
                  color: int,
                  shape: str,
@@ -10,6 +14,18 @@ class Character:
                  shield: int,
                  fire_rate: int,
                  xp: int) -> None:
+        """
+        Args:
+            color (int): Character color (not yet implemented).
+            shape (str): Character shape (not yet implemented).
+            hp (int): Maximum health of the character.
+            attack (int): Base attack damage the character can inflict.
+            speed (int): Movement speed of the character.
+            shield (int): Amount of damage the character can block before losing hp.
+            fire_rate (int): Delay between attacks.
+            xp (int): Experience points awarded when the character is defeated.
+        """
+
         self.color = color
         self.shape = shape
         self.xp = xp
@@ -23,11 +39,14 @@ class Character:
 
     def teta_calculation(self, coord1: tuple[float, float], coord2: tuple[float, float]) -> float:
         """
-        Function that calculates teta, direction from the pole relative to the direction of the polar axis (polar coordinates), according to two tuples of coordinates
+        Function that calculates teta, direction from the pole relative to the direction of the polar axis (polar coordinates), according to two tuples of coordinates.
 
-        coord1: tuple[float, float]
-        coord2: tuple[float, float]
-        -> float
+        Args:
+            coord1 (tuple[float, float]): Origin point (x1, y1) from which the direction is measured.
+            coord2 (tuple[float, float]): Target point (x2, y2) toward which the direction is calculated.
+
+        Returns:
+            float: Angle θ in radians in the range [-π, π], representing the direction from `coord1` to `coord2`.
         """
 
         dx: float = coord1[0] - coord2[0] # distance between x of coord1 and x of coord2
@@ -37,12 +56,15 @@ class Character:
     
     def polar_to_cartesian(self, teta: float, r: int, offset: float = 0) -> tuple[float, float]:
         """
-        Function that turns polar coordinates into cartesian coordinates
+        Function that turns polar coordinates into cartesian coordinates.
 
-        teta: float
-        r: int
-        offset: float
-        -> tuple[float, float]
+        Args:
+            teta (float): Angle in radians representing the polar coordinate
+        r (int): radius or distance from the origin.
+        offset (float, optional): Additional angular shift in radians applied to `teta`. Useful for rotating the resulting point. Defaults to 0.
+
+        Returns:
+            - `tuple[float, float]` - A tuple containing the (x, y) Cartesian coordinates corresponding to the given polar coordinates.
         """
 
         x: float = math.cos(teta + offset) * r # calculates x according to the polar coordinates given (if given an offset, adds it to the operation)

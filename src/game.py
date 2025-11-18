@@ -7,14 +7,12 @@ from upgrades import Upgrade
 
 class Game:
     """
-    Class that manages the game in general
+    Class that manages the game in general.
     """
 
     def __init__(self) -> None:
         """
-        Initialize the class Player
-
-        takes no arguments and returns None
+        Initialize the class Player.
         """
 
         self.player = Player() # creates the object Player
@@ -64,10 +62,14 @@ class Game:
 
         pyxel.run(self.update, self.draw) # call infinitely the update and draw functions
 
-    def variables_update(self):
+    def variables_update(self) -> None:
+        """
+        Update all variables.
+        """
+
         self.player.enemies_list = self.enemies.enemies_list
         self.player.enemy_size = self.enemies.size
-        self.player.enemies_damage = self.enemies.damage
+        self.player.enemies_damage = self.enemies.attack
 
         self.player.bullets.enemies_list = self.enemies.enemies_list
         self.player.bullets.enemy_size = self.enemies.size
@@ -84,9 +86,7 @@ class Game:
 
     def update(self) -> None:
         """
-        Function that calls all the update functions of every class and is called infinitely by Pyxel
-
-        takes no arguments -> None
+        Function that calls all the update functions of every class and is called infinitely by Pyxel.
         """
 
         if self.player.skills["hp"] > 0:
@@ -112,9 +112,7 @@ class Game:
 
     def draw(self) -> None:
         """
-        Function that calls all the draw functions of every class and is called infinitely by Pyxel
-
-        takes no arguments -> None
+        Function that calls all the draw functions of every class and is called infinitely by Pyxel.
         """
 
         pyxel.cls(0) # clears the window
@@ -139,9 +137,11 @@ class Game:
     def load_image_as_array(self, path: str, color: int = 12) -> list[list[int]]:
         """
         Load an image and convert it to a 2D array of pixel colors based on transparency.
+
         Args:
             path (str): The file path to the image.
             color (int): The color to use for non-transparent pixels.
+
         Returns:
             list[list[int]]: A 2D array representing the image pixels.
         """
@@ -168,12 +168,10 @@ class Game:
     def draw_cursor(self, x, y) -> None:
         """
         Draw a custom cursor at the specified position.
+
         Args:
-            x (int): The x-coordinate to draw the cursor.
-            y (int): The y-coordinate to draw the cursor.
-        
-        Returns:
-            None
+            x (int): the x-coordinate to draw the cursor.
+            y (int): the y-coordinate to draw the cursor.
         """
 
         for j, row in enumerate(self.cursor_pixels):

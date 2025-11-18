@@ -2,11 +2,12 @@ import pyxel
 
 class ASCII:
     """
-    Class that manages the ASCII police
+    Class that manages the ASCII font.
     """
 
     def __init__(self) -> None:
-        """For each character, see ascii.txt"""
+        """For each character, see ascii.txt (not included into the documentation, see the repo on [GitHub](https://github.com/ALfakynz/Window-Kill))."""
+
         self.alphabet: dict[str, list[str]] = {
             "a": ["  /\\  ", " /--\\ ", "/    \\"],
             "b": ["|--\\", "| -<", "|__/"],
@@ -56,10 +57,13 @@ class ASCII:
 
     def convert(self, string: str) -> list[str]:
         """
-        Convert each character into a ASCII font
+        Convert each character into a ASCII font.
 
-        @param string: the string to convert
-        @return: a list with top/mid/bottom of the string for each character 
+        Args:
+            string (str): The string to convert.
+        
+        Returns:
+            list[str]: A list with top/mid/bottom of the string for each character.
         """
 
         string = string.lower()
@@ -71,13 +75,13 @@ class ASCII:
     
     def text(self, x: float, y: float, text: str, color: int) -> None:
         """
-        Display a converted text with pyxel
+        Display a converted text with pyxel.
 
-        @param x: float. The x location of the text
-        @param y: float. The y location of the text
-        @param text: str. The text
-        @param color: int. The color
-        @return: None
+        Args:
+            x (float): The x location of the text.
+            y (float): The y location of the text.
+            text (str): The text to convert.
+            color (int): The color to use.
         """
 
         converted = self.convert(text)

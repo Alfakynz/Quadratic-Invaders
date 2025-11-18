@@ -7,7 +7,7 @@ from enemy import Enemy
 
 class Player(Character):
     """
-    Class that manages the player and inherits the characteristics of the class Character
+    Class that manages the player and inherits the characteristics of the class Character.
     """
 
     def __init__(self,
@@ -20,17 +20,16 @@ class Player(Character):
                  fire_rate: int = 30, # number of frames counted each time a bullet is shot
                  xp: int = 0) -> None: # amount of experience points collected by the player
         """
-        Initialize the class Player
+        Initialize the class Player.
 
-        color: int
-        shape : str
-        hp: int
-        attack: int
-        speed: int
-        shield: int
-        fire_rate: int
-        xp: int
-        -> None
+        color (int): The player color.
+        shape (str): The player shape.
+        hp (int): The player hp.
+        attack (int): The player attack.
+        speed (int): The player speed.
+        shield (int): The player shield.
+        fire_rate (int): The player fire rate.
+        xp (int): The player xp.
         """
 
         super().__init__(color, shape, hp, attack, speed, shield, fire_rate, xp)
@@ -56,11 +55,9 @@ class Player(Character):
 
         return None
 
-    def player_movements(self) -> bool:
+    def player_movements(self) -> None:
         """
-        Move the player according to the arrow keys pressed and stops it when it is about to go out of bounds
-
-        takes no arguments -> bool
+        Move the player according to the arrow keys pressed and stops it when it is about to go out of bounds.
         """
 
         if (pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.KEY_D)) and self.player_x < self.window_width:
@@ -83,11 +80,12 @@ class Player(Character):
             for enemy in self.enemies_list:
                 if enemy["x"] <= self.player_x+self.r and enemy["y"] <= self.player_y+self.r and enemy["x"]+self.enemy_size >= self.player_x and enemy["y"]+self.enemy_size >= self.player_y:
                     self.player_y -= self.skills["speed"]
-            
 
-        return True
+    def damage(self) -> None:
+        """
+        Checks collision between the player and every enemy, then applies damage and handles temporary invincibility.
+        """
 
-    def damage(self) -> bool:
         for enemy in self.enemies_list:
             if enemy["x"] <= self.player_x+self.r and enemy["y"] <= self.player_y+self.r and enemy["x"]+self.enemy_size >= self.player_x and enemy["y"]+self.enemy_size >= self.player_y and self.took_damage == False:
                 self.skills["hp"] = self.receive_damage(self.enemies_damage, self.skills["hp"], self.skills["shield"])
@@ -96,23 +94,21 @@ class Player(Character):
             
             if self.took_damage == False:
                 self.count = 0
+
             elif self.took_damage == True:
                 self.count += 1
 
-            if self.count >= 60 :
+            if self.count >= 60:
                 self.color = 7
                 self.took_damage = False
-        return True
-                
+
     def add_xp(self, amount: int) -> bool:
         self.xp += amount
         return True
 
-    def update(self) -> bool:
+    def update(self) -> None:
         """
-        Function that updates everything inside and is called infinitely in the class Game
-
-        takes no arguments -> bool
+        Function that updates everything inside and is called infinitely in the class Game.
         """
 
         self.player_movements() # moves the player
@@ -129,13 +125,9 @@ class Player(Character):
 
         self.bullets.update(self.polar_to_cartesian) # updates the bullets
 
-        return True
-
-    def draw(self) -> bool:
+    def draw(self) -> None:
         """
-        Function that draws the objects on the window and is called infinitely in the class Game
-
-        takes no arguments -> bool
+        Function that draws the objects on the window and is called infinitely in the class Game.
         """
 
         # conversion of polar coordinates into cartesian coordinates for the vertex of the triangle that is orientated to the mouse
@@ -155,9 +147,11 @@ class Player(Character):
         self.draw_hp()
         self.draw_xp()
 
-        return True
-    
-    def draw_hp(self):
+    def draw_hp(self) -> None:
+        """
+        Function that draws the hp on the window.
+        """
+
         color = pyxel.COLOR_GREEN
 
         hp = self.skills["hp"]
@@ -171,8 +165,12 @@ class Player(Character):
         else:
             color = pyxel.COLOR_RED
 
-        self.ascii.text(25, 25, f"{self.skills["hp"]} HP", color)
+        self.ascii.text(25, 25, f"{hp} HP", color)
     
-    def draw_xp(self):
+    def draw_xp(self) -> None:
+        """
+        Function that draws the xp on the window.
+        """
+
         color = pyxel.COLOR_YELLOW
         self.ascii.text(1125, 25, f"{self.xp} XP", color)
