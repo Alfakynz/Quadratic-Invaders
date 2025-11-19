@@ -40,9 +40,6 @@ class Game:
         SRC = ASSETS_DIR / "GameOver.png"
         DST = ASSETS_DIR / "_GameOver_256.png"
 
-        pyxel.init(self.window_width, self.window_height, title = self.window_title, fps = 60, quit_key = False) # initializes Pyxel and creates the window
-        pyxel.images[0].load(0, 0, str(DST))
-
         # Resizes the GameOver image into a 256x256 format (made by ChatGPT)
         im = PILImage.open(SRC).convert("RGBA")
         # Use the newer Resampling enum if available, otherwise fall back to legacy constants
@@ -53,7 +50,10 @@ class Game:
             resample_method = getattr(PILImage, "BICUBIC", getattr(PILImage, "NEAREST"))
         im.thumbnail((256, 256), resample_method)
         im.save(DST)
-        
+
+        pyxel.init(self.window_width, self.window_height, title = self.window_title, fps = 60, quit_key = False) # initializes Pyxel and creates the window
+        pyxel.images[0].load(0, 0, str(DST))
+
         self.game_over_w, self.game_over_h = im.size
         self.game_over_w = max(1, min(self.game_over_w, 256))
         self.game_over_h = max(1, min(self.game_over_h, 256))
