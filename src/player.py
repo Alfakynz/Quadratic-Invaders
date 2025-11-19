@@ -12,7 +12,6 @@ class Player(Character):
 
     def __init__(self,
                  color: int = 7, # white
-                 shape: str = "triangle",
                  hp: int = 10, # health points
                  attack: int = 1, # amount of hp that the player removes to the enemies touched by a bullet
                  speed: int = 5, # speed at which the player moves (in cartesian coordinates)
@@ -23,7 +22,6 @@ class Player(Character):
         Initialize the class Player.
 
         color (int): The player color.
-        shape (str): The player shape.
         hp (int): The player hp.
         attack (int): The player attack.
         speed (int): The player speed.
@@ -32,7 +30,7 @@ class Player(Character):
         xp (int): The player xp.
         """
 
-        super().__init__(color, shape, hp, attack, speed, shield, fire_rate, xp)
+        super().__init__(color, hp, attack, speed, shield, fire_rate, xp)
         self.ascii: ASCII = ASCII()
 
         self.window_width: int = 0 # width of the window (given by the class Game)
@@ -102,9 +100,15 @@ class Player(Character):
                 self.color = 7
                 self.took_damage = False
 
-    def add_xp(self, amount: int) -> bool:
+    def add_xp(self, amount: int) -> None:
+        """
+        Function that adds xp.
+
+        Args:
+            amount (int): The amount of xp to add.
+        """
+
         self.xp += amount
-        return True
 
     def update(self) -> None:
         """

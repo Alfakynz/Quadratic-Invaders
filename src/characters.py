@@ -7,7 +7,6 @@ class Character:
 
     def __init__(self,
                  color: int,
-                 shape: str,
                  hp: int,
                  attack: int,
                  speed: int,
@@ -17,7 +16,6 @@ class Character:
         """
         Args:
             color (int): Character color (not yet implemented).
-            shape (str): Character shape (not yet implemented).
             hp (int): Maximum health of the character.
             attack (int): Base attack damage the character can inflict.
             speed (int): Movement speed of the character.
@@ -27,7 +25,6 @@ class Character:
         """
 
         self.color = color
-        self.shape = shape
         self.xp = xp
         self.skills = {
             "hp": hp,

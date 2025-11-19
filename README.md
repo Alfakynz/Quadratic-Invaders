@@ -40,7 +40,6 @@ To create a pdf, use the [Markdown PDF](https://marketplace.visualstudio.com/ite
 #### Interface
 
 - Couleur (`color: int`)
-- Forme (`shape: str`)
 - PV (`hp: int`)
 - Dégats (`damage: int`)
 - Vitesse (`speed: int`)
@@ -68,7 +67,6 @@ To create a pdf, use the [Markdown PDF](https://marketplace.visualstudio.com/ite
 #### Interface
 
 - Couleur (`color: int`)
-- Forme (`shape: str`)
 - Dégat (`damage: int`)
 - Vitesse (`speed: int`)
 - Angle (`angle: float`)

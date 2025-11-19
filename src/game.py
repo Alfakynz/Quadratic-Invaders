@@ -125,14 +125,10 @@ class Game:
                 self.player.draw() # draws the player
                 self.enemies.draw() # draws the enemies
                 self.draw_cursor(pyxel.mouse_x - 16, pyxel.mouse_y - 16) # draws a custom cursor (centered)
-
-            return
-        
         else:
             x = (self.window_width  - self.game_over_w) // 2
             y = (self.window_height - self.game_over_h) // 2
             pyxel.blt(x, y, 0, 0, 0, self.game_over_w, self.game_over_h)
-
 
     def load_image_as_array(self, path: str, color: int = 12) -> list[list[int]]:
         """

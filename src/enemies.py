@@ -12,7 +12,6 @@ class Enemies(Character):
     def __init__(self,
                  player: Player,
                  color: int = 4, # red
-                 shape: str = "square",
                  hp: int = 1, # health points
                  attack: int = 1, # amount of hp that the enemies remove to the player when they touch them
                  speed: int = 2, # speed at which the enemies move (r in polar coordinates)
@@ -24,7 +23,6 @@ class Enemies(Character):
 
         Args:
             color (int): Character color (not yet implemented).
-            shape (str): Character shape (not yet implemented).
             hp (int): Maximum health of the character.
             attack (int): Base attack damage the character can inflict.
             speed (int): Movement speed of the character.
@@ -33,10 +31,9 @@ class Enemies(Character):
             xp (int): Experience points awarded when the character is defeated. 
         """
 
-        super().__init__(color, shape, hp, attack, speed, shield, fire_rate, xp)
+        super().__init__(color, hp, attack, speed, shield, fire_rate, xp)
 
         self.color: int = color
-        self.shape: str = shape
         self.hp: int = hp
         self.attack: int = attack
         self.speed: int = speed
@@ -74,7 +71,6 @@ class Enemies(Character):
                 "teta": 0,
                 "count": 0,
                 "color": self.color,
-                "shape": self.shape,
                 "hp": self.hp,
                 "attack": self.attack,
                 "speed": self.speed,

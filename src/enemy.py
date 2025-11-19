@@ -11,7 +11,6 @@ class Enemy(TypedDict):
         teta (float): The direction from the pole relative to the direction of the polar axis.
         count (int): The time after having touched the player.
         color (int): The enemy color.
-        shape (str): The enemy shape (not yet implemented).
         hp (int): The enemy hp.
         attack (int): The enemy attack.
         speed (float): The enemy speed.
@@ -26,7 +25,6 @@ class Enemy(TypedDict):
     teta: float
     count: int
     color: int
-    shape: str
     hp: int
     attack: int
     speed: float
