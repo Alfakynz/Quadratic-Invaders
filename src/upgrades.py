@@ -1,23 +1,23 @@
 import pyxel
 from player import Player
-from skills import Skill
+from skill import Skill
 from ascii import ASCII
 
 class Upgrade:
     """
-    Class that displays the menu.
+    Class that displays the upgrade menu.
     """
 
     def __init__(self, player: Player) -> None:
         """
-        Create the upgrade the menu to buy skills upgrades.
+        Create the upgrade menu to buy skills upgrades.
 
         Args:
             player (Player): The Player.
         """
 
-        self.player = player
-        self.upgrades = {
+        self.player: Player = player
+        self.upgrades: dict[str, Skill] = {
             "hp": Skill("hp", "Increase your health by 1", 25, 1),
             "attack": Skill("attack", "Increase your attack by 1", 10, 1),
             "shield": Skill("shield", "Increase your shield by 5", 50, 5),
@@ -75,7 +75,7 @@ class Upgrade:
             self.selected_index = (self.selected_index - 1) % len(self.skill_names)
 
         # Purchase the selected upgrade
-        if pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.KEY_KP_ENTER):
+        if pyxel.btnp(pyxel.KEY_RETURN):
             selected_skill = self.skill_names[self.selected_index]
             self.increase(selected_skill)
     
@@ -101,7 +101,11 @@ class Upgrade:
             self.y += 30
 
         self.y += 30
-        self.ascii.text(self.x, self.y, "Press ENTER to buy or press E to close or press 0 to quit", pyxel.COLOR_DARK_BLUE)
+        self.ascii.text(self.x, self.y, "Press ENTER to buy", pyxel.COLOR_DARK_BLUE)
+        self.y += 30
+        self.ascii.text(self.x, self.y, "Press ZQSD or the arrow keys to switch buttons", pyxel.COLOR_DARK_BLUE)
+        self.y += 30
+        self.ascii.text(self.x, self.y, "Press E or ESCAPE to close", pyxel.COLOR_DARK_BLUE)
 
         # Display a message if necessary
         if hasattr(self, "message"):

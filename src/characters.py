@@ -24,9 +24,9 @@ class Character:
             xp (int): Experience points awarded when the character is defeated.
         """
 
-        self.color = color
-        self.xp = xp
-        self.skills = {
+        self.color: int = color
+        self.xp: int = xp
+        self.skills: dict[str, int] = {
             "hp": hp,
             "attack": attack,
             "shield": shield,

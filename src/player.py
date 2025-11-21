@@ -51,7 +51,7 @@ class Player(Character):
         self.bullets: Bullets = Bullets(self.player_x, self.player_y) # creates the objet Bullets
         self.bullets.fire_rate = self.skills["fire_rate"] # gives the fire rate to the bullet
 
-        return None
+        self.teta: float = 0.0  # default orientation to avoid draw() crash
 
     def player_movements(self) -> None:
         """

@@ -20,8 +20,8 @@ class Skill:
             level (int): The skill level, 0 by default.
         """
 
-        self.name = name
-        self.description = description
-        self.price = price
-        self.amount = amount
-        self.level = level
+        self.name: str = name
+        self.description: str = description
+        self.price: int = price
+        self.amount: int = amount
+        self.level: int = level

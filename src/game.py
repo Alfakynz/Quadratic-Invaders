@@ -4,6 +4,8 @@ from pathlib import Path
 from player import Player
 from enemies import Enemies
 from upgrades import Upgrade
+from menu import Menu
+from control import Control
 
 class Game:
     """
@@ -18,6 +20,8 @@ class Game:
         self.player = Player() # creates the object Player
         self.enemies = Enemies(self.player) # creates the object Enemies
         self.upgrade = Upgrade(self.player) # creates the object Upgrade
+        self.menu = Menu() # creates the object Menu
+        self.control = Control() # creatse the object Control
 
         self.window_width: int = 1250 # width of the window
         self.window_height: int = 800 # height of the window
@@ -35,10 +39,10 @@ class Game:
         self.in_upgrade_menu: bool = False
 
         # Matches the paths with the files (made by ChatGPT)
-        BASE_DIR = Path(__file__).resolve().parent
-        ASSETS_DIR = BASE_DIR.parent / "assets"
-        SRC = ASSETS_DIR / "GameOver.png"
-        DST = ASSETS_DIR / "_GameOver_256.png"
+        BASE_DIR: Path = Path(__file__).resolve().parent
+        ASSETS_DIR: Path = BASE_DIR.parent / "assets"
+        SRC: Path = ASSETS_DIR / "GameOver.png"
+        DST: Path = ASSETS_DIR / "_GameOver_256.png"
 
         # Resizes the GameOver image into a 256x256 format (made by ChatGPT)
         im = PILImage.open(SRC).convert("RGBA")
@@ -89,14 +93,28 @@ class Game:
         Function that calls all the update functions of every class and is called infinitely by Pyxel.
         """
 
+        # Temporary quit the game with 0
+        if pyxel.btnp(pyxel.KEY_0):
+            pyxel.quit()
+        
         if self.player.skills["hp"] > 0:
-            # Temporary quit the game with 0
-            if pyxel.btnp(pyxel.KEY_0):
-                pyxel.quit()
+            if pyxel.btnp(pyxel.KEY_ESCAPE):
+                if not self.in_upgrade_menu and not self.control.in_control:
+                    self.menu.toggle_menu()
+                else:
+                    self.in_upgrade_menu = False
 
-            if pyxel.btnp(pyxel.KEY_E) or pyxel.btnp(pyxel.KEY_ESCAPE):
+            if pyxel.btnp(pyxel.KEY_E) and not self.menu.in_menu:
                 self.upgrade.message = ""  # Clear previous messages when toggling menu
                 self.in_upgrade_menu = not self.in_upgrade_menu
+
+            if self.control.in_control:
+                self.control.update(self.menu) # updates the control menu
+                return # skips the rest of the update function
+
+            if self.menu.in_menu:
+                self.menu.update(self.control) # updates the menu
+                return # skips the rest of the update function
 
             if self.in_upgrade_menu:
                 self.upgrade.update() # updates the upgrade menu
@@ -118,7 +136,11 @@ class Game:
         pyxel.cls(0) # clears the window
         pyxel.mouse(False) # displays the mouse on the window
 
-        if self.player.skills["hp"] > 0:
+        if self.control.in_control:
+            self.control.draw() # draws the tuto
+        elif self.menu.in_menu:
+            self.menu.draw() # draws the menu
+        elif self.player.skills["hp"] > 0:
             if self.in_upgrade_menu:
                 self.upgrade.draw() # draws the upgrade menu
             else:
