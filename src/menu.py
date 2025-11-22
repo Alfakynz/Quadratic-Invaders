@@ -14,7 +14,7 @@ class Menu:
 
         self.items: dict[str, str] = {
             "play": "Play",
-            "control": "Control",
+            "controls": "Controls",
             "quit": "Quit"
         }
         self.ascii: ASCII = ASCII()
@@ -28,7 +28,7 @@ class Menu:
     def toggle_menu(self) -> None:
         self.in_menu = not self.in_menu
 
-    def update(self, control: Control) -> None:
+    def update(self, controls: Control) -> None:
         """
         Handle user input to navigate.
         """
@@ -45,8 +45,8 @@ class Menu:
             match selected_skill:
                 case "play":
                     self.toggle_menu()
-                case "control":
-                    control.toggle_menu()
+                case "controls":
+                    controls.toggle_menu()
                     self.toggle_menu()
                 case "quit":
                     pyxel.quit()

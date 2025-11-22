@@ -13,9 +13,9 @@ class Control:
 
         self.items: list[str] = [
             "Press ENTER to select",
-            "Press ZQSD or arrow keys to switch buttons",
+            "Use ZQSD or the arrow keys to move",
             "Press ESCAPE to close the window or open the menu",
-            "Press E to open the inventory",
+            "Press E to open the upgrade menu",
             "Hold left click to shoot enemies"
         ]
         self.ascii: ASCII = ASCII()
@@ -46,7 +46,7 @@ class Control:
 
         pyxel.cls(0)
         self.y = 25
-        self.ascii.text(self.x, self.y, "--- Control ---", pyxel.COLOR_YELLOW)
+        self.ascii.text(self.x, self.y, "--- Controls ---", pyxel.COLOR_YELLOW)
         self.y += 30
         self.ascii.text(self.x, self.y, "Back", pyxel.COLOR_LIME)
         self.y += 60

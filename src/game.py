@@ -17,22 +17,14 @@ class Game:
         Initialize the class Player.
         """
 
-        self.player = Player() # creates the object Player
-        self.enemies = Enemies(self.player) # creates the object Enemies
-        self.upgrade = Upgrade(self.player) # creates the object Upgrade
-        self.menu = Menu() # creates the object Menu
-        self.control = Control() # creatse the object Control
+        self.player: Player = Player() # creates the object Player
+        self.enemies: Enemies = Enemies(self.player) # creates the object Enemies
+        self.upgrade: Upgrade = Upgrade(self.player) # creates the object Upgrade
+        self.menu: Menu = Menu() # creates the object Menu
+        self.control: Control = Control() # creatse the object Control
 
         self.window_width: int = 1250 # width of the window
         self.window_height: int = 800 # height of the window
-
-        # gives the width and height of the window to the different classes
-        self.player.window_width = self.window_width
-        self.player.window_height = self.window_height
-        self.enemies.window_width = self.window_width
-        self.enemies.window_height = self.window_height
-        self.player.bullets.window_width = self.window_width
-        self.player.bullets.window_height = self.window_height
 
         self.window_title: str = "Window-Kill" # title of the window
 
@@ -46,7 +38,7 @@ class Game:
 
         # Resizes the GameOver image into a 256x256 format (made by ChatGPT)
         im = PILImage.open(SRC).convert("RGBA")
-        # Use the newer Resampling enum if available, otherwise fall back to legacy constants
+        # Uses the newer Resampling enum if available, otherwise falls back to legacy constants
         resampling = getattr(PILImage, "Resampling", None)
         if resampling is not None:
             resample_method = resampling.BICUBIC
@@ -56,41 +48,22 @@ class Game:
         im.save(DST)
 
         pyxel.init(self.window_width, self.window_height, title = self.window_title, fps = 60, quit_key = False) # initializes Pyxel and creates the window
-        pyxel.images[0].load(0, 0, str(DST))
+        pyxel.images[0].load(0, 0, str(DST)) #puts the game over image in Pyxel's image bank 0 at the coordinates (0, 0)
 
-        self.game_over_w, self.game_over_h = im.size
-        self.game_over_w = max(1, min(self.game_over_w, 256))
-        self.game_over_h = max(1, min(self.game_over_h, 256))
-        self.cursor_path = ASSETS_DIR / "cursor.png"
+        self.game_over_w, self.game_over_h = im.size #gets the size of the image
+
+        #tests if the width and the height of the image is between 1 and 256 (inclusive) since Pyxel has difficulties with invalid surfaces (zero, negative, higher than 256, etc...)
+        assert 1 <= self.game_over_w <= 256
+        assert 1 <= self.game_over_h <= 256
+
+        self.cursor_path: Path = ASSETS_DIR / "cursor.png"
         self.cursor_pixels = self.load_image_as_array(str(self.cursor_path))
 
-        pyxel.run(self.update, self.draw) # call infinitely the update and draw functions
-
-    def variables_update(self) -> None:
-        """
-        Update all variables.
-        """
-
-        self.player.enemies_list = self.enemies.enemies_list
-        self.player.enemy_size = self.enemies.size
-        self.player.enemies_damage = self.enemies.attack
-
-        self.player.bullets.enemies_list = self.enemies.enemies_list
-        self.player.bullets.enemy_size = self.enemies.size
-
-        # gives the player's position to the enemies
-        self.enemies.player_x = self.player.player_x
-        self.enemies.player_y = self.player.player_y
-
-        self.enemies.player_size = self.player.r
-        self.enemies.player_attack = self.player.skills["attack"]
-
-        self.enemies.bullets_list = self.player.bullets.bullets_list
-        self.enemies.bullet_size = self.player.bullets.size
+        pyxel.run(self.update, self.draw) # calls infinitely the update and draw methods
 
     def update(self) -> None:
         """
-        Function that calls all the update functions of every class and is called infinitely by Pyxel.
+        Method that calls all the update methods of every class and is called infinitely by Pyxel.
         """
 
         # Temporary quit the game with 0
@@ -110,34 +83,42 @@ class Game:
 
             if self.control.in_control:
                 self.control.update(self.menu) # updates the control menu
-                return # skips the rest of the update function
+                return # skips the rest of the update method
 
             if self.menu.in_menu:
                 self.menu.update(self.control) # updates the menu
-                return # skips the rest of the update function
+                return # skips the rest of the update method
 
             if self.in_upgrade_menu:
                 self.upgrade.update() # updates the upgrade menu
-                return # skips the rest of the update function
+                return # skips the rest of the update method
 
-            self.variables_update()
+            self.player.update(self.enemies.enemies_array, 
+                               self.enemies.size, 
+                               self.enemies.attack,
+                               self.window_width,
+                               self.window_height) # updates the player and gives some attributes of the Enemies class to the Player Class
 
-            self.player.update() # updates the player
-
-            self.enemies.update() # updates the enemies
-
+            self.enemies.update(self.player.player_x,
+                                self.player.player_y,
+                                self.player.r,
+                                self.player.skills["attack"],
+                                self.player.bullets.bullets_array,
+                                self.player.bullets.size,
+                                self.window_width,
+                                self.window_height) # updates the enemies and gives some attributes of the Player class and the Bullets to the Enemies Class
             return
 
     def draw(self) -> None:
         """
-        Function that calls all the draw functions of every class and is called infinitely by Pyxel.
+        Method that calls all the draw methods of every class and is called infinitely by Pyxel.
         """
 
         pyxel.cls(0) # clears the window
         pyxel.mouse(False) # displays the mouse on the window
 
         if self.control.in_control:
-            self.control.draw() # draws the tuto
+            self.control.draw() # draws the controls menu
         elif self.menu.in_menu:
             self.menu.draw() # draws the menu
         elif self.player.skills["hp"] > 0:
@@ -148,9 +129,11 @@ class Game:
                 self.enemies.draw() # draws the enemies
                 self.draw_cursor(pyxel.mouse_x - 16, pyxel.mouse_y - 16) # draws a custom cursor (centered)
         else:
+            #centers the image
             x = (self.window_width  - self.game_over_w) // 2
             y = (self.window_height - self.game_over_h) // 2
-            pyxel.blt(x, y, 0, 0, 0, self.game_over_w, self.game_over_h)
+
+            pyxel.blt(x, y, 0, 0, 0, self.game_over_w, self.game_over_h) #displays the game over image when the player dies
 
     def load_image_as_array(self, path: str, color: int = 12) -> list[list[int]]:
         """

@@ -103,7 +103,7 @@ class Upgrade:
         self.y += 30
         self.ascii.text(self.x, self.y, "Press ENTER to buy", pyxel.COLOR_DARK_BLUE)
         self.y += 30
-        self.ascii.text(self.x, self.y, "Press ZQSD or the arrow keys to switch buttons", pyxel.COLOR_DARK_BLUE)
+        self.ascii.text(self.x, self.y, "Use ZQSD or the arrow keys to select something else", pyxel.COLOR_DARK_BLUE)
         self.y += 30
         self.ascii.text(self.x, self.y, "Press E or ESCAPE to close", pyxel.COLOR_DARK_BLUE)
 

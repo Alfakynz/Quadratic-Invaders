@@ -63,15 +63,15 @@ class ASCII:
             string (str): The string to convert.
         
         Returns:
-            list[str]: A list with top/mid/bottom of the string for each character.
+            list[str]: An array with top/mid/bottom of the string for each character.
         """
 
         string = string.lower()
-        liste: list[str] = ["", "", ""]
+        array: list[str] = ["", "", ""]
         for letter in string:
             for i in range(3):
-                liste[i] += self.alphabet[letter][i] + " "
-        return liste
+                array[i] += self.alphabet[letter][i] + " "
+        return array
     
     def text(self, x: float, y: float, text: str, color: int) -> None:
         """

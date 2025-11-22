@@ -2,14 +2,16 @@ from typing import TypedDict
 
 class Enemy(TypedDict):
     """
-    An enemy with his characteristic.
+    An enemy with their characteristics.
 
     Args:
         x (float): The x position.
         y (float): The y position.
-        reverse (bool): If the enemy has touched the player.
+        reverse (bool): Repulse effect when the enemy touches the player.
         teta (float): The direction from the pole relative to the direction of the polar axis.
-        count (int): The time after having touched the player.
+        count_player (int): The time after having touched the player.
+        count_bullet (int): The time after having touched a bullet.
+        bullet_touched (bool): True if collided with a bullet, False otherwise.
         color (int): The enemy color.
         hp (int): The enemy hp.
         attack (int): The enemy attack.
@@ -23,7 +25,9 @@ class Enemy(TypedDict):
     y: float
     reverse: bool
     teta: float
-    count: int
+    count_player: int
+    count_bullet: int
+    bullet_touched: int
     color: int
     hp: int
     attack: int

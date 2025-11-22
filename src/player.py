@@ -30,12 +30,14 @@ class Player(Character):
         xp (int): The player xp.
         """
 
-        super().__init__(color, hp, attack, speed, shield, fire_rate, xp)
+        super().__init__(color, hp, attack, speed, shield, fire_rate, xp) #calls the __init__ method of the parent class
+        
         self.ascii: ASCII = ASCII()
 
-        self.window_width: int = 0 # width of the window (given by the class Game)
-        self.window_height: int = 0 # height of the window (given by the class Game)
-
+        #initializes the attributes related to the window
+        self.window_width: int = 0 # width of the window
+        self.window_height: int = 0 # height of the window
+        
         # player's starting position
         self.player_x: int = 500
         self.player_y: int = 375
@@ -44,12 +46,12 @@ class Player(Character):
         self.took_damage: bool = False
         self.count: int = 0
 
-        self.enemies_list: list[Enemy] = []
+        #initializes the attributes related to the enemies
+        self.enemies_array: list[Enemy] = []
         self.enemies_damage: int = 0
         self.enemy_size: int = 0
 
         self.bullets: Bullets = Bullets(self.player_x, self.player_y) # creates the objet Bullets
-        self.bullets.fire_rate = self.skills["fire_rate"] # gives the fire rate to the bullet
 
         self.teta: float = 0.0  # default orientation to avoid draw() crash
 
@@ -60,22 +62,22 @@ class Player(Character):
 
         if (pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.KEY_D)) and self.player_x < self.window_width:
             self.player_x += self.skills["speed"] # moves to the right
-            for enemy in self.enemies_list:
+            for enemy in self.enemies_array:
                 if enemy["x"] <= self.player_x+self.r and enemy["y"] <= self.player_y+self.r and enemy["x"]+self.enemy_size >= self.player_x and enemy["y"]+self.enemy_size >= self.player_y:
                     self.player_x -= self.skills["speed"]
         if (pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.KEY_Q)) and self.player_x > 0:
             self.player_x -= self.skills["speed"] # moves to the left
-            for enemy in self.enemies_list:
+            for enemy in self.enemies_array:
                 if enemy["x"] <= self.player_x+self.r and enemy["y"] <= self.player_y+self.r and enemy["x"]+self.enemy_size >= self.player_x and enemy["y"]+self.enemy_size >= self.player_y:
                     self.player_x += self.skills["speed"]
         if (pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.KEY_S)) and self.player_y < self.window_height:
             self.player_y += self.skills["speed"] # moves down
-            for enemy in self.enemies_list:
+            for enemy in self.enemies_array:
                 if enemy["x"] <= self.player_x+self.r and enemy["y"] <= self.player_y+self.r and enemy["x"]+self.enemy_size >= self.player_x and enemy["y"]+self.enemy_size >= self.player_y:
                     self.player_y -= self.skills["speed"]
         if (pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_Z)) and self.player_y > 0:
             self.player_y -= self.skills["speed"] # moves up
-            for enemy in self.enemies_list:
+            for enemy in self.enemies_array:
                 if enemy["x"] <= self.player_x+self.r and enemy["y"] <= self.player_y+self.r and enemy["x"]+self.enemy_size >= self.player_x and enemy["y"]+self.enemy_size >= self.player_y:
                     self.player_y -= self.skills["speed"]
 
@@ -84,25 +86,25 @@ class Player(Character):
         Checks collision between the player and every enemy, then applies damage and handles temporary invincibility.
         """
 
-        for enemy in self.enemies_list:
-            if enemy["x"] <= self.player_x+self.r and enemy["y"] <= self.player_y+self.r and enemy["x"]+self.enemy_size >= self.player_x and enemy["y"]+self.enemy_size >= self.player_y and self.took_damage == False:
-                self.skills["hp"] = self.receive_damage(self.enemies_damage, self.skills["hp"], self.skills["shield"])
-                self.color = 13
-                self.took_damage = True
+        for enemy in self.enemies_array:
+            if enemy["x"] <= self.player_x+self.r and enemy["y"] <= self.player_y+self.r and enemy["x"]+self.enemy_size >= self.player_x and enemy["y"]+self.enemy_size >= self.player_y and self.took_damage == False: #checks collision and if the player is invincible
+                self.skills["hp"] = self.receive_damage(self.enemies_damage, self.skills["hp"], self.skills["shield"]) #damages the player
+                self.color = 13 #turns the player grey to show that he is now invincible and that he took some damage
+                self.took_damage = True #turns on the invincibility
             
             if self.took_damage == False:
-                self.count = 0
+                self.count = 0 #puts the frame counter back to 0 when the invincibility is turned off
 
             elif self.took_damage == True:
-                self.count += 1
+                self.count += 1 #counts the number of frames since the invincibility is turned on
 
-            if self.count >= 60:
-                self.color = 7
-                self.took_damage = False
+            if self.count >= 60: #checks if 1 second had passed since the invinbility is turned on
+                self.color = 7 #turns the player back to white
+                self.took_damage = False #turns off the invincibility
 
     def add_xp(self, amount: int) -> None:
         """
-        Function that adds xp.
+        Method that adds xp.
 
         Args:
             amount (int): The amount of xp to add.
@@ -110,14 +112,30 @@ class Player(Character):
 
         self.xp += amount
 
-    def update(self) -> None:
+    def update(self, enemies_array: list[Enemy], enemies_size: int, enemies_attack: int, window_width: int, window_height: int) -> None:
         """
-        Function that updates everything inside and is called infinitely in the class Game.
+        Method that updates everything inside and is called infinitely in the class Game.
+
+        Args:
+            enemies_array (list[Enemy]): Array containing the enemies created and still alive.
+            enemies_size (int): Size of the enemies.
+            enemies_attack (int): Amount of hp that the enemies remove to the player when they collide with them.
+            window_width (int): Width of the window.
+            window_height (int): Height of the window.
         """
+
+        #updates the attributes related to the enemies
+        self.enemies_array = enemies_array
+        self.enemy_size = enemies_size
+        self.enemies_damage = enemies_attack
+
+        #updates the attributes related to the window
+        self.window_width = window_width
+        self.window_height = window_height
 
         self.player_movements() # moves the player
 
-        self.damage()
+        self.damage() #damages the player
 
         # gives the position of the player to the bullet
         self.bullets.player_x = self.player_x
@@ -125,13 +143,12 @@ class Player(Character):
 
         # calculates the teta between the position of the mouse and the position of the player (polar coordinates)
         self.teta: float = self.teta_calculation((pyxel.mouse_x, pyxel.mouse_y), (self.player_x, self.player_y))
-        self.bullets.teta = self.teta # gives teta to the bullet in order use it as the direction the bullet will move towards
 
-        self.bullets.update(self.polar_to_cartesian) # updates the bullets
+        self.bullets.update(self.polar_to_cartesian, enemies_array, enemies_size, window_width, window_height, self.skills["fire_rate"], self.teta) # updates the bullets
 
     def draw(self) -> None:
         """
-        Function that draws the objects on the window and is called infinitely in the class Game.
+        Method that draws the objects on the window and is called infinitely in the class Game.
         """
 
         # conversion of polar coordinates into cartesian coordinates for the vertex of the triangle that is orientated to the mouse
@@ -153,7 +170,7 @@ class Player(Character):
 
     def draw_hp(self) -> None:
         """
-        Function that draws the hp on the window.
+        Method that draws the hp on the window.
         """
 
         color = pyxel.COLOR_GREEN
@@ -173,7 +190,7 @@ class Player(Character):
     
     def draw_xp(self) -> None:
         """
-        Function that draws the xp on the window.
+        Method that draws the xp on the window.
         """
 
         color = pyxel.COLOR_YELLOW
