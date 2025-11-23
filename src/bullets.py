@@ -35,24 +35,17 @@ class Bullets:
         self.SIZE: int = 10 # size of the bullet/circle
         self.COLOR: int = 10 # yellow
         self.bullets_array: list[list[float]] = [] # array containing the coordinates and the direction of each bullet
-        self.count: int = 0 #initializes the counter used in bullets_creation
-        self.can_shoot: bool = True 
+        self.last_shot_frame: int = 0 #initializes the attribute used in bullets_creation
 
     def bullets_creation(self) -> None:
         """
         Creates bullets every time a specific amount of frames is counted and when left click is continuously pressed.
         """
-        self.count += 1
-
-        if self.count >= 60:
-            self.can_shoot = True
         
-        if self.can_shoot == True:
-            self.count = 0
-
-        if pyxel.btn(pyxel.MOUSE_BUTTON_LEFT) and self.count % self.fire_rate == 0 and self.can_shoot == True:
-            self.bullets_array.append([self.player_x, self.player_y, self.teta]) # adds to bullets_array an array containing the coordinates and the direction of the bullet
-            self.can_shoot = False
+        if pyxel.btn(pyxel.MOUSE_BUTTON_LEFT): #checks if left click is pressed
+            if pyxel.frame_count - self.last_shot_frame >= self.fire_rate: #checks if enough time has passed since the last bullet was shot
+                self.bullets_array.append([self.player_x, self.player_y, self.teta]) # adds to bullets_array an array containing the coordinates and the direction of the bullet
+                self.last_shot_frame = pyxel.frame_count #saves the last frame where a bullet was shot
 
     def bullets_movements(self, polar_to_cartesian: Callable) -> None:
         """
@@ -62,7 +55,7 @@ class Bullets:
             polar_to_cartesian (Callable): A Callable function that converts polar coordinates into cartesian coordinates.
         """
 
-        for bullet in self.bullets_array:
+        for bullet in self.bullets_array[:]: #goes through a copy of the array
             # moves the bullet (with the help of a conversion of polar coordinates into cartesian coordinates)
             bullet[0] += polar_to_cartesian(bullet[2], self.BULLET_SPEED)[0]
             bullet[1] += polar_to_cartesian(bullet[2], self.BULLET_SPEED)[1]

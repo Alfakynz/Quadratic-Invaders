@@ -77,7 +77,6 @@ class Enemies(Character):
                 "y": 0,
                 "reverse": False,
                 "teta": 0,
-                "count_player": 0,
                 "count_bullet": 0,
                 "bullet_touched": False,
                 "color": self.color,
@@ -86,7 +85,8 @@ class Enemies(Character):
                 "speed": self.upgrades["speed"],
                 "shield": self.upgrades["shield"],
                 "fire_rate": self.fire_rate,
-                "xp": self.xp
+                "xp": self.xp,
+                "knockback_speed": 0.0
             }) #creates the characteristics of the enemy
             
             if side == 1:
@@ -111,18 +111,23 @@ class Enemies(Character):
 
         for enemy in self.enemies_array:
             # calculates the teta between the position of the player and the position of the enemy (polar coordinates)
-            teta: float = self.teta_calculation((self.player_x, self.player_y), (enemy["x"], enemy["y"]))
+            teta_to_player: float = self.teta_calculation((self.player_x, self.player_y), (enemy["x"], enemy["y"]))
 
             if enemy["reverse"] == True:
-                #creates a repulsed effect when the enemy collides with the player
-                enemy["x"] -= 2*self.polar_to_cartesian(enemy["teta"], enemy["speed"])[0]
-                enemy["y"] -= 2*self.polar_to_cartesian(enemy["teta"], enemy["speed"])[1]
-                enemy["count_player"] += 1
+                #creates a knockback effect when the enemy collides with the player
+                enemy["x"] -= self.polar_to_cartesian(teta_to_player, enemy["knockback_speed"])[0]
+                enemy["y"] -= self.polar_to_cartesian(teta_to_player, enemy["knockback_speed"])[1]
+                
+                enemy["knockback_speed"] *= 0.85 #creates friction
+
+                if enemy["knockback_speed"] < enemy["speed"] * 0.5: #stops the knockback effect when the knockback_speed is about to be normal again
+                    enemy["reverse"] = False #turns off the knockback effect
+                    enemy["knockback_speed"] = 0.0 #resets the knockback_speed
+
             elif enemy["reverse"] == False:
                 # moves the enemy (with the help of a conversion of polar coordinates into cartesian coordinates)
-                enemy["x"] += self.polar_to_cartesian(teta, enemy["speed"])[0]
-                enemy["y"] += self.polar_to_cartesian(teta, enemy["speed"])[1]
-                enemy["count_player"] = 0
+                enemy["x"] += self.polar_to_cartesian(teta_to_player, enemy["speed"])[0]
+                enemy["y"] += self.polar_to_cartesian(teta_to_player, enemy["speed"])[1]
 
     def player_collision(self):
         """
@@ -131,10 +136,10 @@ class Enemies(Character):
 
         for enemy in self.enemies_array:
             if enemy["x"] <= self.player_x+self.PLAYER_SIZE and enemy["y"] <= self.player_y+self.PLAYER_SIZE and enemy["x"]+self.SIZE >= self.player_x and enemy["y"]+self.SIZE >= self.player_y: #checks the collision
-                enemy["reverse"] = True #turns on the repulse effect
-                enemy["teta"] = self.teta_calculation((self.player_x, self.player_y), (enemy["x"], enemy["y"])) #saves the direction it was moving towards
-            if enemy["reverse"] == True and enemy["count_player"] >= 15: #turns off the repulse effect after 0.25 seconds
-                enemy["reverse"] = False
+                if not enemy["reverse"]: #makes sure the knockback is not reactivated when it is already turned on
+                    enemy["reverse"] = True #turns on the knockback effect
+                    enemy["teta"] = self.teta_calculation((self.player_x, self.player_y), (enemy["x"], enemy["y"])) #saves the direction it was moving towards
+                    enemy["knockback_speed"] = enemy["speed"] * 5 #knockback power
 
     def bullet_collision(self, player: Player):
         """
