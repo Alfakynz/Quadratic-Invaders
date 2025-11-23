@@ -169,7 +169,7 @@ class Enemies(Character):
 
     def enemies_upgrade(self, in_control: bool, in_menu: bool, in_upgrade_menu: bool) -> None:
         """
-        Method that upgrades a skill of the enemies every 15 seconds.
+        Method that upgrades a skill of the enemies every 10 seconds.
 
         Args:
             in_control (bool): True if the control menu is displayed, False otherwise
