@@ -125,8 +125,8 @@ class Game:
             return
         else:
             if pyxel.btnp(pyxel.KEY_ESCAPE) or pyxel.btnp(pyxel.KEY_R) or pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.KEY_RSHIFT) or pyxel.btnp(pyxel.KEY_E) or pyxel.btnp(pyxel.KEY_F):
-                # Resets everything to restart the game
-                self.reset_game()
+                # Restarts everything to restart the game
+                self.restart_game()
 
     def draw(self) -> None:
         """
@@ -200,9 +200,9 @@ class Game:
                 if color != 0:
                     pyxel.pset(x + i, y + j, color)
 
-    def reset_game(self) -> None:
+    def restart_game(self) -> None:
         """
-        Reset the game to its initial state.
+        Restart the game to its initial state.
         """
 
         self.player = Player()

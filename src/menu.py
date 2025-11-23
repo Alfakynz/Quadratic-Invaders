@@ -15,7 +15,7 @@ class Menu:
         self.items: dict[str, str] = {
             "play": "Play",
             "controls": "Controls",
-            "reset": "Reset",
+            "restart": "Restart",
             "quit": "Quit"
         }
         self.ascii: ASCII = ASCII()
@@ -53,8 +53,8 @@ class Menu:
                 case "controls":
                     controls.toggle_menu()
                     self.toggle_menu()
-                case "reset":
-                    game.reset_game()
+                case "restart":
+                    game.restart_game()
                 case "quit":
                     pyxel.quit()
 

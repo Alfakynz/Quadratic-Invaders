@@ -133,7 +133,7 @@ class Enemies(Character):
             if enemy["x"] <= self.player_x+self.PLAYER_SIZE and enemy["y"] <= self.player_y+self.PLAYER_SIZE and enemy["x"]+self.SIZE >= self.player_x and enemy["y"]+self.SIZE >= self.player_y: #checks the collision
                 enemy["reverse"] = True #turns on the repulse effect
                 enemy["teta"] = self.teta_calculation((self.player_x, self.player_y), (enemy["x"], enemy["y"])) #saves the direction it was moving towards
-            if enemy["reverse"] == True and enemy["count_player"] >= 15: #turns off the repulse effect after 0.5 seconds
+            if enemy["reverse"] == True and enemy["count_player"] >= 15: #turns off the repulse effect after 0.25 seconds
                 enemy["reverse"] = False
 
     def bullet_collision(self, player: Player):

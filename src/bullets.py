@@ -35,14 +35,24 @@ class Bullets:
         self.SIZE: int = 10 # size of the bullet/circle
         self.COLOR: int = 10 # yellow
         self.bullets_array: list[list[float]] = [] # array containing the coordinates and the direction of each bullet
+        self.count: int = 0 #initializes the counter used in bullets_creation
+        self.can_shoot: bool = True 
 
     def bullets_creation(self) -> None:
         """
         Creates bullets every time a specific amount of frames is counted and when left click is continuously pressed.
         """
+        self.count += 1
 
-        if pyxel.btn(pyxel.MOUSE_BUTTON_LEFT) and pyxel.frame_count % self.fire_rate == True:
+        if self.count >= 60:
+            self.can_shoot = True
+        
+        if self.can_shoot == True:
+            self.count = 0
+
+        if pyxel.btn(pyxel.MOUSE_BUTTON_LEFT) and self.count % self.fire_rate == 0 and self.can_shoot == True:
             self.bullets_array.append([self.player_x, self.player_y, self.teta]) # adds to bullets_array an array containing the coordinates and the direction of the bullet
+            self.can_shoot = False
 
     def bullets_movements(self, polar_to_cartesian: Callable) -> None:
         """
