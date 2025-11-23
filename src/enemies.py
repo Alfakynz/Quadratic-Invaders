@@ -71,7 +71,7 @@ class Enemies(Character):
         """
 
         side = random.randint(1, 4) # chooses a random side of the map
-        if pyxel.frame_count % self.upgrades["creation_speed"] == True: #creates an enemy every given frames
+        if pyxel.frame_count % self.upgrades["creation_speed"] == 0: #creates an enemy every given frames
             self.enemies_array.append({
                 "x": 0,
                 "y": 0,
