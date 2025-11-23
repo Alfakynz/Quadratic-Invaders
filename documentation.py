@@ -22,6 +22,9 @@ main_index = content.find("# quadratic-invaders")
 if main_index != -1:
     content = content[main_index:]
 
+# 5. Replace all occurrences of '# quadratic-invaders' with '# Quadratic Invaders'
+content = content.replace("# quadratic-invaders", "# Quadratic Invaders")
+
 # 5. Remove all <a ...></a> tags
 content = re.sub(r'<a[^>]*>.*?</a>', '', content, flags=re.DOTALL)
 
