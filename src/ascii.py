@@ -7,7 +7,7 @@ class ASCII:
 
     def __init__(self) -> None:
         """
-        For each character, see ascii.txt (not included into the documentation, see the repo on [GitHub](https://github.com/Alfakynz/Window-Kill)).
+        For each character, see ascii.txt (not included into the documentation, see the repo on [GitHub](https://github.com/Alfakynz/Quadratic-Invaders)).
         Each character is represented by an array of 3 strings (top, middle, bottom).
         """
 

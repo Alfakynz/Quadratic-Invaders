@@ -142,7 +142,7 @@ class Enemies(Character):
         """
 
         for enemy in self.enemies_array:
-            for bullet in self.bullets_array[:]:
+            for bullet in self.bullets_array[:]: #goes throught a copy of the array
                 if enemy["x"] <= bullet[0]+self.BULLET_SIZE and enemy["y"] <= bullet[1]+self.BULLET_SIZE and enemy["x"]+self.SIZE >= bullet[0] and enemy["y"]+self.SIZE >= bullet[1]: #checks the collision
                     self.bullets_array.remove(bullet)
                     enemy["hp"] = self.receive_damage(self.player_attack, enemy["hp"], enemy["shield"]) #damages the enemy
