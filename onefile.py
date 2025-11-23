@@ -4,7 +4,7 @@ import sys
 import re
 
 FOLDER = "src"
-OUTPUT_FILE = "window-kill.py"
+OUTPUT_FILE = "quadratic-invaders.py"
 
 def merge_python_files(src_folder):
     """

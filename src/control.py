@@ -12,10 +12,10 @@ class Control:
         """
 
         self.items: list[str] = [
-            "Press ENTER to select",
+            "Press ENTER or F to select",
             "Use ZQSD or the arrow keys to move",
             "Press ESCAPE to close the window or open the menu",
-            "Press E to open the upgrade menu",
+            "Press E or RSHIFT to open the upgrade menu",
             "Hold left click to shoot enemies"
         ]
         self.ascii: ASCII = ASCII()
@@ -35,7 +35,7 @@ class Control:
         """
 
         # Navigate the upgrade menu
-        if pyxel.btnp(pyxel.KEY_ESCAPE) or pyxel.btnp(pyxel.KEY_RETURN):
+        if pyxel.btnp(pyxel.KEY_ESCAPE) or pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.KEY_F):
             menu.toggle_menu()
             self.toggle_menu()
 

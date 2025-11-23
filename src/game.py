@@ -89,7 +89,7 @@ class Game:
                 else:
                     self.in_upgrade_menu = False
 
-            if pyxel.btnp(pyxel.KEY_E) and not self.menu.in_menu:
+            if (pyxel.btnp(pyxel.KEY_E) or pyxel.btnp(pyxel.KEY_RSHIFT)) and not self.menu.in_menu:
                 self.upgrade.message = ""  # Clear previous messages when toggling menu
                 self.in_upgrade_menu = not self.in_upgrade_menu
 
@@ -98,7 +98,7 @@ class Game:
                 return # skips the rest of the update method
 
             if self.menu.in_menu:
-                self.menu.update(self.control) # updates the menu
+                self.menu.update(self.control, self) # updates the menu
                 return # skips the rest of the update method
 
             if self.in_upgrade_menu:
@@ -126,12 +126,7 @@ class Game:
         else:
             if pyxel.btnp(pyxel.KEY_ESCAPE) or pyxel.btnp(pyxel.KEY_R):
                 # Resets everything to restart the game
-                self.player = Player()
-                self.enemies = Enemies(self.player)
-                self.upgrade = Upgrade(self.player)
-                self.menu = Menu()
-                self.control = Control()
-                self.in_upgrade_menu = False
+                self.reset_game()
 
     def draw(self) -> None:
         """
@@ -204,3 +199,15 @@ class Game:
             for i, color in enumerate(row):
                 if color != 0:
                     pyxel.pset(x + i, y + j, color)
+
+    def reset_game(self) -> None:
+        """
+        Reset the game to its initial state.
+        """
+
+        self.player = Player()
+        self.enemies = Enemies(self.player)
+        self.upgrade = Upgrade(self.player)
+        self.menu = Menu()
+        self.control = Control()
+        self.in_upgrade_menu = False

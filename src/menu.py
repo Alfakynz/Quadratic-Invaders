@@ -15,6 +15,7 @@ class Menu:
         self.items: dict[str, str] = {
             "play": "Play",
             "controls": "Controls",
+            "reset": "Reset",
             "quit": "Quit"
         }
         self.ascii: ASCII = ASCII()
@@ -28,9 +29,13 @@ class Menu:
     def toggle_menu(self) -> None:
         self.in_menu = not self.in_menu
 
-    def update(self, controls: Control) -> None:
+    def update(self, controls: Control, game) -> None:
         """
         Handle user input to navigate.
+
+        Args:
+            controls (Control): The controls menu.
+            game (Game): The main game instance.
         """
 
         # Navigate the upgrade menu
@@ -40,7 +45,7 @@ class Menu:
             self.selected_index = (self.selected_index - 1) % len(self.items)
 
         # Purchase the selected upgrade
-        if pyxel.btnp(pyxel.KEY_RETURN):
+        if pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.KEY_F):
             selected_skill = self.items_names[self.selected_index]
             match selected_skill:
                 case "play":
@@ -48,6 +53,8 @@ class Menu:
                 case "controls":
                     controls.toggle_menu()
                     self.toggle_menu()
+                case "reset":
+                    game.reset_game()
                 case "quit":
                     pyxel.quit()
 
@@ -59,7 +66,6 @@ class Menu:
         pyxel.cls(0)
         self.y = 25
         self.ascii.text(self.x, self.y, "--- Menu ---", pyxel.COLOR_YELLOW)
-        self.y += 30
         self.y += 60
 
         # Display each item

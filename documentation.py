@@ -18,7 +18,7 @@ with open(doc_path, "r") as f:
     content = f.read()
 
 # 4. Remove everything before "# main"
-main_index = content.find("# window-kill")
+main_index = content.find("# quadratic-invaders")
 if main_index != -1:
     content = content[main_index:]
 

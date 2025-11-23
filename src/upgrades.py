@@ -90,7 +90,7 @@ class Upgrade:
             self.selected_index = (self.selected_index - 1) % len(self.skill_names)
 
         # Purchase the selected upgrade
-        if pyxel.btnp(pyxel.KEY_RETURN):
+        if pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.KEY_F):
             selected_skill = self.skill_names[self.selected_index]
             self.increase(selected_skill)
     
@@ -102,8 +102,10 @@ class Upgrade:
         pyxel.cls(0)
         self.y = 25
         self.ascii.text(self.x, self.y, "--- Upgrade Menu ---", pyxel.COLOR_YELLOW)
+        self.y += 60
+        self.draw_hp(self.x, self.y)
         self.y += 30
-        self.ascii.text(self.x, self.y, f"XP: {self.player.xp}", pyxel.COLOR_WHITE)
+        self.ascii.text(self.x, self.y, f"XP: {self.player.xp}", pyxel.COLOR_YELLOW)
 
         self.y += 60
 
@@ -126,3 +128,23 @@ class Upgrade:
         if hasattr(self, "message"):
             self.y += 60
             self.ascii.text(self.x, self.y, self.message, self.color)
+
+    def draw_hp(self, x, y) -> None:
+        """
+        Method that draws the hp on the window.
+        """
+
+        color = pyxel.COLOR_GREEN
+
+        hp = self.player.skills["hp"]
+
+        if hp > 7:
+            color = pyxel.COLOR_GREEN
+        elif hp > 5:
+            color = pyxel.COLOR_YELLOW
+        elif hp > 3:
+            color = pyxel.COLOR_ORANGE
+        else:
+            color = pyxel.COLOR_RED
+
+        self.ascii.text(x, y, f"HP: {hp}", color)
