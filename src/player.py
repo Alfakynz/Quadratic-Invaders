@@ -14,7 +14,7 @@ class Player(Character):
                  color: int = 7, # white
                  hp: int = 10, # health points
                  attack: int = 1, # amount of hp that the player removes to the enemies touched by a bullet
-                 speed: int = 5, # speed at which the player moves (in cartesian coordinates)
+                 speed: int = 4, # speed at which the player moves (in cartesian coordinates)
                  shield: int = 0, # reduces the damage taken
                  fire_rate: int = 60, # number of frames counted each time a bullet is shot
                  xp: int = 0) -> None: # amount of experience points collected by the player
@@ -42,7 +42,7 @@ class Player(Character):
         self.player_x: int = 500
         self.player_y: int = 375
 
-        self.R: int = 20 # distance from the pole in polar coodinates (also size)
+        self.SIZE: int = 20 # distance from the pole in polar coodinates (also size)
         self.took_damage: bool = False
         self.count: int = 0
 
@@ -63,22 +63,22 @@ class Player(Character):
         if (pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.KEY_D)) and self.player_x < self.WINDOW_WIDTH:
             self.player_x += self.skills["speed"] # moves to the right
             for enemy in self.enemies_array:
-                if enemy["x"] <= self.player_x+self.R and enemy["y"] <= self.player_y+self.R and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y:
+                if enemy["x"] <= self.player_x+self.SIZE and enemy["y"] <= self.player_y+self.SIZE and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y:
                     self.player_x -= self.skills["speed"]
         if (pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.KEY_Q)) and self.player_x > 0:
             self.player_x -= self.skills["speed"] # moves to the left
             for enemy in self.enemies_array:
-                if enemy["x"] <= self.player_x+self.R and enemy["y"] <= self.player_y+self.R and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y:
+                if enemy["x"] <= self.player_x+self.SIZE and enemy["y"] <= self.player_y+self.SIZE and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y:
                     self.player_x += self.skills["speed"]
         if (pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.KEY_S)) and self.player_y < self.WINDOW_HEIGHT:
             self.player_y += self.skills["speed"] # moves down
             for enemy in self.enemies_array:
-                if enemy["x"] <= self.player_x+self.R and enemy["y"] <= self.player_y+self.R and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y:
+                if enemy["x"] <= self.player_x+self.SIZE and enemy["y"] <= self.player_y+self.SIZE and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y:
                     self.player_y -= self.skills["speed"]
         if (pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_Z)) and self.player_y > 0:
             self.player_y -= self.skills["speed"] # moves up
             for enemy in self.enemies_array:
-                if enemy["x"] <= self.player_x+self.R and enemy["y"] <= self.player_y+self.R and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y:
+                if enemy["x"] <= self.player_x+self.SIZE and enemy["y"] <= self.player_y+self.SIZE and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y:
                     self.player_y -= self.skills["speed"]
 
     def damage(self) -> None:
@@ -87,7 +87,7 @@ class Player(Character):
         """
 
         for enemy in self.enemies_array:
-            if enemy["x"] <= self.player_x+self.R and enemy["y"] <= self.player_y+self.R and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y and self.took_damage == False: #checks collision and if the player is invincible
+            if enemy["x"] <= self.player_x+self.SIZE and enemy["y"] <= self.player_y+self.SIZE and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y and self.took_damage == False: #checks collision and if the player is invincible
                 self.skills["hp"] = self.receive_damage(self.enemies_damage, self.skills["hp"], self.skills["shield"]) #damages the player
                 self.color = 13 #turns the player grey to show that he is now invincible and that he took some damage
                 self.took_damage = True #turns on the invincibility
@@ -152,10 +152,10 @@ class Player(Character):
         """
 
         # conversion of polar coordinates into cartesian coordinates for the vertex of the triangle that is orientated to the mouse
-        p1: tuple[float, float] = self.polar_to_cartesian(self.teta, self.R)
+        p1: tuple[float, float] = self.polar_to_cartesian(self.teta, self.SIZE)
         # conversion for the other vertexes of the triangle (with an offset of 3pi/4)
-        p2: tuple[float, float] = self.polar_to_cartesian(self.teta, self.R, 3*math.pi/4)
-        p3: tuple[float, float] = self.polar_to_cartesian(self.teta, self.R, -3*math.pi/4)
+        p2: tuple[float, float] = self.polar_to_cartesian(self.teta, self.SIZE, 3*math.pi/4)
+        p3: tuple[float, float] = self.polar_to_cartesian(self.teta, self.SIZE, -3*math.pi/4)
 
         # drawing of the triangle/player
         pyxel.tri(self.player_x + p1[0], self.player_y + p1[1],

@@ -26,7 +26,7 @@ class Game:
         self.WINDOW_WIDTH: int = 1250 # width of the window
         self.WINDOW_HEIGHT: int = 800 # height of the window
 
-        self.WINDOW_TITLE: str = "Window-Kill" # title of the window
+        self.WINDOW_TITLE: str = "Quadratic Invaders" # title of the window
 
         self.in_upgrade_menu: bool = False
 
@@ -113,7 +113,7 @@ class Game:
 
             self.enemies.update(self.player.player_x,
                                 self.player.player_y,
-                                self.player.R,
+                                self.player.SIZE,
                                 self.player.skills["attack"],
                                 self.player.bullets.bullets_array,
                                 self.player.bullets.SIZE,

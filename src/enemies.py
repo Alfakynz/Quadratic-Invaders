@@ -46,7 +46,7 @@ class Enemies(Character):
         self.WINDOW_HEIGHT: int = 0 # height of the window (given by the class Game)
 
         self.enemies_array: list[Enemy] = [] # array where the coordinates of each enemy is stored
-        self.creation_speed: int = 300 # initializes the number of frames counted each time an enemy is created
+        self.creation_speed: int = 180 # initializes the number of frames counted each time an enemy is created
         self.SIZE: int = 40 # size of the enemies
 
         self.UPGRADE_SPEED: int = 900 #number of frames counted each time an enemy is upgraded
@@ -71,7 +71,7 @@ class Enemies(Character):
         """
 
         side = random.randint(1, 4) # chooses a random side of the map
-        if pyxel.frame_count % self.upgrades["creation_speed"] == True:
+        if pyxel.frame_count % self.upgrades["creation_speed"] == True: #creates an enemy every given frames
             self.enemies_array.append({
                 "x": 0,
                 "y": 0,
@@ -87,7 +87,7 @@ class Enemies(Character):
                 "shield": self.upgrades["shield"],
                 "fire_rate": self.fire_rate,
                 "xp": self.xp
-            })
+            }) #creates the characteristics of the enemy
             
             if side == 1:
                 # creates an enemy on the top side of the window
@@ -173,9 +173,9 @@ class Enemies(Character):
         """
 
 
-        if pyxel.frame_count % 900 == 0 and pyxel.frame_count != 0 and not in_control and not in_menu and not in_upgrade_menu: #checks if 15 seconds had passed and if the controls, the menu or the upgrade menu is displayed
-            if self.upgrades_order == "creation_speed" and self.upgrades[self.upgrades_order] > 6: #checks if it's the turn of the creation speed to be upgraded and limits the creation speed to higher than 0.1 seconds
-                self.upgrades[self.upgrades_order] -= 6 #decreases the creation speed of 0.1 seconds
+        if pyxel.frame_count % 600 == 0 and pyxel.frame_count != 0 and not in_control and not in_menu and not in_upgrade_menu: #checks if 10 seconds had passed and if the controls, the menu or the upgrade menu is displayed
+            if self.upgrades_order == "creation_speed" and self.upgrades[self.upgrades_order] > 30: #checks if it's the turn of the creation speed to be upgraded and limits the creation speed to higher than 0.1 seconds
+                self.upgrades[self.upgrades_order] -= 30 #decreases the creation speed of 0.5 seconds
                 self.xp += 1
                 self.upgrades_order = "speed" #next skill to be upgraded: speed
             elif self.upgrades_order == "speed" and self.upgrades[self.upgrades_order] < 15: #checks if it's the turn of the speed to be upgraded and limits the speed to below 15
@@ -190,8 +190,8 @@ class Enemies(Character):
                 self.upgrades[self.upgrades_order] += 1 #increases the attack of 1
                 self.xp += 1
                 self.upgrades_order = "shield" #next skill to be upgraded: shield
-            elif self.upgrades_order == "shield" and self.upgrades[self.upgrades_order] < 95: #checks if it's the turn of the shield to be upgraded and limits the shield to below 95%
-                self.upgrades[self.upgrades_order] += 1 #increases the shield of 1
+            elif self.upgrades_order == "shield" and self.upgrades[self.upgrades_order] < 94: #checks if it's the turn of the shield to be upgraded and limits the shield to below 95%
+                self.upgrades[self.upgrades_order] += 2 #increases the shield of 2
                 self.xp += 1
                 self.upgrades_order = "creation_speed" #next skill to be upgraded: creation speed
 

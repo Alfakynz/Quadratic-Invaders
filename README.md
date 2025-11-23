@@ -1,4 +1,4 @@
-# Window Kill
+# Quadratic Invaders
 
 Python, [Pyxel](https://github.com/kitao/pyxel)
 

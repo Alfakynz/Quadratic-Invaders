@@ -54,7 +54,7 @@ class Upgrade:
             return
         
         #speed maxed out (lower than 15)
-        if skill == "speed" and upgrade.level == 10:
+        if skill == "speed" and upgrade.level == 11:
             self.message = "Skill maxed out"
             return
         
