@@ -22,7 +22,7 @@ class Upgrade:
             "attack": Skill("attack", "Increase your attack by 1", 10, 1),
             "shield": Skill("shield", "Increase your shield by 5", 50, 5),
             "speed": Skill("speed", "Increase your speed by 1", 5, 1),
-            "fire_rate": Skill("fire rate", "Increase your bulleting speed by 2", 10, 2),
+            "fire_rate": Skill("fire rate", "Increase your fire rate by 2", 10, -2),
         }
         self.ascii: ASCII = ASCII()
         self.x: int = 25
@@ -51,6 +51,21 @@ class Upgrade:
         if self.player.xp < upgrade.price:
             self.message = "Insufficient XP"
             self.color = pyxel.COLOR_RED
+            return
+        
+        #speed maxed out (lower than 15)
+        if skill == "speed" and upgrade.level == 10:
+            self.message = "Skill maxed out"
+            return
+        
+        #shield maxed out (lower than 95)
+        if skill == "shield" and upgrade.level == 19:
+            self.message = "Skill maxed out"
+            return
+        
+        #fire rate maxed out (higher than 10)
+        if skill == "fire rate" and upgrade.level == 25:
+            self.message = "Skill maxed out"
             return
         
         self.player.xp -= upgrade.price

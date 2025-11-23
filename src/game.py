@@ -23,10 +23,10 @@ class Game:
         self.menu: Menu = Menu() # creates the object Menu
         self.control: Control = Control() # creatse the object Control
 
-        self.window_width: int = 1250 # width of the window
-        self.window_height: int = 800 # height of the window
+        self.WINDOW_WIDTH: int = 1250 # width of the window
+        self.WINDOW_HEIGHT: int = 800 # height of the window
 
-        self.window_title: str = "Window-Kill" # title of the window
+        self.WINDOW_TITLE: str = "Window-Kill" # title of the window
 
         self.in_upgrade_menu: bool = False
 
@@ -47,17 +47,17 @@ class Game:
         im.thumbnail((256, 256), resample_method)
         im.save(DST)
 
-        pyxel.init(self.window_width, self.window_height, title = self.window_title, fps = 60, quit_key = False) # initializes Pyxel and creates the window
+        pyxel.init(self.WINDOW_WIDTH, self.WINDOW_HEIGHT, title = self.WINDOW_TITLE, fps = 60, quit_key = False) # initializes Pyxel and creates the window
         pyxel.images[0].load(0, 0, str(DST)) #puts the game over image in Pyxel's image bank 0 at the coordinates (0, 0)
 
-        self.game_over_w, self.game_over_h = im.size #gets the size of the image
+        self.GAME_OVER_W, self.GAME_OVER_H = im.size #gets the size of the image
 
         #tests if the width and the height of the image is between 1 and 256 (inclusive) since Pyxel has difficulties with invalid surfaces (zero, negative, higher than 256, etc...)
-        assert 1 <= self.game_over_w <= 256
-        assert 1 <= self.game_over_h <= 256
+        assert 1 <= self.GAME_OVER_W <= 256
+        assert 1 <= self.GAME_OVER_H <= 256
 
-        self.cursor_path: Path = ASSETS_DIR / "cursor.png"
-        self.cursor_pixels = self.load_image_as_array(str(self.cursor_path))
+        self.CURSOR_PATH: Path = ASSETS_DIR / "cursor.png"
+        self.CURSOR_PIXELS = self.load_image_as_array(str(self.CURSOR_PATH))
 
         pyxel.run(self.update, self.draw) # calls infinitely the update and draw methods
 
@@ -94,19 +94,22 @@ class Game:
                 return # skips the rest of the update method
 
             self.player.update(self.enemies.enemies_array, 
-                               self.enemies.size, 
-                               self.enemies.attack,
-                               self.window_width,
-                               self.window_height) # updates the player and gives some attributes of the Enemies class to the Player Class
+                               self.enemies.SIZE, 
+                               self.enemies.upgrades["attack"],
+                               self.WINDOW_WIDTH,
+                               self.WINDOW_HEIGHT) # updates the player and gives some attributes of the Enemies class to the Player Class
 
             self.enemies.update(self.player.player_x,
                                 self.player.player_y,
-                                self.player.r,
+                                self.player.R,
                                 self.player.skills["attack"],
                                 self.player.bullets.bullets_array,
-                                self.player.bullets.size,
-                                self.window_width,
-                                self.window_height) # updates the enemies and gives some attributes of the Player class and the Bullets to the Enemies Class
+                                self.player.bullets.SIZE,
+                                self.WINDOW_WIDTH,
+                                self.WINDOW_HEIGHT,
+                                self.control.in_control,
+                                self.menu.in_menu,
+                                self.in_upgrade_menu) # updates the enemies and gives some attributes of the Player class and the Bullets to the Enemies Class
             return
 
     def draw(self) -> None:
@@ -130,10 +133,10 @@ class Game:
                 self.draw_cursor(pyxel.mouse_x - 16, pyxel.mouse_y - 16) # draws a custom cursor (centered)
         else:
             #centers the image
-            x = (self.window_width  - self.game_over_w) // 2
-            y = (self.window_height - self.game_over_h) // 2
+            x = (self.WINDOW_WIDTH  - self.GAME_OVER_W) // 2
+            y = (self.WINDOW_HEIGHT - self.GAME_OVER_H) // 2
 
-            pyxel.blt(x, y, 0, 0, 0, self.game_over_w, self.game_over_h) #displays the game over image when the player dies
+            pyxel.blt(x, y, 0, 0, 0, self.GAME_OVER_W, self.GAME_OVER_H) #displays the game over image when the player dies
 
     def load_image_as_array(self, path: str, color: int = 12) -> list[list[int]]:
         """
@@ -175,7 +178,7 @@ class Game:
             y (int): the y-coordinate to draw the cursor.
         """
 
-        for j, row in enumerate(self.cursor_pixels):
+        for j, row in enumerate(self.CURSOR_PIXELS):
             for i, color in enumerate(row):
                 if color != 0:
                     pyxel.pset(x + i, y + j, color)

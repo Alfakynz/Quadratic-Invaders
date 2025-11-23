@@ -21,19 +21,19 @@ class Bullets:
 
         #initializes the attributes related to the enemies
         self.enemies_array: list[Enemy] = []
-        self.enemy_size: int = 0
+        self.ENEMY_SIZE: int = 0
 
         #initializes the attributes related to the window
-        self.window_width = 0 
-        self.window_height = 0
+        self.WINDOW_WIDTH = 0 
+        self.WINDOW_HEIGHT = 0
 
         #initializes the attributes related to the window
         self.fire_rate: int = 0 # number of frames counted each time a bullet is shot
         self.teta: float = 0 # value of teta between the position of the mouse and the position of the player (calculated in the method update of the class Player)
 
-        self.bullet_speed: int = 10 # speed of the bullet (also r in polar coordinates)
-        self.size: int = 10 # size of the bullet/circle
-        self.color: int = 10 # yellow
+        self.BULLET_SPEED: int = 10 # speed of the bullet (also r in polar coordinates)
+        self.SIZE: int = 10 # size of the bullet/circle
+        self.COLOR: int = 10 # yellow
         self.bullets_array: list[list[float, float, float]] = [] # array containing the coordinates and the direction of each bullet
 
     def bullets_creation(self) -> None:
@@ -54,20 +54,10 @@ class Bullets:
 
         for bullet in self.bullets_array:
             # moves the bullet (with the help of a conversion of polar coordinates into cartesian coordinates)
-            bullet[0] += polar_to_cartesian(bullet[2], self.bullet_speed)[0]
-            bullet[1] += polar_to_cartesian(bullet[2], self.bullet_speed)[1]
-            if  bullet[0] < 0 - self.size or bullet[0] > self.window_width + self.size or bullet[1] < 0 - self.size or bullet[1] > self.window_height + self.size:
+            bullet[0] += polar_to_cartesian(bullet[2], self.BULLET_SPEED)[0]
+            bullet[1] += polar_to_cartesian(bullet[2], self.BULLET_SPEED)[1]
+            if  bullet[0] < 0 - self.SIZE or bullet[0] > self.WINDOW_WIDTH + self.SIZE or bullet[1] < 0 - self.SIZE or bullet[1] > self.WINDOW_HEIGHT + self.SIZE:
                 self.bullets_array.remove(bullet) #removes the bullet when it goes out of bounds
-    
-    def enemy_collision(self) -> None:
-        """
-        Method that checks the collision between enemies and the bullet.
-        """
-
-        for enemy in self.enemies_array:
-            for bullet in self.bullets_array:
-                if enemy["x"] <= bullet[0] + self.size and enemy["y"] <= bullet[1] + self.size and enemy["x"] + self.enemy_size >= bullet[0] and enemy["y"] + self.enemy_size >= bullet[1]: #checks if the bullet collides with an enemy
-                    self.bullets_array.remove(bullet) #removes the bullet when it collides with an enemy
 
     def update(self, polar_to_cartesian: Callable, enemies_array: list[Enemy], enemies_size: int, window_width: int, window_height: int, fire_rate: int, teta: float) -> None:
         """
@@ -85,11 +75,11 @@ class Bullets:
 
         #updates the attributes related to the enemies
         self.enemies_array = enemies_array
-        self.enemy_size = enemies_size
+        self.ENEMY_SIZE = enemies_size
 
         #updates the attributes related to the window
-        self.window_width = window_width
-        self.window_height = window_height
+        self.WINDOW_WIDTH = window_width
+        self.WINDOW_HEIGHT = window_height
 
         #updates the attributes related to the bullets
         self.fire_rate = fire_rate
@@ -97,7 +87,6 @@ class Bullets:
 
         self.bullets_creation() # creates bullets
         self.bullets_movements(polar_to_cartesian) # moves bullets
-        #self.enemy_collision()
 
     def draw(self) -> None:
         """
@@ -105,4 +94,4 @@ class Bullets:
         """
 
         for bullet in self.bullets_array:
-            pyxel.circ(bullet[0], bullet[1], self.size, self.color) # draws bullets/circles
+            pyxel.circ(bullet[0], bullet[1], self.SIZE, self.COLOR) # draws bullets/circles
