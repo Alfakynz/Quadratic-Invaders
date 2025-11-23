@@ -124,7 +124,7 @@ class Game:
                                 self.in_upgrade_menu) # updates the enemies and gives some attributes of the Player class and the Bullets to the Enemies Class
             return
         else:
-            if pyxel.btnp(pyxel.KEY_ESCAPE) or pyxel.btnp(pyxel.KEY_R):
+            if pyxel.btnp(pyxel.KEY_ESCAPE) or pyxel.btnp(pyxel.KEY_R) or pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.KEY_RSHIFT) or pyxel.btnp(pyxel.KEY_E) or pyxel.btnp(pyxel.KEY_F):
                 # Resets everything to restart the game
                 self.reset_game()
 

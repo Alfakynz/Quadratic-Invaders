@@ -44,7 +44,7 @@ class Upgrade:
             self.message = "Skill not found"
             self.color = pyxel.COLOR_RED
             return
-        
+
         upgrade = self.upgrades[skill]
 
         # Insufficient XP
@@ -74,7 +74,7 @@ class Upgrade:
         upgrade.price = int(upgrade.price * 1.5)
         upgrade.level += 1
 
-        self.message = f"{skill.capitalize()} upgraded to level {upgrade.level}"
+        self.message = f"{upgrade.name} upgraded to level {upgrade.level}"
         self.color = pyxel.COLOR_LIGHT_BLUE
         return
 
@@ -93,7 +93,7 @@ class Upgrade:
         if pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.KEY_F):
             selected_skill = self.skill_names[self.selected_index]
             self.increase(selected_skill)
-    
+
     def draw(self) -> None:
         """
         Draw the upgrade menu.
@@ -103,6 +103,8 @@ class Upgrade:
         self.y = 25
         self.ascii.text(self.x, self.y, "--- Upgrade Menu ---", pyxel.COLOR_YELLOW)
         self.y += 60
+        self.draw_time(self.x, self.y)
+        self.y += 30
         self.draw_hp(self.x, self.y)
         self.y += 30
         self.ascii.text(self.x, self.y, f"XP: {self.player.xp}", pyxel.COLOR_YELLOW)
@@ -132,6 +134,10 @@ class Upgrade:
     def draw_hp(self, x, y) -> None:
         """
         Method that draws the hp on the window.
+
+        Args:
+            x (int): The x position of the text.
+            y (int): The y position of the text.
         """
 
         color = pyxel.COLOR_GREEN
@@ -148,3 +154,15 @@ class Upgrade:
             color = pyxel.COLOR_RED
 
         self.ascii.text(x, y, f"HP: {hp}", color)
+
+    def draw_time(self, x: int, y: int) -> None:
+        """
+        Method that draws the time on the window.
+        Args:
+            x (int): The x position of the text.
+            y (int): The y position of the text.
+        """
+        minutes = self.player.time // 3600
+        seconds = (self.player.time // 60) % 60
+        color = pyxel.COLOR_LIGHT_BLUE
+        self.ascii.text(x, y, f"Time: {minutes:02}:{seconds:02}", color)

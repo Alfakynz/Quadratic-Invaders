@@ -21,13 +21,14 @@ class Player(Character):
         """
         Initialize the class Player.
 
-        color (int): The player color.
-        hp (int): The player hp.
-        attack (int): The player attack.
-        speed (int): The player speed.
-        shield (int): The player shield.
-        fire_rate (int): The player fire rate.
-        xp (int): The player xp.
+        Args:
+            color (int): The player color.
+            hp (int): The player hp.
+            attack (int): The player attack.
+            speed (int): The player speed.
+            shield (int): The player shield.
+            fire_rate (int): The player fire rate.
+            xp (int): The player xp.
         """
 
         super().__init__(color, hp, attack, speed, shield, fire_rate, xp) #calls the __init__ method of the parent class
@@ -54,6 +55,8 @@ class Player(Character):
         self.bullets: Bullets = Bullets(self.player_x, self.player_y) # creates the objet Bullets
 
         self.teta: float = 0.0  # default orientation to avoid draw() crash
+
+        self.time = 0
 
     def player_movements(self) -> None:
         """
@@ -151,6 +154,8 @@ class Player(Character):
         Method that draws the objects on the window and is called infinitely in the class Game.
         """
 
+        self.time += 1
+
         # conversion of polar coordinates into cartesian coordinates for the vertex of the triangle that is orientated to the mouse
         p1: tuple[float, float] = self.polar_to_cartesian(self.teta, self.SIZE)
         # conversion for the other vertexes of the triangle (with an offset of 3pi/4)
@@ -167,6 +172,7 @@ class Player(Character):
 
         self.draw_hp()
         self.draw_xp()
+        self.draw_time(self.time // 3600, (self.time // 60) % 60)
 
     def draw_hp(self) -> None:
         """
@@ -195,3 +201,15 @@ class Player(Character):
 
         color = pyxel.COLOR_YELLOW
         self.ascii.text(1125, 25, f"{self.xp} XP", color)
+
+    def draw_time(self, minutes: int, seconds: int) -> None:
+        """
+        Method that draws the time on the window.
+
+        Args:
+            minutes (int): The number of minutes.
+            seconds (int): The number of seconds.
+        """
+
+        color = pyxel.COLOR_LIGHT_BLUE
+        self.ascii.text(585, 25, f"{minutes:02}:{seconds:02}", color)
