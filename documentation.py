@@ -13,11 +13,11 @@ subprocess.run(["python3", str(onefile_path)], check=True)
 with open(doc_path, "w") as f:
     subprocess.run(["pydoc-markdown", "-I", str(Path.cwd())], stdout=f, check=True)
 
-# 3. Read the content of doc.md
+# 3. Read the content of markdown file
 with open(doc_path, "r") as f:
     content = f.read()
 
-# 4. Remove everything before "# main"
+# 4. Remove everything before "# quadratic-invaders"
 main_index = content.find("# quadratic-invaders")
 if main_index != -1:
     content = content[main_index:]
