@@ -34,7 +34,7 @@ class Bullets:
         self.BULLET_SPEED: int = 10 # speed of the bullet (also r in polar coordinates)
         self.SIZE: int = 10 # size of the bullet/circle
         self.COLOR: int = 10 # yellow
-        self.bullets_array: list[list[float, float, float]] = [] # array containing the coordinates and the direction of each bullet
+        self.bullets_array: list[list[float]] = [] # array containing the coordinates and the direction of each bullet
 
     def bullets_creation(self) -> None:
         """

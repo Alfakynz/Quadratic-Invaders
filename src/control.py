@@ -47,7 +47,7 @@ class Control:
         pyxel.cls(0)
         self.y = 25
         self.ascii.text(self.x, self.y, "--- Controls ---", pyxel.COLOR_YELLOW)
-        self.y += 30
+        self.y += 60
         self.ascii.text(self.x, self.y, "Back", pyxel.COLOR_LIME)
         self.y += 60
 

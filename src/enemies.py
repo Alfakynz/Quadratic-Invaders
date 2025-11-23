@@ -62,7 +62,7 @@ class Enemies(Character):
         self.player_attack: int = 0
 
         #initializes the attributes related to the bullets
-        self.bullets_array: list[list[float, float, float]] = []
+        self.bullets_array: list[list[float]] = []
         self.BULLET_SIZE: int = 0
 
     def enemies_creation(self) -> None:
@@ -196,7 +196,7 @@ class Enemies(Character):
                 self.upgrades_order = "creation_speed" #next skill to be upgraded: creation speed
 
 
-    def update(self, player_x: int, player_y: int, player_size: int, player_attack: int, bullets_array: list[list[float, float, float]], bullet_size: int, window_width: int, window_height: int, in_control: bool, in_menu: bool, in_upgrade_menu: bool) -> None:
+    def update(self, player_x: int, player_y: int, player_size: int, player_attack: int, bullets_array: list[list[float]], bullet_size: int, window_width: int, window_height: int, in_control: bool, in_menu: bool, in_upgrade_menu: bool) -> None:
         """
         Method that updates everything inside and is called infinitely in the class Game.
 

@@ -36,6 +36,10 @@ class Game:
         SRC: Path = ASSETS_DIR / "GameOver.png"
         DST: Path = ASSETS_DIR / "_GameOver_256.png"
 
+        # Fallback if the image doesn't exist
+        if not SRC.exists():
+            SRC = Path(__file__).resolve().parent / "assets" / "GameOver.png"
+
         # Resizes the GameOver image into a 256x256 format (made by ChatGPT)
         im = PILImage.open(SRC).convert("RGBA")
         # Uses the newer Resampling enum if available, otherwise falls back to legacy constants
@@ -45,6 +49,10 @@ class Game:
         else:
             resample_method = getattr(PILImage, "BICUBIC", getattr(PILImage, "NEAREST"))
         im.thumbnail((256, 256), resample_method)
+
+        if not DST.exists():
+            DST = Path(__file__).resolve().parent / "assets" / "_GameOver_256.png"
+
         im.save(DST)
 
         pyxel.init(self.WINDOW_WIDTH, self.WINDOW_HEIGHT, title = self.WINDOW_TITLE, fps = 60, quit_key = False) # initializes Pyxel and creates the window
@@ -57,6 +65,10 @@ class Game:
         assert 1 <= self.GAME_OVER_H <= 256
 
         self.CURSOR_PATH: Path = ASSETS_DIR / "cursor.png"
+        
+        if not self.CURSOR_PATH.exists():
+            self.CURSOR_PATH = Path(__file__).resolve().parent / "assets" / "cursor.png"
+        
         self.CURSOR_PIXELS = self.load_image_as_array(str(self.CURSOR_PATH))
 
         pyxel.run(self.update, self.draw) # calls infinitely the update and draw methods
@@ -111,6 +123,15 @@ class Game:
                                 self.menu.in_menu,
                                 self.in_upgrade_menu) # updates the enemies and gives some attributes of the Player class and the Bullets to the Enemies Class
             return
+        else:
+            if pyxel.btnp(pyxel.KEY_ESCAPE) or pyxel.btnp(pyxel.KEY_R):
+                # Resets everything to restart the game
+                self.player = Player()
+                self.enemies = Enemies(self.player)
+                self.upgrade = Upgrade(self.player)
+                self.menu = Menu()
+                self.control = Control()
+                self.in_upgrade_menu = False
 
     def draw(self) -> None:
         """
@@ -140,7 +161,8 @@ class Game:
 
     def load_image_as_array(self, path: str, color: int = 12) -> list[list[int]]:
         """
-        Load an image and convert it to a 2D array of pixel colors based on transparency.
+        Load an image and convert it to a 2D array of pixel colors based on transparency. 
+        Open the image using PIL, then get the image size and create a 2D array where each pixel is represented by the specified color if its alpha value is above a threshold, otherwise 0 (transparent).
 
         Args:
             path (str): The file path to the image.
@@ -171,7 +193,7 @@ class Game:
     
     def draw_cursor(self, x, y) -> None:
         """
-        Draw a custom cursor at the specified position.
+        Draw a custom cursor at the specified position. Used to replace the default mouse cursor. 
 
         Args:
             x (int): the x-coordinate to draw the cursor.

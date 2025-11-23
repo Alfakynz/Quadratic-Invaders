@@ -6,7 +6,10 @@ class ASCII:
     """
 
     def __init__(self) -> None:
-        """For each character, see ascii.txt (not included into the documentation, see the repo on [GitHub](https://github.com/ALfakynz/Window-Kill))."""
+        """
+        For each character, see ascii.txt (not included into the documentation, see the repo on [GitHub](https://github.com/Alfakynz/Window-Kill)).
+        Each character is represented by an array of 3 strings (top, middle, bottom).
+        """
 
         self.alphabet: dict[str, list[str]] = {
             "a": ["  /\\  ", " /--\\ ", "/    \\"],
@@ -57,7 +60,7 @@ class ASCII:
 
     def convert(self, string: str) -> list[str]:
         """
-        Convert each character into a ASCII font.
+        Convert each character into an ASCII font. For each character, get the top/mid/bottom part of letters from self.alphabet.
 
         Args:
             string (str): The string to convert.
@@ -75,7 +78,7 @@ class ASCII:
     
     def text(self, x: float, y: float, text: str, color: int) -> None:
         """
-        Display a converted text with pyxel.
+        Display a converted text with pyxel. Display the top/mid/bottom parts of the ASCII font one below the other.
 
         Args:
             x (float): The x location of the text.

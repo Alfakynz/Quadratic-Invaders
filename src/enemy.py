@@ -31,7 +31,7 @@ class Enemy(TypedDict):
     color: int
     hp: int
     attack: int
-    speed: float
+    speed: int
     shield: int
     fire_rate: float
     xp: int
