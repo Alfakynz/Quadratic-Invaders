@@ -58,7 +58,7 @@ class Menu:
                 case "quit":
                     pyxel.quit()
 
-    def draw(self) -> None:
+    def draw(self, game) -> None:
         """
         Draw the menu.
         """
@@ -80,3 +80,8 @@ class Menu:
         self.ascii.text(self.x, self.y, "Press ENTER to select", pyxel.COLOR_DARK_BLUE)
         self.y += 30
         self.ascii.text(self.x, self.y, "Press ZQSD or the arrow keys to switch buttons", pyxel.COLOR_DARK_BLUE)
+        self.y += 60
+
+        minutes = game.best_time // 3600
+        seconds = (game.best_time // 60) % 60
+        self.ascii.text(self.x, self.y, f"Best time: {minutes:02}:{seconds:02}", pyxel.COLOR_LIGHT_BLUE)

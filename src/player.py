@@ -11,6 +11,8 @@ class Player(Character):
     """
 
     def __init__(self,
+                 window_width: int,
+                 window_height: int,
                  color: int = 7, # white
                  hp: int = 10, # health points
                  hp_max: int = 10, # max health points
@@ -37,12 +39,12 @@ class Player(Character):
         self.ascii: ASCII = ASCII()
 
         #initializes the attributes related to the window
-        self.WINDOW_WIDTH: int = 0 # width of the window
-        self.WINDOW_HEIGHT: int = 0 # height of the window
+        self.WINDOW_WIDTH: int = window_width # width of the window
+        self.WINDOW_HEIGHT: int = window_height # height of the window
         
         # player's starting position
-        self.player_x: int = 500
-        self.player_y: int = 375
+        self.player_x: int = self.WINDOW_WIDTH // 2
+        self.player_y: int = self.WINDOW_HEIGHT // 2
 
         self.SIZE: int = 20 # distance from the pole in polar coodinates (also size)
         self.took_damage: bool = False

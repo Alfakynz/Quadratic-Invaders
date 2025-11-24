@@ -18,8 +18,8 @@ class Upgrade:
 
         self.player: Player = player
         self.upgrades: dict[str, Skill] = {
-            "hp_max": Skill("hp max", "Increase your health by 1", 25, 1),
             "attack": Skill("attack", "Increase your attack by 1", 10, 1),
+            "hp_max": Skill("hp max", "Increase your health by 1", 25, 1),
             "shield": Skill("shield", "Increase your shield by 5", 50, 5),
             "speed": Skill("speed", "Increase your speed by 1", 5, 1),
             "fire_rate": Skill("fire rate", "Increase your fire rate by 2", 10, -2),
@@ -119,8 +119,10 @@ class Upgrade:
         for i, skill_name in enumerate(self.skill_names):
             upgrade = self.upgrades[skill_name]
             color = pyxel.COLOR_LIME if i == self.selected_index else pyxel.COLOR_WHITE
-            self.ascii.text(20, self.y, f"{upgrade.name} Lv.{upgrade.level}: {upgrade.description} ({upgrade.price})"
-, color)
+            self.ascii.text(20, self.y, upgrade.name, color)
+            self.ascii.text(225, self.y, f"Lv.{upgrade.level}:", color)
+            self.ascii.text(350, self.y, upgrade.description, color)
+            self.ascii.text(900, self.y, f"({upgrade.price})", color)
             self.y += 30
 
         self.y += 30
@@ -146,7 +148,7 @@ class Upgrade:
 
         hp = self.player.skills["hp"]
 
-        if hp > 7:
+        if hp > 8:
             color = pyxel.COLOR_GREEN
         elif hp > 5:
             color = pyxel.COLOR_YELLOW

@@ -18,19 +18,20 @@ class Game:
         Initialize the class Player.
         """
 
-        self.player: Player = Player() # creates the object Player
+        self.WINDOW_WIDTH: int = 1250 # width of the window
+        self.WINDOW_HEIGHT: int = 800 # height of the window
+        self.WINDOW_TITLE: str = "Quadratic Invaders" # title of the window
+
+        self.player: Player = Player(self.WINDOW_WIDTH, self.WINDOW_HEIGHT) # creates the object Player
         self.enemies: Enemies = Enemies(self.player) # creates the object Enemies
         self.upgrade: Upgrade = Upgrade(self.player) # creates the object Upgrade
         self.menu: Menu = Menu() # creates the object Menu
         self.control: Control = Control() # creatse the object Control
         self.ascii: ASCII = ASCII()
 
-        self.WINDOW_WIDTH: int = 1250 # width of the window
-        self.WINDOW_HEIGHT: int = 800 # height of the window
-
-        self.WINDOW_TITLE: str = "Quadratic Invaders" # title of the window
-
         self.in_upgrade_menu: bool = False
+
+        self.best_time: int = 0
 
         # Matches the paths with the files (made by ChatGPT)
         BASE_DIR: Path = Path(__file__).resolve().parent
@@ -123,6 +124,10 @@ class Game:
                                 self.menu.in_menu,
                                 self.in_upgrade_menu) # updates the enemies and gives some attributes of the Player class and the Bullets to the Enemies Class
             return
+        elif self.player.skills["hp"] == 0:
+            if self.best_time < self.player.time:
+                self.best_time = self.player.time
+            self.player.skills["hp"] -= 1
         else:
             if pyxel.btnp(pyxel.KEY_ESCAPE) or pyxel.btnp(pyxel.KEY_R) or pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.KEY_RSHIFT) or pyxel.btnp(pyxel.KEY_E) or pyxel.btnp(pyxel.KEY_F):
                 # Restarts everything to restart the game
@@ -139,7 +144,7 @@ class Game:
         if self.control.in_control:
             self.control.draw() # draws the controls menu
         elif self.menu.in_menu:
-            self.menu.draw() # draws the menu
+            self.menu.draw(self) # draws the menu
         elif self.player.skills["hp"] > 0:
             if self.in_upgrade_menu:
                 self.upgrade.draw() # draws the upgrade menu
@@ -206,7 +211,7 @@ class Game:
         Restart the game to its initial state.
         """
 
-        self.player = Player()
+        self.player = Player(self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
         self.enemies = Enemies(self.player)
         self.upgrade = Upgrade(self.player)
         self.menu = Menu()
