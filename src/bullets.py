@@ -31,7 +31,7 @@ class Bullets:
         self.fire_rate: int = 0 # number of frames counted each time a bullet is shot
         self.teta: float = 0 # value of teta between the position of the mouse and the position of the player (calculated in the method update of the class Player)
 
-        self.BULLET_SPEED: int = 10 # speed of the bullet (also r in polar coordinates)
+        self.BULLET_SPEED: int = 15 # speed of the bullet (also r in polar coordinates)
         self.SIZE: int = 10 # size of the bullet/circle
         self.COLOR: int = 10 # yellow
         self.bullets_array: list[list[float]] = [] # array containing the coordinates and the direction of each bullet
