@@ -17,10 +17,14 @@ with open(doc_path, "w") as f:
 with open(doc_path, "r") as f:
     content = f.read()
 
-# 4. Remove everything before "# quadratic-invaders"
+# 4. Remove everything before "# quadratic-invaders" and after "# onefile"
 main_index = content.find("# quadratic-invaders")
 if main_index != -1:
     content = content[main_index:]
+
+main_index = content.find("# onefile")
+if main_index != -1:
+    content = content[:main_index]
 
 # 5. Replace all occurrences of '# quadratic-invaders' with '# Quadratic Invaders'
 content = content.replace("# quadratic-invaders", "# Quadratic Invaders")

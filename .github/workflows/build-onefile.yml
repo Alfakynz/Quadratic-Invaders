@@ -1,0 +1,34 @@
+name: Build Onefile
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-onefile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Run onefile.py
+        run: |
+          python3 onefile.py
+
+      - name: Check generated file
+        run: |
+          if [ ! -f quadratic-invaders.py ]; then
+            echo "Error: quadratic-invaders.py not found."
+            exit 1
+          fi
+
+      - name: Upload artifact (quadratic-invaders.py)
+        uses: actions/upload-artifact@v4
+        with:
+          name: quadratic-invaders.py
+          path: quadratic-invaders.py

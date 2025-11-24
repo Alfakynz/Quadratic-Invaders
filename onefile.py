@@ -27,6 +27,7 @@ def merge_python_files(src_folder):
 
     all_imports = set()   # Set to deduplicate external imports
     classes = {}          # Dictionary class -> {code, deps}
+    functions = {}        # name -> {code, deps}
     other_code_lines = [] # Lines of code that are not imports and not classes
 
     # 2. Process each file: collect imports and class definitions
@@ -76,6 +77,21 @@ def merge_python_files(src_folder):
                 class_block = "\n".join(code_lines[start:end])
                 classes[node.name] = {"code": class_block, "deps": set()}
                 class_lines.update(range(start, end))
+            elif isinstance(node, ast.FunctionDef):
+                start = node.lineno - 1
+                end = getattr(node, "end_lineno", None)
+                if end is None:
+                    child_lines = []
+                    for child in ast.walk(node):
+                        ln = getattr(child, "end_lineno", None) or getattr(child, "lineno", None)
+                        if isinstance(ln, int):
+                            child_lines.append(ln)
+                    end = max(child_lines) if child_lines else start + 1
+                end = min(end, len(code_lines))
+                func_block = "\n".join(code_lines[start:end])
+                functions[node.name] = {"code": func_block, "deps": set()}
+                class_lines.update(range(start, end))
+
 
         # Collect the rest of the code (functions, main script, etc.)
         for i, line in enumerate(code_lines):
@@ -109,6 +125,18 @@ def merge_python_files(src_folder):
                 if node.id in class_names and node.id != cls:
                     info["deps"].add(node.id)
 
+    func_names = set(functions.keys())
+    for fn, info in functions.items():
+        try:
+            func_tree = ast.parse(info["code"])
+        except SyntaxError:
+            continue
+        for node in ast.walk(func_tree):
+            if isinstance(node, ast.Name):
+                if node.id in func_names and node.id != fn:
+                    info["deps"].add(node.id)
+
+
     # 5. Topological sorting of classes
     sorted_classes = []
     deps = {cls: set(info["deps"]) for cls, info in classes.items()}
@@ -127,6 +155,24 @@ def merge_python_files(src_folder):
             sorted_classes.extend(deps.keys())
             break
 
+    sorted_functions = []
+    deps_f = {fn: set(info["deps"]) for fn, info in functions.items()}
+
+    while deps_f:
+        acyclic = False
+        for fn, dset in list(deps_f.items()):
+            dset.discard(fn)
+            if not dset:
+                acyclic = True
+                sorted_functions.append(fn)
+                del deps_f[fn]
+                for other in list(deps_f):
+                    deps_f[other].discard(fn)
+        if not acyclic:
+            sorted_functions.extend(deps_f.keys())
+            break
+
+
     # 6. Build the final code
     output = []
 
@@ -139,6 +185,12 @@ def merge_python_files(src_folder):
     for cls in sorted_classes:
         output.append(classes[cls]["code"])
         output.append("")
+
+    # Ordered functions
+    for fn in sorted_functions:
+        output.append(functions[fn]["code"])
+        output.append("")
+
 
     # Other lines of code
     if other_code_lines:
