@@ -23,7 +23,11 @@ class Control:
         self.y: int = 25
         self.in_control: bool = False
 
-    def toggle_menu(self):
+    def toggle_menu(self) -> None:
+        """
+        Toggle menu.
+        """
+
         self.in_control = not self.in_control
 
     def update(self, menu) -> None:

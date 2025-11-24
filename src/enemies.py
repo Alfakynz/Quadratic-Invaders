@@ -129,7 +129,7 @@ class Enemies(Character):
                 enemy["x"] += self.polar_to_cartesian(teta_to_player, enemy["speed"])[0]
                 enemy["y"] += self.polar_to_cartesian(teta_to_player, enemy["speed"])[1]
 
-    def player_collision(self):
+    def player_collision(self) -> None:
         """
         Method that checks the collisions between enemies and the player.
         """
@@ -141,7 +141,7 @@ class Enemies(Character):
                     enemy["teta"] = self.teta_calculation((self.player_x, self.player_y), (enemy["x"], enemy["y"])) #saves the direction it was moving towards
                     enemy["knockback_speed"] = enemy["speed"] * 5 #knockback power
 
-    def bullet_collision(self, player: Player):
+    def bullet_collision(self, player: Player) -> None:
         """
         Method that checks the collision between enemies and the bullets.
         """
