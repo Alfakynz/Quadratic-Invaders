@@ -30,6 +30,7 @@ class Upgrade:
         self.color: int = pyxel.COLOR_GREEN
         self.selected_index: int = 0
         self.skill_names: list = list(self.upgrades.keys())
+        self.message = ""
 
     def increase(self, skill: str) -> None:
         """
@@ -126,10 +127,8 @@ class Upgrade:
         self.y += 30
         self.ascii.text(self.x, self.y, "Press E or ESCAPE to close", pyxel.COLOR_DARK_BLUE)
 
-        # Display a message if necessary
-        if hasattr(self, "message"):
-            self.y += 60
-            self.ascii.text(self.x, self.y, self.message, self.color)
+        self.y += 60
+        self.ascii.text(self.x, self.y, self.message, self.color)
 
     def draw_hp(self, x, y) -> None:
         """

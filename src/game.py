@@ -6,6 +6,7 @@ from enemies import Enemies
 from upgrades import Upgrade
 from menu import Menu
 from control import Control
+from ascii import ASCII
 
 class Game:
     """
@@ -22,6 +23,7 @@ class Game:
         self.upgrade: Upgrade = Upgrade(self.player) # creates the object Upgrade
         self.menu: Menu = Menu() # creates the object Menu
         self.control: Control = Control() # creatse the object Control
+        self.ascii: ASCII = ASCII()
 
         self.WINDOW_WIDTH: int = 1250 # width of the window
         self.WINDOW_HEIGHT: int = 800 # height of the window
@@ -39,6 +41,7 @@ class Game:
         # Fallback if the image doesn't exist
         if not SRC.exists():
             SRC = Path(__file__).resolve().parent / "assets" / "GameOver.png"
+            DST = Path(__file__).resolve().parent / "assets" / "_GameOver_256.png"
 
         # Resizes the GameOver image into a 256x256 format (made by ChatGPT)
         im = PILImage.open(SRC).convert("RGBA")
@@ -49,9 +52,6 @@ class Game:
         else:
             resample_method = getattr(PILImage, "BICUBIC", getattr(PILImage, "NEAREST"))
         im.thumbnail((256, 256), resample_method)
-
-        if not DST.exists():
-            DST = Path(__file__).resolve().parent / "assets" / "_GameOver_256.png"
 
         im.save(DST)
 
@@ -153,6 +153,7 @@ class Game:
             y = (self.WINDOW_HEIGHT - self.GAME_OVER_H) // 2
 
             pyxel.blt(x, y, 0, 0, 0, self.GAME_OVER_W, self.GAME_OVER_H) #displays the game over image when the player dies
+            self.ascii.text(400, 750, "Press any key to continue", pyxel.COLOR_WHITE)
 
     def load_image_as_array(self, path: str, color: int = 12) -> list[list[int]]:
         """

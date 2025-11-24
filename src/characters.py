@@ -51,7 +51,7 @@ class Character:
         teta: float = math.atan2(dy, dx) # calculation of teta
         return teta
     
-    def polar_to_cartesian(self, teta: float, r: int, offset: float = 0) -> tuple[float, float]:
+    def polar_to_cartesian(self, teta: float, r: float, offset: float = 0) -> tuple[float, float]:
         """
         Method that turns polar coordinates into cartesian coordinates.
 
