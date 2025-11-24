@@ -18,7 +18,7 @@ class Upgrade:
 
         self.player: Player = player
         self.upgrades: dict[str, Skill] = {
-            "hp": Skill("hp", "Increase your health by 1", 25, 1),
+            "hp_max": Skill("hp max", "Increase your health by 1", 25, 1),
             "attack": Skill("attack", "Increase your attack by 1", 10, 1),
             "shield": Skill("shield", "Increase your shield by 5", 50, 5),
             "speed": Skill("speed", "Increase your speed by 1", 5, 1),
@@ -71,6 +71,9 @@ class Upgrade:
         
         self.player.xp -= upgrade.price
         self.player.skills[skill] += upgrade.amount
+
+        if skill == "hp_max":
+            self.player.skills["hp"] = self.player.skills["hp_max"]
 
         upgrade.price = int(upgrade.price * 1.5)
         upgrade.level += 1

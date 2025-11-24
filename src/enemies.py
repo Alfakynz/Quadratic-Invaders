@@ -13,6 +13,7 @@ class Enemies(Character):
                  player: Player,
                  color: int = 4, # red
                  hp: int = 1, # health points
+                 hp_max: int = 1, # max health points
                  attack: int = 1, # amount of hp that the enemies remove to the player when they touch them
                  speed: int = 2, # speed at which the enemies move (r in polar coordinates)
                  shield: int = 0, # reduces the damage taken
@@ -23,7 +24,8 @@ class Enemies(Character):
 
         Args:
             color (int): Character color (not yet implemented).
-            hp (int): Maximum health of the character.
+            hp (int): Current health of the character.
+            hp_max (int): Maximum health of the character.
             attack (int): Base attack damage the character can inflict.
             speed (int): Movement speed of the character.
             shield (int): Amount of damage the character can block before losing hp.
@@ -31,11 +33,12 @@ class Enemies(Character):
             xp (int): Experience points awarded when the character is defeated. 
         """
 
-        super().__init__(color, hp, attack, speed, shield, fire_rate, xp) #calls the __init__ method of the parent class
+        super().__init__(color, hp, hp_max, attack, speed, shield, fire_rate, xp) #calls the __init__ method of the parent class
 
         #initializes the attributes characterizing the Enemies class
         self.color: int = color
         self.hp: int = hp
+        self.hp_max: int = hp_max
         self.attack: int = attack
         self.speed: int = speed
         self.shield: int = shield

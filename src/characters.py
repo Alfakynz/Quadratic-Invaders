@@ -8,6 +8,7 @@ class Character:
     def __init__(self,
                  color: int,
                  hp: int,
+                 hp_max: int,
                  attack: int,
                  speed: int,
                  shield: int,
@@ -16,7 +17,8 @@ class Character:
         """
         Args:
             color (int): Character color (not yet implemented).
-            hp (int): Maximum health of the character.
+            hp (int): Current health of the character.
+            hp_max (int): Maximum health of the character.
             attack (int): Base attack damage the character can inflict.
             speed (int): Movement speed of the character.
             shield (int): Amount of damage the character can block before losing hp.
@@ -28,6 +30,7 @@ class Character:
         self.xp: int = xp
         self.skills: dict[str, int] = {
             "hp": hp,
+            "hp_max": hp_max,
             "attack": attack,
             "shield": shield,
             "speed": speed,

@@ -13,6 +13,7 @@ class Player(Character):
     def __init__(self,
                  color: int = 7, # white
                  hp: int = 10, # health points
+                 hp_max: int = 10, # max health points
                  attack: int = 1, # amount of hp that the player removes to the enemies touched by a bullet
                  speed: int = 4, # speed at which the player moves (in cartesian coordinates)
                  shield: int = 0, # reduces the damage taken
@@ -31,7 +32,7 @@ class Player(Character):
             xp (int): The player xp.
         """
 
-        super().__init__(color, hp, attack, speed, shield, fire_rate, xp) #calls the __init__ method of the parent class
+        super().__init__(color, hp, hp_max, attack, speed, shield, fire_rate, xp) #calls the __init__ method of the parent class
         
         self.ascii: ASCII = ASCII()
 
