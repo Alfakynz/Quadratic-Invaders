@@ -152,7 +152,7 @@ Create the control informations
 def toggle_menu() -> None
 ```
 
-Toggle menu.
+A function to toggle on/off the controls view
 
 #### update
 
@@ -214,6 +214,14 @@ def __init__() -> None
 ```
 
 Create the menu.
+
+#### toggle\_menu
+
+```python
+def toggle_menu() -> None
+```
+
+A function to toggle on/off the menu
 
 #### update
 
@@ -717,7 +725,7 @@ Restart the game to its initial state.
 def test(name: str, test1, test2) -> None
 ```
 
-Function
+Function to test 2 args with an assert.
 
 **Arguments**:
 
