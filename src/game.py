@@ -129,7 +129,7 @@ class Game:
                 self.best_time = self.player.time
             self.player.skills["hp"] -= 1
         else:
-            if pyxel.btnp(pyxel.KEY_ESCAPE) or pyxel.btnp(pyxel.KEY_R) or pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.KEY_RSHIFT) or pyxel.btnp(pyxel.KEY_E) or pyxel.btnp(pyxel.KEY_F):
+            if pyxel.btnp(pyxel.KEY_RETURN):
                 # Restarts everything to restart the game
                 self.restart_game()
 
@@ -158,7 +158,7 @@ class Game:
             y = (self.WINDOW_HEIGHT - self.GAME_OVER_H) // 2
 
             pyxel.blt(x, y, 0, 0, 0, self.GAME_OVER_W, self.GAME_OVER_H) #displays the game over image when the player dies
-            self.ascii.text(400, 750, "Press any key to continue", pyxel.COLOR_WHITE)
+            self.ascii.text(400, 750, "Press Enter to continue", pyxel.COLOR_WHITE)
 
     def load_image_as_array(self, path: str, color: int = 12) -> list[list[int]]:
         """
