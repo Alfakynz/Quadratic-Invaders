@@ -27,6 +27,10 @@ class Menu:
         self.in_menu: bool = True
 
     def toggle_menu(self) -> None:
+        """
+        A function to toggle on/off the menu
+        """
+
         self.in_menu = not self.in_menu
 
     def update(self, controls: Control, game) -> None:

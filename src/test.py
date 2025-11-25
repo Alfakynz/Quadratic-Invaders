@@ -45,7 +45,7 @@ def jeux_de_test() -> None:
 
 def test(name: str, test1, test2) -> None:
     """
-    Function 
+    Function to test 2 args with an assert.
 
     Args:
         name (str): Name of the test.

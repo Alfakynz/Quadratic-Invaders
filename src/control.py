@@ -25,7 +25,7 @@ class Control:
 
     def toggle_menu(self) -> None:
         """
-        Toggle menu.
+        A function to toggle on/off the controls view
         """
 
         self.in_control = not self.in_control
