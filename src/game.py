@@ -90,7 +90,7 @@ class Game:
                 else:
                     self.in_upgrade_menu = False
 
-            if (pyxel.btnp(pyxel.KEY_E) or pyxel.btnp(pyxel.KEY_RSHIFT)) and not self.menu.in_menu:
+            if (pyxel.btnp(pyxel.KEY_E) or pyxel.btnp(pyxel.KEY_RSHIFT)) and not self.menu.in_menu and not self.control.in_control:
                 self.upgrade.message = ""  # Clear previous messages when toggling menu
                 self.in_upgrade_menu = not self.in_upgrade_menu
 
