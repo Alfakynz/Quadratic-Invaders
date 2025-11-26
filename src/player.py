@@ -68,33 +68,44 @@ class Player(Character):
 
         if (pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.KEY_D)) and self.player_x < self.WINDOW_WIDTH:
             self.player_x += self.skills["speed"] # moves to the right
+            #print("right")
             for enemy in self.enemies_array:
                 if enemy["x"] <= self.player_x+self.SIZE and enemy["y"] <= self.player_y+self.SIZE and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y:
                     self.player_x -= self.skills["speed"]
+                    #print("blocked right")
         if (pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.KEY_Q)) and self.player_x > 0:
             self.player_x -= self.skills["speed"] # moves to the left
+            #print("left")
             for enemy in self.enemies_array:
                 if enemy["x"] <= self.player_x+self.SIZE and enemy["y"] <= self.player_y+self.SIZE and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y:
                     self.player_x += self.skills["speed"]
+                    #print("blocked left")
         if (pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.KEY_S)) and self.player_y < self.WINDOW_HEIGHT:
             self.player_y += self.skills["speed"] # moves down
+            #print("down")
             for enemy in self.enemies_array:
                 if enemy["x"] <= self.player_x+self.SIZE and enemy["y"] <= self.player_y+self.SIZE and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y:
                     self.player_y -= self.skills["speed"]
+                    #print("blocked down")
         if (pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_Z)) and self.player_y > 0:
             self.player_y -= self.skills["speed"] # moves up
+            #print("up")
             for enemy in self.enemies_array:
                 if enemy["x"] <= self.player_x+self.SIZE and enemy["y"] <= self.player_y+self.SIZE and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y:
                     self.player_y -= self.skills["speed"]
+                    #print("blocked up")
 
     def damage(self) -> None:
         """
         Checks collision between the player and every enemy, then applies damage and handles temporary invincibility.
         """
 
+        #print(self.took_damage)
         for enemy in self.enemies_array:
             if enemy["x"] <= self.player_x+self.SIZE and enemy["y"] <= self.player_y+self.SIZE and enemy["x"]+self.ENEMY_SIZE >= self.player_x and enemy["y"]+self.ENEMY_SIZE >= self.player_y and self.took_damage == False: #checks collision and if the player is invincible
+                #print("hp before dmg", self.skills["hp"])
                 self.skills["hp"] = self.receive_damage(self.enemies_damage, self.skills["hp"], self.skills["shield"]) #damages the player
+                #print("hp after dmg", self.skills["hp"])
                 self.color = 13 #turns the player grey to show that he is now invincible and that he took some damage
                 self.took_damage = True #turns on the invincibility
             
@@ -117,6 +128,7 @@ class Player(Character):
         """
 
         self.xp += amount
+        #print(self.xp)
 
     def update(self, enemies_array: list[Enemy], enemies_size: int, enemies_attack: int, window_width: int, window_height: int) -> None:
         """
@@ -130,6 +142,7 @@ class Player(Character):
             window_height (int): Height of the window.
         """
 
+        #print("Player update works")
         #updates the attributes related to the enemies
         self.enemies_array = enemies_array
         self.ENEMY_SIZE = enemies_size
@@ -149,7 +162,7 @@ class Player(Character):
 
         # calculates the teta between the position of the mouse and the position of the player (polar coordinates)
         self.teta: float = self.teta_calculation((pyxel.mouse_x, pyxel.mouse_y), (self.player_x, self.player_y))
-
+        #print(self.teta)
         self.bullets.update(self.polar_to_cartesian, enemies_array, enemies_size, window_width, window_height, self.skills["fire_rate"], self.teta) # updates the bullets
 
     def draw(self) -> None:
@@ -157,13 +170,17 @@ class Player(Character):
         Method that draws the objects on the window and is called infinitely in the class Game.
         """
 
+        #print("Player draw works")
         self.time += 1
 
         # conversion of polar coordinates into cartesian coordinates for the vertex of the triangle that is orientated to the mouse
         p1: tuple[float, float] = self.polar_to_cartesian(self.teta, self.SIZE)
+        #print(p1)
         # conversion for the other vertexes of the triangle (with an offset of 3pi/4)
         p2: tuple[float, float] = self.polar_to_cartesian(self.teta, self.SIZE, 3*math.pi/4)
+        #print(p2)
         p3: tuple[float, float] = self.polar_to_cartesian(self.teta, self.SIZE, -3*math.pi/4)
+        #print(p3)
 
         # drawing of the triangle/player
         pyxel.tri(self.player_x + p1[0], self.player_y + p1[1],
@@ -188,14 +205,19 @@ class Player(Character):
 
         if hp > 7:
             color = pyxel.COLOR_GREEN
+            #print(f"{hp} HP")
         elif hp > 5:
             color = pyxel.COLOR_YELLOW
+            #print(f"{hp} HP")
         elif hp > 3:
             color = pyxel.COLOR_ORANGE
+            #print(f"{hp} HP")
         else:
             color = pyxel.COLOR_RED
-
+            #print(f"{hp} HP")
+    
         self.ascii.text(25, 25, f"{hp} HP", color)
+        #print(f"{hp} HP")
     
     def draw_xp(self) -> None:
         """
@@ -203,7 +225,8 @@ class Player(Character):
         """
 
         color = pyxel.COLOR_YELLOW
-        self.ascii.text(1125, 25, f"{self.xp} XP", color)
+        self.ascii.text(1050, 25, f"{self.xp} XP", color)
+        #print(f"{self.xp} XP")
 
     def draw_time(self, minutes: int, seconds: int) -> None:
         """
@@ -216,3 +239,4 @@ class Player(Character):
 
         color = pyxel.COLOR_LIGHT_BLUE
         self.ascii.text(585, 25, f"{minutes:02}:{seconds:02}", color)
+        #print(f"{minutes:02}:{seconds:02}")

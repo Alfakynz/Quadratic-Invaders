@@ -18,7 +18,7 @@ class Enemies(Character):
                  speed: int = 2, # speed at which the enemies move (r in polar coordinates)
                  shield: int = 0, # reduces the damage taken
                  fire_rate: int = 60, # number of frames counted each time a bullet is shot
-                 xp: int = 1) -> None: # amount of experience points dropped by the enemies when killed
+                 xp: int = 0) -> None: # amount of experience points dropped by the enemies when killed
         """
         Initializes the class Enemies
 
@@ -73,8 +73,12 @@ class Enemies(Character):
         Creates an enemy on a random side of the map every time a specific amount of frames is counted.
         """
 
+        #print(pyxel.frame_count)
+        #print(self.upgrades["creation_speed"])
         side = random.randint(1, 4) # chooses a random side of the map
+        #print(side)
         if pyxel.frame_count % self.upgrades["creation_speed"] == 0: #creates an enemy every given frames
+            #print("enemy creation")
             self.enemies_array.append({
                 "x": 0,
                 "y": 0,
@@ -95,17 +99,21 @@ class Enemies(Character):
             if side == 1:
                 # creates an enemy on the top side of the window
                 self.enemies_array[-1]["x"] = random.randint(0, self.WINDOW_WIDTH - self.SIZE)
+                #print(self.enemies_array[-1]["x"])
             elif side == 2:
                 # creates an enemy on the bottom side of the window
                 self.enemies_array[-1]["x"] = random.randint(0, self.WINDOW_WIDTH - self.SIZE)
+                #print(self.enemies_array[-1]["x"])
                 self.enemies_array[-1]["y"] = self.WINDOW_HEIGHT - self.SIZE
             elif side == 3:
                 # creates an enemy on the left side of the window
                 self.enemies_array[-1]["y"] = random.randint(0, self.WINDOW_HEIGHT - self.SIZE)
+                #print(self.enemies_array[-1]["y"])
             elif side == 4:
                 # creates an enemy on the right side of the window
                 self.enemies_array[-1]["x"] = self.WINDOW_WIDTH - self.SIZE
                 self.enemies_array[-1]["y"] = random.randint(0, self.WINDOW_HEIGHT - self.SIZE)
+                #print(self.enemies_array[-1]["y"])
 
     def enemies_movements(self) -> None:
         """
@@ -115,22 +123,29 @@ class Enemies(Character):
         for enemy in self.enemies_array:
             # calculates the teta between the position of the player and the position of the enemy (polar coordinates)
             teta_to_player: float = self.teta_calculation((self.player_x, self.player_y), (enemy["x"], enemy["y"]))
+            #print(teta_to_player)
 
             if enemy["reverse"] == True:
                 #creates a knockback effect when the enemy collides with the player
                 enemy["x"] -= self.polar_to_cartesian(teta_to_player, enemy["knockback_speed"])[0]
+                #print(enemy["x"])
                 enemy["y"] -= self.polar_to_cartesian(teta_to_player, enemy["knockback_speed"])[1]
+                #print(enemy["y"])
                 
+                #print(enemy["knockback_speed"])
                 enemy["knockback_speed"] *= 0.85 #creates friction
 
                 if enemy["knockback_speed"] < enemy["speed"] * 0.5: #stops the knockback effect when the knockback_speed is about to be normal again
+                    #print(enemy["knockback_speed"])
                     enemy["reverse"] = False #turns off the knockback effect
                     enemy["knockback_speed"] = 0.0 #resets the knockback_speed
 
             elif enemy["reverse"] == False:
                 # moves the enemy (with the help of a conversion of polar coordinates into cartesian coordinates)
                 enemy["x"] += self.polar_to_cartesian(teta_to_player, enemy["speed"])[0]
+                #print(enemy["x"])
                 enemy["y"] += self.polar_to_cartesian(teta_to_player, enemy["speed"])[1]
+                #print(enemy["y"])
 
     def player_collision(self) -> None:
         """
@@ -139,10 +154,13 @@ class Enemies(Character):
 
         for enemy in self.enemies_array:
             if enemy["x"] <= self.player_x+self.PLAYER_SIZE and enemy["y"] <= self.player_y+self.PLAYER_SIZE and enemy["x"]+self.SIZE >= self.player_x and enemy["y"]+self.SIZE >= self.player_y: #checks the collision
+                #print("player collision")
                 if not enemy["reverse"]: #makes sure the knockback is not reactivated when it is already turned on
                     enemy["reverse"] = True #turns on the knockback effect
                     enemy["teta"] = self.teta_calculation((self.player_x, self.player_y), (enemy["x"], enemy["y"])) #saves the direction it was moving towards
+                    #print(enemy["teta"])
                     enemy["knockback_speed"] = enemy["speed"] * 5 #knockback power
+                    #print(enemy["knockback_speed"])
 
     def bullet_collision(self, player: Player) -> None:
         """
@@ -152,13 +170,18 @@ class Enemies(Character):
         for enemy in self.enemies_array:
             for bullet in self.bullets_array[:]: #goes throught a copy of the array
                 if enemy["x"] <= bullet[0]+self.BULLET_SIZE and enemy["y"] <= bullet[1]+self.BULLET_SIZE and enemy["x"]+self.SIZE >= bullet[0] and enemy["y"]+self.SIZE >= bullet[1]: #checks the collision
+                    #print("bullet collision")
                     self.bullets_array.remove(bullet)
                     enemy["hp"] = self.receive_damage(self.player_attack, enemy["hp"], enemy["shield"]) #damages the enemy
+                    #print(enemy["hp"])
                     enemy["color"] = 2 #turns the enemy purple to show that he took some damage
                     enemy["bullet_touched"] = True #shows that the enemy collided with a bullet
                     if enemy["hp"] == 0:
                         self.enemies_array.remove(enemy) #removes the enemy from the array when he dies
+                        #print(self.enemies_array)
                         player.add_xp(enemy["xp"]) #gives the amount of xp that the enemy dropped when he died to the player
+                        #print(enemy["xp"])
+                        #print(player.xp)
                         break
             if enemy["bullet_touched"] == False:
                 enemy["count_bullet"] = 0 #puts the counter back to 0 when the enemy does not collide with a bullet
@@ -180,26 +203,32 @@ class Enemies(Character):
             in_upgrade_menu (bool): True if the upgrade menu is displayed, False otherwise
         """
 
-
-        if pyxel.frame_count % 600 == 0 and pyxel.frame_count != 0 and not in_control and not in_menu and not in_upgrade_menu: #checks if 10 seconds had passed and if the controls, the menu or the upgrade menu is displayed
+        #print(pyxel.frame_count)
+        if pyxel.frame_count % 600 == 0 and not in_control and not in_menu and not in_upgrade_menu: #checks if 10 seconds had passed and if the controls, the menu or the upgrade menu is displayed
+            #print("upgraded")
             if self.upgrades_order == "creation_speed" and self.upgrades[self.upgrades_order] > 30: #checks if it's the turn of the creation speed to be upgraded and limits the creation speed to higher than 0.1 seconds
                 self.upgrades[self.upgrades_order] -= 30 #decreases the creation speed of 0.5 seconds
+                #print(self.upgrades[self.upgrades_order])
                 self.xp += 1
                 self.upgrades_order = "speed" #next skill to be upgraded: speed
             elif self.upgrades_order == "speed" and self.upgrades[self.upgrades_order] < 15: #checks if it's the turn of the speed to be upgraded and limits the speed to below 15
                 self.upgrades[self.upgrades_order] += 1 #increases the speed of 1
+                #print(self.upgrades[self.upgrades_order])
                 self.xp += 1
                 self.upgrades_order = "hp" #next skill to be upgraded: hp
             elif self.upgrades_order == "hp": #checks if it's the turn of the hp to be upgraded
                 self.upgrades[self.upgrades_order] += 1 #increases the hp of 1
+                #print(self.upgrades[self.upgrades_order])
                 self.xp += 1
                 self.upgrades_order = "attack" #next skill to be upgraded: attack
             elif self.upgrades_order == "attack": #checks if it's the turn of the attack to be upgraded
                 self.upgrades[self.upgrades_order] += 1 #increases the attack of 1
+                #print(self.upgrades[self.upgrades_order])
                 self.xp += 1
                 self.upgrades_order = "shield" #next skill to be upgraded: shield
             elif self.upgrades_order == "shield" and self.upgrades[self.upgrades_order] < 94: #checks if it's the turn of the shield to be upgraded and limits the shield to below 95%
                 self.upgrades[self.upgrades_order] += 2 #increases the shield of 2
+                #print(self.upgrades[self.upgrades_order])
                 self.xp += 1
                 self.upgrades_order = "creation_speed" #next skill to be upgraded: creation speed
 
@@ -222,6 +251,7 @@ class Enemies(Character):
             in_upgrade_menu (bool): True if the upgrade menu is displayed, False otherwise
         """
 
+        #print("Enemies update works")
         #updates the attributes related to the player
         self.player_x = player_x
         self.player_y = player_y
@@ -247,5 +277,7 @@ class Enemies(Character):
         Method that draws the enemies on the window and is called infinitely in the class Game.
         """
 
+        #print("Enemies draw works")
         for enemy in self.enemies_array:
             pyxel.rect(enemy["x"], enemy["y"], self.SIZE, self.SIZE, enemy["color"]) # draws enemies/squares
+            #print("Enemy drew")

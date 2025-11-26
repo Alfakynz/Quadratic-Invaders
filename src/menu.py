@@ -32,6 +32,7 @@ class Menu:
         """
 
         self.in_menu = not self.in_menu
+        #print(self.in_menu)
 
     def update(self, controls: Control, game) -> None:
         """
@@ -42,15 +43,21 @@ class Menu:
             game (Game): The main game instance.
         """
 
-        # Navigate the upgrade menu
+        #print("Menu update works")
+        # Navigate the main menu
         if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.KEY_S):
+            #print("down")
             self.selected_index = (self.selected_index + 1) % len(self.items)
+            #print(self.selected_index)
         if pyxel.btnp(pyxel.KEY_UP) or pyxel.btnp(pyxel.KEY_Z):
+            #print("up")
             self.selected_index = (self.selected_index - 1) % len(self.items)
+            #print(self.selected_index)
 
-        # Purchase the selected upgrade
+        # Select an option
         if pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.KEY_F):
             selected_skill = self.items_names[self.selected_index]
+            #print(selected_skill)
             match selected_skill:
                 case "play":
                     self.toggle_menu()
@@ -67,6 +74,7 @@ class Menu:
         Draw the menu.
         """
 
+        #print("Menu draw works")
         pyxel.cls(0)
         self.y = 25
         self.ascii.text(self.x, self.y, "--- Menu ---", pyxel.COLOR_YELLOW)
@@ -79,6 +87,7 @@ class Menu:
             self.ascii.text(20, self.y, f"{item}"
 , color)
             self.y += 30
+            #print(f"{item}")
 
         self.y += 30
         self.ascii.text(self.x, self.y, "Press ENTER to select", pyxel.COLOR_DARK_BLUE)
@@ -89,3 +98,4 @@ class Menu:
         minutes = game.best_time // 3600
         seconds = (game.best_time // 60) % 60
         self.ascii.text(self.x, self.y, f"Best time: {minutes:02}:{seconds:02}", pyxel.COLOR_LIGHT_BLUE)
+        #print(f"Best time: {minutes:02}:{seconds:02}")

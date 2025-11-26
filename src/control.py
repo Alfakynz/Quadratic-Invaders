@@ -29,6 +29,7 @@ class Control:
         """
 
         self.in_control = not self.in_control
+        #print(self.in_control)
 
     def update(self, menu) -> None:
         """
@@ -38,8 +39,10 @@ class Control:
             menu (Menu): The main menu to return to.
         """
 
-        # Navigate the upgrade menu
+        #print("Control update works")
+        # Navigate the control menu
         if pyxel.btnp(pyxel.KEY_ESCAPE) or pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.KEY_F):
+            #print("Back")
             menu.toggle_menu()
             self.toggle_menu()
 
@@ -48,6 +51,7 @@ class Control:
         Draw the controls.
         """
 
+        #print("Control draw works")
         pyxel.cls(0)
         self.y = 25
         self.ascii.text(self.x, self.y, "--- Controls ---", pyxel.COLOR_YELLOW)
@@ -57,5 +61,6 @@ class Control:
 
         # Display each item
         for item in self.items:
+            #print(item)
             self.ascii.text(self.x, self.y, item, pyxel.COLOR_DARK_BLUE)
             self.y += 30

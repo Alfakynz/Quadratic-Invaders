@@ -42,10 +42,15 @@ class Bullets:
         Creates bullets every time a specific amount of frames is counted and when left click is continuously pressed.
         """
         
+        #print(pyxel.frame_count)
         if pyxel.btn(pyxel.MOUSE_BUTTON_LEFT): #checks if left click is pressed
+            #print("left click")
             if pyxel.frame_count - self.last_shot_frame >= self.fire_rate: #checks if enough time has passed since the last bullet was shot
                 self.bullets_array.append([self.player_x, self.player_y, self.teta]) # adds to bullets_array an array containing the coordinates and the direction of the bullet
+                #print(self.bullets_array)
+                #print(self.bullets_array[-1])
                 self.last_shot_frame = pyxel.frame_count #saves the last frame where a bullet was shot
+                #print(self.last_shot_frame)
 
     def bullets_movements(self, polar_to_cartesian: Callable) -> None:
         """
@@ -58,9 +63,13 @@ class Bullets:
         for bullet in self.bullets_array[:]: #goes through a copy of the array
             # moves the bullet (with the help of a conversion of polar coordinates into cartesian coordinates)
             bullet[0] += polar_to_cartesian(bullet[2], self.BULLET_SPEED)[0]
+            #print(bullet[0])
             bullet[1] += polar_to_cartesian(bullet[2], self.BULLET_SPEED)[1]
+            #print(bullet[1])
             if  bullet[0] < 0 - self.SIZE or bullet[0] > self.WINDOW_WIDTH + self.SIZE or bullet[1] < 0 - self.SIZE or bullet[1] > self.WINDOW_HEIGHT + self.SIZE:
+                #print("before out of bounds", self.bullets_array)
                 self.bullets_array.remove(bullet) #removes the bullet when it goes out of bounds
+                #print("after out of bounds", self.bullets_array)
 
     def update(self, polar_to_cartesian: Callable, enemies_array: list[Enemy], enemies_size: int, window_width: int, window_height: int, fire_rate: int, teta: float) -> None:
         """
@@ -76,6 +85,7 @@ class Bullets:
             teta (float): value of teta between the position of the mouse and the position of the player
         """
 
+        #print("Bullets update works")
         #updates the attributes related to the enemies
         self.enemies_array = enemies_array
         self.ENEMY_SIZE = enemies_size
@@ -96,5 +106,7 @@ class Bullets:
         Method that draws the bullets on the window and is called infinitely in the class Player.
         """
 
+        #print("Bullets draw works")
         for bullet in self.bullets_array:
             pyxel.circ(bullet[0], bullet[1], self.SIZE, self.COLOR) # draws bullets/circles
+            #print("Bullet drew")

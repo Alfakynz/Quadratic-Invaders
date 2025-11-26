@@ -79,6 +79,7 @@ class Game:
         Method that calls all the update methods of every class and is called infinitely by Pyxel.
         """
 
+        #print("Game update works")
         # Temporary quit the game with 0
         if pyxel.btnp(pyxel.KEY_0):
             pyxel.quit()
@@ -125,12 +126,15 @@ class Game:
                                 self.in_upgrade_menu) # updates the enemies and gives some attributes of the Player class and the Bullets to the Enemies Class
             return
         elif self.player.skills["hp"] == 0:
+            #print("before", self.best_time)
             if self.best_time < self.player.time:
                 self.best_time = self.player.time
+                #print("after", self.best_time)
             self.player.skills["hp"] -= 1
         else:
             if pyxel.btnp(pyxel.KEY_RETURN):
                 # Restarts everything to restart the game
+                #print("restart")
                 self.restart_game()
 
     def draw(self) -> None:
@@ -138,25 +142,30 @@ class Game:
         Method that calls all the draw methods of every class and is called infinitely by Pyxel.
         """
 
+        #print("Game draw works")
         pyxel.cls(0) # clears the window
         pyxel.mouse(False) # displays the mouse on the window
 
         if self.control.in_control:
             self.control.draw() # draws the controls menu
+            #print("control drew")
         elif self.menu.in_menu:
             self.menu.draw(self) # draws the menu
+            #print("menu drew")
         elif self.player.skills["hp"] > 0:
             if self.in_upgrade_menu:
                 self.upgrade.draw() # draws the upgrade menu
+                #print("upgrade drew")
             else:
                 self.player.draw() # draws the player
                 self.enemies.draw() # draws the enemies
                 self.draw_cursor(pyxel.mouse_x - 16, pyxel.mouse_y - 16) # draws a custom cursor (centered)
         else:
+            #print("Game Over")
             #centers the image
             x = (self.WINDOW_WIDTH  - self.GAME_OVER_W) // 2
             y = (self.WINDOW_HEIGHT - self.GAME_OVER_H) // 2
-
+        
             pyxel.blt(x, y, 0, 0, 0, self.GAME_OVER_W, self.GAME_OVER_H) #displays the game over image when the player dies
             self.ascii.text(400, 750, "Press Enter to continue", pyxel.COLOR_WHITE)
 
@@ -175,6 +184,8 @@ class Game:
 
         img = PILImage.open(path).convert("RGBA")
         w, h = img.size
+        #print(w)
+        #print(h)
         data = []
 
         for y in range(h):
@@ -189,6 +200,9 @@ class Game:
                     a = 0
                 row.append(color if a > 10 else 0)
             data.append(row)
+
+        #print("converted line", data[0][:20])
+        #print("matrix", len(data), "lignes x", len(data[0]), "colonnes")
 
         return data
     
@@ -205,6 +219,7 @@ class Game:
             for i, color in enumerate(row):
                 if color != 0:
                     pyxel.pset(x + i, y + j, color)
+                    #print("cursor drew")
 
     def restart_game(self) -> None:
         """
@@ -217,3 +232,4 @@ class Game:
         self.menu = Menu()
         self.control = Control()
         self.in_upgrade_menu = False
+        #print("restarted")
