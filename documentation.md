@@ -551,7 +551,7 @@ def __init__(player: Player,
              speed: int = 2,
              shield: int = 0,
              fire_rate: int = 60,
-             xp: int = 1) -> None
+             xp: int = 0) -> None
 ```
 
 Initializes the class Enemies
