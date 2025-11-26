@@ -18,7 +18,7 @@ class Enemies(Character):
                  speed: int = 2, # speed at which the enemies move (r in polar coordinates)
                  shield: int = 0, # reduces the damage taken
                  fire_rate: int = 60, # number of frames counted each time a bullet is shot
-                 xp: int = 0) -> None: # amount of experience points dropped by the enemies when killed
+                 xp: int = 1) -> None: # amount of experience points dropped by the enemies when killed
         """
         Initializes the class Enemies
 
